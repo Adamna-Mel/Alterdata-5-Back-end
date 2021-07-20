@@ -5,10 +5,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-package br.com.alterdata.pack.exception.ErrorMessage;
 
 @ControllerAdvice
-public class ExceptionHandler{
+public class APIExceptionHandler{
 
 	@ExceptionHandler(NotFoundException.class)
 	public ResponseEntity<?> handlerNotFoundException(NotFoundException exception){
@@ -20,8 +19,8 @@ public class ExceptionHandler{
 		return new ResponseEntity<>(errorMessage, HttpStatus.NOT_FOUND);
 	}
 	
-	@ExceptionHandler(ResourceBadRequestException.class)
-	public ResponseEntity<?> handlerResourceBadRequestException(ResourceBadRequestException exception){
+	@ExceptionHandler(BadRequestException.class)
+	public ResponseEntity<?> handlerBadRequestException(BadRequestException exception){
 		ErrorMessage errorMessage = new ErrorMessage(
 				"Bad Request",
 				400,
@@ -30,8 +29,8 @@ public class ExceptionHandler{
 		return new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST);
 	}
 	
-	@ExceptionHandler(ResourceUnauthorizedException.class)
-	public ResponseEntity<?> handlerResourceUnauthorizedException(ResourceBadRequestException exception){
+	@ExceptionHandler(UnauthorizedException.class)
+	public ResponseEntity<?> handlerUnauthorizedException(BadRequestException exception){
 		ErrorMessage errorMessage = new ErrorMessage(
 				"Unauthorized",
 				403,

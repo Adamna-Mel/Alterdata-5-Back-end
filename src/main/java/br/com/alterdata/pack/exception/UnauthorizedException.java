@@ -4,13 +4,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(code = HttpStatus.UNAUTHORIZED)
-public class ResourceUnauthorizedException extends RuntimeException {
+public class UnauthorizedException extends RuntimeException {
 	
-	public ResourceUnauthorizedException() {
+	public UnauthorizedException() {
 		super("Usuario não está autorizado a utilizar esse recurso");
 	}
 	
-	public ResourceUnauthorizedException(String mensagem) {
+	public UnauthorizedException(String mensagem) {
 		super(mensagem);
 	}
 	
