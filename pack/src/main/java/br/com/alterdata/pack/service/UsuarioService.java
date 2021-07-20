@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import br.com.alterdata.pack.model.Usuario;
 import br.com.alterdata.pack.repository.UsuarioRepository;
+import br.com.alterdata.pack.shared.UsuarioDto;
 
 
 @Service
@@ -70,7 +71,6 @@ public class UsuarioService {
 	        }
 	    }
 
-	    
 	    public void deletar(Long id) {
 
 	        try {
@@ -81,5 +81,40 @@ public class UsuarioService {
 	            System.out.println(e.getMessage());
 	        }    
 	    }
+
+		public Optional<Usuario> editarStatus(Long id, UsuarioDto usuario){
+			var usuarioExistente = _repositorioUsuario.findById(id);
+			
+			usuarioExistente.get().setStatus(usuario.getStatus());
+			
+			return usuarioExistente;
+		}
+
+		public Optional<Usuario> editarTime(Long id, UsuarioDto usuario){
+
+			var usuarioExistente = _repositorioUsuario.findById(id);
+			
+			usuarioExistente.get().setTime(usuario.getTime());
+			
+			return usuarioExistente;
+		}
+
+		public Optional<Usuario> editarPapel(Long id, UsuarioDto usuario){
+
+			var usuarioExistente = _repositorioUsuario.findById(id);
+			
+			usuarioExistente.get().setPapel(usuario.getPapel());
+			
+			return usuarioExistente;
+		}
+
+		public Optional<Usuario> editarAvatar(Long id, UsuarioDto usuario){
+
+			var usuarioExistente = _repositorioUsuario.findById(id);
+			
+			usuarioExistente.get().setAvatar(usuario.getAvatar());
+			
+			return usuarioExistente;
+		}
 
 }
