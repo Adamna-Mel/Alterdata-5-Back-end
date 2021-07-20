@@ -78,42 +78,21 @@ public class UsuarioService {
 				this._repositorioUsuario.deleteById(id);
 	    }
 
-		public Optional<Usuario> editarStatus(Long id, UsuarioDto usuario){
+			public Optional<Usuario> editar(Long id, UsuarioDto usuario){
 
-			Optional<Usuario> usuarioExistente = obterPorId(id);
-
-			usuarioExistente.get().setStatus(usuario.getStatus());
-			
-			return usuarioExistente;
-		}
-
-		public Optional<Usuario> editarTime(Long id, UsuarioDto usuario){
-
-			Optional<Usuario> usuarioExistente = obterPorId(id);
-			
-			usuarioExistente.get().setTime(usuario.getTime());
-			
-			return usuarioExistente;
-		}
-
-		public Optional<Usuario> editarPapel(Long id, UsuarioDto usuario){
-
-			Optional<Usuario> usuarioExistente = obterPorId(id);
-			
-			usuarioExistente.get().setPapel(usuario.getPapel());
-			
-			return usuarioExistente;
-		}
-
-		//TODO: se o usuario passar um outro atributo o avatar ficar nulo
-		public Optional<Usuario> editarAvatar(Long id, UsuarioDto usuario){
-
-			Optional<Usuario> usuarioExistente = obterPorId(id);
-			
-			usuarioExistente.get().setAvatar(usuario.getAvatar());
-			
-			return usuarioExistente;
-		}
+				Optional<Usuario> usuarioExistente = obterPorId(id);
+	
+				if (usuario.getStatus() != null)
+						usuarioExistente.get().setStatus(usuario.getStatus());
+				if (usuario.getPapel() != null)
+						usuarioExistente.get().setPapel(usuario.getPapel());
+			  if (usuario.getTime() != null)
+						usuarioExistente.get().setTime(usuario.getTime());
+			  if (usuario.getAvatar() != null)
+						usuarioExistente.get().setAvatar(usuario.getAvatar());
+				
+				return usuarioExistente;
+			}
 
 			public void validarCampos(Usuario usuario){
 				if (usuario.getLogin() == null)

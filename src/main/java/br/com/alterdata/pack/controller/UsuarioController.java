@@ -65,34 +65,10 @@ public class UsuarioController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PatchMapping("{id}/editarstatus")
-    public ResponseEntity<Optional<Usuario>> editarStatus(@PathVariable(value = "id") Long id, @RequestBody UsuarioDto usuario){
+    @PatchMapping("{id}")
+    public ResponseEntity<Optional<Usuario>> editar(@PathVariable(value = "id") Long id, @RequestBody UsuarioDto usuario){
 
-        Optional<Usuario> usuarioNovoStatus = _servicoUsuario.editarStatus(id, usuario);
-
-        return new ResponseEntity<>(usuarioNovoStatus, HttpStatus.OK);
-    }
-
-    @PatchMapping("{id}/editartime")
-    public ResponseEntity<Optional<Usuario>> editarTime(@PathVariable(value = "id") Long id, @RequestBody UsuarioDto usuario){
-
-        Optional<Usuario> usuarioNovoStatus = _servicoUsuario.editarTime(id, usuario);
-
-        return new ResponseEntity<>(usuarioNovoStatus, HttpStatus.OK);
-    }
-
-    @PatchMapping("{id}/editarpapel")
-    public ResponseEntity<Optional<Usuario>> editarPapel(@PathVariable(value = "id") Long id, @RequestBody UsuarioDto usuario){
-
-        Optional<Usuario> usuarioNovoStatus = _servicoUsuario.editarPapel(id, usuario);
-
-        return new ResponseEntity<>(usuarioNovoStatus, HttpStatus.OK);
-    }
-
-    @PatchMapping("{id}/editaravatar")
-    public ResponseEntity<Optional<Usuario>> editarAvatar(@PathVariable(value = "id") Long id, @RequestBody UsuarioDto usuario){
-
-        Optional<Usuario> usuarioNovoStatus = _servicoUsuario.editarAvatar(id, usuario);
+        Optional<Usuario> usuarioNovoStatus = _servicoUsuario.editar(id, usuario);
 
         return new ResponseEntity<>(usuarioNovoStatus, HttpStatus.OK);
     }
