@@ -23,58 +23,62 @@ public class UsuarioService {
 	        return this. _repositorioUsuario.findAll();
 	    }
 	    
-	    
-	    public ResponseEntity<Optional<Usuario>> obterPorId(@PathVariable(value = "id") Long id){
+	    public Optional<Usuario> obterPorId(Long id){
 
-	        try {
 	            var encontrado = _repositorioUsuario.findById(id);
 
-	            return new ResponseEntity<Optional<Usuario>>(encontrado, HttpStatus.OK);
-
-	        }catch (Exception e) {
-	            System.out.println(e.getMessage());
-
-	            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND );
-	        }
+				if(encontrado.isEmpty()){
+					Optional.empty();
+				}
+	            return encontrado;
+	  
 	    }
 
-	    
-	    public ResponseEntity<Usuario> adicionar(@RequestBody Usuario usuario) {
+		public Optional<Usuario> obterPorLogin(String login){
+
+			Optional<Usuario> usuario = _repositorioUsuario.findByLogin(login);
+
+			if(usuario.isEmpty()){
+				return Optional.empty();
+			}
+
+			return usuario;
+
+		}
+
+	    public Usuario adicionar(Usuario usuario) {
 
 	        var adicionado = this._repositorioUsuario.save(usuario);
 
-	        return new ResponseEntity<Usuario>(adicionado, HttpStatus.CREATED);
+	        return adicionado;
 	    }
 
 	    
-	    public ResponseEntity<Usuario> atualizar(@PathVariable(value = "id") Long id, @RequestBody Usuario usuario) {
+	    public Usuario atualizar(Long id, Usuario usuario) {
 
 	        try {
 	            usuario.setId(id);
 
 	            var usuarioAtualizado = this._repositorioUsuario.save(usuario);
 
-	            return new ResponseEntity<>(usuarioAtualizado, HttpStatus.OK);
+	            return usuarioAtualizado;
 
 	        }catch (Exception e) {
 	            System.out.println(e.getMessage());
 
-	            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+	            return null;
 	        }
 	    }
 
 	    
-	    public ResponseEntity<Optional<Usuario>> deletar(@PathVariable(value = "id") Long id) {
+	    public void deletar(Long id) {
 
 	        try {
 	            this._repositorioUsuario.deleteById(id);
 
-	            return new ResponseEntity<Optional<Usuario>>(HttpStatus.OK);
-
+	        
 	        }catch (Exception e) {
 	            System.out.println(e.getMessage());
-
-	            return new ResponseEntity<Optional<Usuario>>(HttpStatus.NOT_FOUND);
 	        }    
 	    }
 

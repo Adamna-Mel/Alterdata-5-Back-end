@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -27,28 +28,46 @@ public class UsuarioController {
     UsuarioService _servicoUsuario;
 
     @GetMapping
-    public List<Usuario> obterTodos() {
-        return _servicoUsuario.obterTodos();
+    public ResponseEntity<List<Usuario>> obterTodos() {
+        return new ResponseEntity<>(_servicoUsuario.obterTodos(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Optional<Usuario>> obterPorId(@PathVariable(value = "id") Long id) {
-        return  _servicoUsuario.obterPorId(id);
+        
+        var usuario = _servicoUsuario.obterPorId(id);
+
+        if(usuario.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return  new ResponseEntity<>(usuario, HttpStatus.OK);
+    }
+
+    @GetMapping("/login/{login}")
+    public ResponseEntity<Optional<Usuario>> obterPorLogin(@PathVariable(value = "login") String login){
+
+        if(login.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(_servicoUsuario.obterPorLogin(login), HttpStatus.OK);
     }
 
     @PostMapping
     public ResponseEntity<Usuario> adicionar(@RequestBody Usuario usuario) {
-        return _servicoUsuario.adicionar(usuario);
+
+        var novoUsuario = _servicoUsuario.adicionar(usuario);
+        return new ResponseEntity<>(novoUsuario, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Usuario> atualizar(@PathVariable(value = "id") Long id, @RequestBody Usuario usuario) {
-        return _servicoUsuario.atualizar(id, usuario);
+        return new ResponseEntity<>(_servicoUsuario.atualizar(id, usuario), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Optional<Usuario>> deletar(@PathVariable(value = "id") Long id) {
-        return _servicoUsuario.deletar(id);
+    public ResponseEntity<Void> deletar(@PathVariable(value = "id") Long id) {
+        _servicoUsuario.deletar(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }
