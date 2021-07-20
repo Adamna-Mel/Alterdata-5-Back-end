@@ -27,7 +27,7 @@ public class UsuarioService {
 
 			Optional<Usuario> encontrado = _repositorioUsuario.findById(id);
 
-							if(encontrado.isEmpty()){
+							if(!encontrado.isPresent()){
 								throw new NotFoundException("Usuário não pode ser encontrado pelo ID:" + id);
 							}
 	            return encontrado;
@@ -38,7 +38,7 @@ public class UsuarioService {
 
 			Optional<Usuario> usuario = _repositorioUsuario.findByLogin(login);
 
-			if(usuario.isEmpty()){
+			if(!usuario.isPresent()){
 				throw new NotFoundException("Usuário não pode ser encontrado pelo Login: " + login);
 			}
 
@@ -116,13 +116,13 @@ public class UsuarioService {
 		}
 
 			public void validarCampos(Usuario usuario){
-				if (usuario.getLogin() == null || usuario.getLogin().isEmpty())
+				if (usuario.getLogin() == null)
 								throw new BadRequestException("Login não pode ser nulo!");
 	
-							if (usuario.getSenha() == null || usuario.getSenha().isEmpty())
+							if (usuario.getSenha() == null)
 								throw new BadRequestException("Senha não pode ser nulo!");
 						
-							if (usuario.getNome() == null || usuario.getNome().isEmpty())
+							if (usuario.getNome() == null)
 								throw new BadRequestException("Nome não pode ser nulo!");
 	
 							Optional<Usuario> usuarioProcurado = this._repositorioUsuario.findByLogin(usuario.getLogin());
