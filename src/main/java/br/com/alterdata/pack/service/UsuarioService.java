@@ -34,15 +34,15 @@ public class UsuarioService {
 	  
 	    }
 
-		public Optional<Usuario> obterPorLogin(String login){
+		public List<Usuario> obterPorLogin(String login){
 
-			Optional<Usuario> usuario = _repositorioUsuario.findByLogin(login);
+			List<Usuario> usuarios = _repositorioUsuario.findByLoginContaining(login.toLowerCase());
 
-			if(!usuario.isPresent()){
-				throw new NotFoundException("Usuário não pode ser encontrado pelo Login: " + login);
+			if(usuarios.size() == 0){
+				throw new NotFoundException("Nenhum Usuário não pode ser encontrado pelo Login: " + login);
 			}
 
-			return usuario;
+			return usuarios;
 
 		}
 

@@ -43,7 +43,7 @@ public class UsuarioController {
     }
 
     @GetMapping("/login/{login}")
-    public ResponseEntity<Optional<Usuario>> obterPorLogin(@PathVariable(value = "login") String login){
+    public ResponseEntity<List<Usuario>> obterPorLogin(@PathVariable(value = "login") String login){
         return new ResponseEntity<>(_servicoUsuario.obterPorLogin(login), HttpStatus.OK);
     }
 
