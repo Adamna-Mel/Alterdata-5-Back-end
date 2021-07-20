@@ -39,9 +39,6 @@ public class UsuarioController {
         
         Optional<Usuario> usuario = _servicoUsuario.obterPorId(id);
 
-        if(usuario.isEmpty()){
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
         return  new ResponseEntity<>(usuario, HttpStatus.OK);
     }
 
