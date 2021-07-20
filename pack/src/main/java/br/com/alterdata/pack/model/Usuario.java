@@ -8,7 +8,6 @@ import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-
 @Entity
 @Table(name= "usuario")
 @SequenceGenerator(name = "generator_usuario", sequenceName = "sequence_usuario", initialValue = 1, allocationSize = 1)
@@ -18,28 +17,26 @@ public class Usuario {
     @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "generator_usuario")
     private Long id;
 
-    @Column(unique = true, nullable = true)
+    @Column(unique = true,nullable = false)
     private String login;
 
     @Column(nullable = false)
     private String senha;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String avatar;
 
     @Column(nullable = false)
     private String nome;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String status;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String papel;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String time;
-
-    
 
     public Long getId() {
         return id;

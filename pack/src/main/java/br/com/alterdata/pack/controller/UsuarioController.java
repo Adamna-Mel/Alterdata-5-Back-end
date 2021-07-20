@@ -47,10 +47,6 @@ public class UsuarioController {
 
     @GetMapping("/login/{login}")
     public ResponseEntity<Optional<Usuario>> obterPorLogin(@PathVariable(value = "login") String login){
-
-        if(login.isEmpty()){
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
         return new ResponseEntity<>(_servicoUsuario.obterPorLogin(login), HttpStatus.OK);
     }
 
@@ -80,7 +76,7 @@ public class UsuarioController {
         return new ResponseEntity<>(usuarioNovoStatus, HttpStatus.OK);
     }
 
-    @PatchMapping("{id}/editarTime")
+    @PatchMapping("{id}/editartime")
     public ResponseEntity<Optional<Usuario>> editarTime(@PathVariable(value = "id") Long id, @RequestBody UsuarioDto usuario){
 
         Optional<Usuario> usuarioNovoStatus = _servicoUsuario.editarTime(id, usuario);
@@ -88,7 +84,7 @@ public class UsuarioController {
         return new ResponseEntity<>(usuarioNovoStatus, HttpStatus.OK);
     }
 
-    @PatchMapping("{id}/editarPapel")
+    @PatchMapping("{id}/editarpapel")
     public ResponseEntity<Optional<Usuario>> editarPapel(@PathVariable(value = "id") Long id, @RequestBody UsuarioDto usuario){
 
         Optional<Usuario> usuarioNovoStatus = _servicoUsuario.editarPapel(id, usuario);
@@ -96,7 +92,7 @@ public class UsuarioController {
         return new ResponseEntity<>(usuarioNovoStatus, HttpStatus.OK);
     }
 
-    @PatchMapping("{id}/editarAvatar")
+    @PatchMapping("{id}/editaravatar")
     public ResponseEntity<Optional<Usuario>> editarAvatar(@PathVariable(value = "id") Long id, @RequestBody UsuarioDto usuario){
 
         Optional<Usuario> usuarioNovoStatus = _servicoUsuario.editarAvatar(id, usuario);
