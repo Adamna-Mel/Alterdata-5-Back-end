@@ -25,7 +25,7 @@ public class UsuarioService {
 	    
 	    public Optional<Usuario> obterPorId(Long id){
 
-	            var encontrado = _repositorioUsuario.findById(id);
+			Optional<Usuario> encontrado = _repositorioUsuario.findById(id);
 
 							if(encontrado.isEmpty()){
 								throw new NotFoundException("Usuário não pode ser encontrado pelo ID:" + id);
@@ -52,7 +52,7 @@ public class UsuarioService {
 
 					validarCampos(usuario);
 
-	        var adicionado = this._repositorioUsuario.save(usuario);
+	        Usuario adicionado = this._repositorioUsuario.save(usuario);
 	        return adicionado;
 	    }
 
@@ -65,7 +65,7 @@ public class UsuarioService {
 
 	            usuario.setId(id);
 
-	            var usuarioAtualizado = this._repositorioUsuario.save(usuario);
+	            Usuario usuarioAtualizado = this._repositorioUsuario.save(usuario);
 
 	            return usuarioAtualizado;
 
@@ -80,7 +80,7 @@ public class UsuarioService {
 
 		public Optional<Usuario> editarStatus(Long id, UsuarioDto usuario){
 
-			var usuarioExistente = obterPorId(id);
+			Optional<Usuario> usuarioExistente = obterPorId(id);
 
 			usuarioExistente.get().setStatus(usuario.getStatus());
 			
@@ -89,7 +89,7 @@ public class UsuarioService {
 
 		public Optional<Usuario> editarTime(Long id, UsuarioDto usuario){
 
-			var usuarioExistente = obterPorId(id);
+			Optional<Usuario> usuarioExistente = obterPorId(id);
 			
 			usuarioExistente.get().setTime(usuario.getTime());
 			
@@ -98,7 +98,7 @@ public class UsuarioService {
 
 		public Optional<Usuario> editarPapel(Long id, UsuarioDto usuario){
 
-			var usuarioExistente = obterPorId(id);
+			Optional<Usuario> usuarioExistente = obterPorId(id);
 			
 			usuarioExistente.get().setPapel(usuario.getPapel());
 			
@@ -108,7 +108,7 @@ public class UsuarioService {
 		//TODO: se o usuario passar um outro atributo o avatar ficar nulo
 		public Optional<Usuario> editarAvatar(Long id, UsuarioDto usuario){
 
-			var usuarioExistente = obterPorId(id);
+			Optional<Usuario> usuarioExistente = obterPorId(id);
 			
 			usuarioExistente.get().setAvatar(usuario.getAvatar());
 			
@@ -125,7 +125,7 @@ public class UsuarioService {
 							if (usuario.getNome() == null || usuario.getNome().isEmpty())
 								throw new BadRequestException("Nome não pode ser nulo!");
 	
-						var usuarioProcurado = this._repositorioUsuario.findByLogin(usuario.getLogin());
+							Optional<Usuario> usuarioProcurado = this._repositorioUsuario.findByLogin(usuario.getLogin());
 
 						if (usuarioProcurado.isPresent()){
 							throw new BadRequestException("Usuário já existe com o Login: " + usuario.getLogin());

@@ -5,10 +5,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-<<<<<<< HEAD:src/main/java/br/com/alterdata/pack/exception/APIExceptionHandler.java
-
-=======
->>>>>>> 65aea55daca4c8bc1e88da6c5a75fcc5a057a5d4:pack/src/main/java/br/com/alterdata/pack/exception/ExceptionHandler.java
 @ControllerAdvice
 public class APIExceptionHandler{
 

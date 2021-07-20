@@ -37,7 +37,7 @@ public class UsuarioController {
     @GetMapping("/{id}")
     public ResponseEntity<Optional<Usuario>> obterPorId(@PathVariable(value = "id") Long id) {
         
-        var usuario = _servicoUsuario.obterPorId(id);
+        Optional<Usuario> usuario = _servicoUsuario.obterPorId(id);
 
         if(usuario.isEmpty()){
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -53,7 +53,7 @@ public class UsuarioController {
     @PostMapping
     public ResponseEntity<Usuario> adicionar(@RequestBody Usuario usuario) {
 
-        var novoUsuario = _servicoUsuario.adicionar(usuario);
+        Usuario novoUsuario = _servicoUsuario.adicionar(usuario);
         return new ResponseEntity<>(novoUsuario, HttpStatus.CREATED);
     }
 
