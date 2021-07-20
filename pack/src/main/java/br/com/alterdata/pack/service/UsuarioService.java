@@ -10,6 +10,7 @@ import br.com.alterdata.pack.exception.BadRequestException;
 import br.com.alterdata.pack.exception.NotFoundException;
 import br.com.alterdata.pack.model.Usuario;
 import br.com.alterdata.pack.repository.UsuarioRepository;
+import br.com.alterdata.pack.shared.UsuarioDto;
 
 
 @Service
@@ -70,14 +71,49 @@ public class UsuarioService {
 
 	    }
 
-	    
 	    public void deletar(Long id) {
 
 				obterPorId(id);
 	      
 				this._repositorioUsuario.deleteById(id);
-
 	    }
+
+		public Optional<Usuario> editarStatus(Long id, UsuarioDto usuario){
+
+			var usuarioExistente = obterPorId(id);
+
+			usuarioExistente.get().setStatus(usuario.getStatus());
+			
+			return usuarioExistente;
+		}
+
+		public Optional<Usuario> editarTime(Long id, UsuarioDto usuario){
+
+			var usuarioExistente = obterPorId(id);
+			
+			usuarioExistente.get().setTime(usuario.getTime());
+			
+			return usuarioExistente;
+		}
+
+		public Optional<Usuario> editarPapel(Long id, UsuarioDto usuario){
+
+			var usuarioExistente = obterPorId(id);
+			
+			usuarioExistente.get().setPapel(usuario.getPapel());
+			
+			return usuarioExistente;
+		}
+
+		//TODO: se o usuario passar um outro atributo o avatar ficar nulo
+		public Optional<Usuario> editarAvatar(Long id, UsuarioDto usuario){
+
+			var usuarioExistente = obterPorId(id);
+			
+			usuarioExistente.get().setAvatar(usuario.getAvatar());
+			
+			return usuarioExistente;
+		}
 
 			public void validarCampos(Usuario usuario){
 				if (usuario.getLogin() == null || usuario.getLogin().isEmpty())
@@ -95,5 +131,6 @@ public class UsuarioService {
 							throw new BadRequestException("Usuário já existe com o Login: " + usuario.getLogin());
 						}
 			}
+
 
 }
