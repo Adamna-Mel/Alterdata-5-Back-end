@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.alterdata.pack.model.Usuario;
 import br.com.alterdata.pack.service.UsuarioService;
+import br.com.alterdata.pack.shared.UsuarioDto;
 
 
 @RestController
@@ -45,10 +47,6 @@ public class UsuarioController {
 
     @GetMapping("/login/{login}")
     public ResponseEntity<Optional<Usuario>> obterPorLogin(@PathVariable(value = "login") String login){
-
-        if(login.isEmpty()){
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
         return new ResponseEntity<>(_servicoUsuario.obterPorLogin(login), HttpStatus.OK);
     }
 
@@ -70,4 +68,35 @@ public class UsuarioController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @PatchMapping("{id}/editarstatus")
+    public ResponseEntity<Optional<Usuario>> editarStatus(@PathVariable(value = "id") Long id, @RequestBody UsuarioDto usuario){
+
+        Optional<Usuario> usuarioNovoStatus = _servicoUsuario.editarStatus(id, usuario);
+
+        return new ResponseEntity<>(usuarioNovoStatus, HttpStatus.OK);
+    }
+
+    @PatchMapping("{id}/editartime")
+    public ResponseEntity<Optional<Usuario>> editarTime(@PathVariable(value = "id") Long id, @RequestBody UsuarioDto usuario){
+
+        Optional<Usuario> usuarioNovoStatus = _servicoUsuario.editarTime(id, usuario);
+
+        return new ResponseEntity<>(usuarioNovoStatus, HttpStatus.OK);
+    }
+
+    @PatchMapping("{id}/editarpapel")
+    public ResponseEntity<Optional<Usuario>> editarPapel(@PathVariable(value = "id") Long id, @RequestBody UsuarioDto usuario){
+
+        Optional<Usuario> usuarioNovoStatus = _servicoUsuario.editarPapel(id, usuario);
+
+        return new ResponseEntity<>(usuarioNovoStatus, HttpStatus.OK);
+    }
+
+    @PatchMapping("{id}/editaravatar")
+    public ResponseEntity<Optional<Usuario>> editarAvatar(@PathVariable(value = "id") Long id, @RequestBody UsuarioDto usuario){
+
+        Optional<Usuario> usuarioNovoStatus = _servicoUsuario.editarAvatar(id, usuario);
+
+        return new ResponseEntity<>(usuarioNovoStatus, HttpStatus.OK);
+    }
 }
