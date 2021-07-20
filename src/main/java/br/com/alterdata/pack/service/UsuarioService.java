@@ -16,14 +16,14 @@ import br.com.alterdata.pack.shared.UsuarioDto;
 @Service
 public class UsuarioService {
 
-	 		@Autowired
-	    private UsuarioRepository _repositorioUsuario;
+	@Autowired
+	private UsuarioRepository _repositorioUsuario;
 
-	    public List<Usuario> obterTodos() {
-	        return this. _repositorioUsuario.findAll();
-	    }
-	    
-	    public Optional<Usuario> obterPorId(Long id){
+	public List<Usuario> obterTodos() {
+	    return this. _repositorioUsuario.findAll();
+	}
+	
+	public Optional<Usuario> obterPorId(Long id){
 
 			Optional<Usuario> encontrado = _repositorioUsuario.findById(id);
 
@@ -34,23 +34,23 @@ public class UsuarioService {
 	  
 	    }
 
-		public Optional<Usuario> obterPorLogin(String login){
+	public Optional<Usuario> obterPorLogin(String login){
 
-			Optional<Usuario> usuario = _repositorioUsuario.findByLogin(login);
+		Optional<Usuario> usuario = _repositorioUsuario.findByLogin(login);
 
-			if(!usuario.isPresent()){
-				throw new NotFoundException("Usuário não pode ser encontrado pelo Login: " + login);
-			}
-
-			return usuario;
-
+		if(!usuario.isPresent()){
+		throw new NotFoundException("Usuário não pode ser encontrado pelo Login: " + login);
 		}
+
+		return usuario;
+
+	}
 
 	    public Usuario adicionar(Usuario usuario) {
 
-					usuario.setId(null);
+			usuario.setId(null);
 
-					validarCampos(usuario);
+			validarCampos(usuario);
 
 	        Usuario adicionado = this._repositorioUsuario.save(usuario);
 	        return adicionado;
@@ -59,9 +59,9 @@ public class UsuarioService {
 	    
 	    public Usuario atualizar(Long id, Usuario usuario) {
 
-							obterPorId(id);
+				obterPorId(id);
 
-							validarCampos(usuario);
+				validarCampos(usuario);
 
 	            usuario.setId(id);
 
@@ -73,7 +73,7 @@ public class UsuarioService {
 
 	    public void deletar(Long id) {
 
-				obterPorId(id);
+		obterPorId(id);
 	      
 				this._repositorioUsuario.deleteById(id);
 	    }

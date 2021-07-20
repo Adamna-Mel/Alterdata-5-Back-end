@@ -1,14 +1,24 @@
 package br.com.alterdata.pack.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 
 @Entity
+@SequenceGenerator(name = "generator_papel", sequenceName = "sequence_papel", initialValue = 1, allocationSize = 1)
 public class Papel {
     
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "generator_usuario")
     private Long id;
-    private String nome;
-    private String icone;
 
+    @Column(unique = true, nullable = false)
+    private String nome;
+    
+    private String icone;
     
     public Papel() {
     }
@@ -48,7 +58,4 @@ public class Papel {
         this.icone = icone;
     }
 
-    
-
-    
 }
