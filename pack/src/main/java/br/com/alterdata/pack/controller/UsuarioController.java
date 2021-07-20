@@ -45,10 +45,6 @@ public class UsuarioController {
 
     @GetMapping("/login/{login}")
     public ResponseEntity<Optional<Usuario>> obterPorLogin(@PathVariable(value = "login") String login){
-
-        if(login.isEmpty()){
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
         return new ResponseEntity<>(_servicoUsuario.obterPorLogin(login), HttpStatus.OK);
     }
 
