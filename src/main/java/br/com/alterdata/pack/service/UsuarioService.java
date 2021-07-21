@@ -32,13 +32,18 @@ public class UsuarioService {
 	            return encontrado;
 	    }
 
-		public Optional<Usuario> obterPorLogin(String login){
-			Optional<Usuario> usuario = _repositorioUsuario.findByLogin(login);
 
-			if(!usuario.isPresent()){
-				throw new NotFoundException("Usuário não pode ser encontrado pelo Login: " + login);
+		public List<Usuario> obterPorLogin(String login){
+
+			List<Usuario> usuarios = _repositorioUsuario.findByLoginContaining(login.toLowerCase());
+
+
+			if(usuarios.size() == 0){
+				throw new NotFoundException("Nenhum Usuário não pode ser encontrado pelo Login: " + login);
 			}
-			return usuario;
+
+			return usuarios;
+
 		}
 
 	    public Usuario adicionar(Usuario usuario) {
@@ -69,21 +74,20 @@ public class UsuarioService {
 
 		public Optional<Usuario> editar(Long id, UsuarioDto usuario){
 
-			Optional<Usuario> usuarioExistente = obterPorId(id);
-
-			if (usuario.getStatus() != null)
-			usuarioExistente.get().setStatus(usuario.getStatus());
-
-			if (usuario.getPapel() != null)
-			usuarioExistente.get().setPapel(usuario.getPapel());
-
-			if (usuario.getTime() != null)
-			usuarioExistente.get().setTime(usuario.getTime());
-
-			if (usuario.getAvatar() != null)
-			usuarioExistente.get().setAvatar(usuario.getAvatar());
+				Optional<Usuario> usuarioExistente = obterPorId(id);
+	
+				if (usuario.getStatus() != null)
+						usuarioExistente.get().setStatus(usuario.getStatus());
+				if (usuario.getPapel() != null)
+						usuarioExistente.get().setPapel(usuario.getPapel());
+			  if (usuario.getTime() != null)
+						usuarioExistente.get().setTime(usuario.getTime());
+			  if (usuario.getAvatar() != null)
+						usuarioExistente.get().setAvatar(usuario.getAvatar());
+				
+				this._repositorioUsuario.save(usuarioExistente.get());
+				return usuarioExistente
 		
-			return usuarioExistente;
 			}
 
 			public void validarCampos(Usuario usuario){

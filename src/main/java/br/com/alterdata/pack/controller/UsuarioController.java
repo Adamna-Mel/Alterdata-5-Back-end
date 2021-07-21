@@ -47,7 +47,7 @@ public class UsuarioController {
 
     @ApiOperation(value = "Filtra os usuários cadastrados de acordo com o login")
     @GetMapping("/login/{login}")
-    public ResponseEntity<Optional<Usuario>> obterPorLogin(@PathVariable(value = "login") String login){
+    public ResponseEntity<List<Usuario>> obterPorLogin(@PathVariable(value = "login") String login){
         return new ResponseEntity<>(_servicoUsuario.obterPorLogin(login), HttpStatus.OK);
     }
 
