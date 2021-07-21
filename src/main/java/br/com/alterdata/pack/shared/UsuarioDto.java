@@ -1,7 +1,5 @@
 package br.com.alterdata.pack.shared;
 
-import br.com.alterdata.pack.model.Papel;
-
 public class UsuarioDto {
 
     private String login;
