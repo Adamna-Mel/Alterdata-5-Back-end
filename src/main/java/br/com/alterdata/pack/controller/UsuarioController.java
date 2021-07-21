@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.alterdata.pack.model.Papel;
 import br.com.alterdata.pack.model.Usuario;
 import br.com.alterdata.pack.service.UsuarioService;
 import br.com.alterdata.pack.shared.UsuarioDto;
@@ -47,20 +48,21 @@ public class UsuarioController {
 
     @ApiOperation(value = "Filtra os usuários cadastrados de acordo com o login")
     @GetMapping("/login/{login}")
-    public ResponseEntity<Optional<Usuario>> obterPorLogin(@PathVariable(value = "login") String login){
+    public ResponseEntity<List<Usuario>> obterPorLogin(@PathVariable(value = "login") String login){
         return new ResponseEntity<>(_servicoUsuario.obterPorLogin(login), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Cadastra um novo usuário")
     @PostMapping
-    public ResponseEntity<Usuario> adicionar(@RequestBody Usuario usuario) {
+    public ResponseEntity<Usuario> adicionar(@RequestBody UsuarioDto usuario) {
+
         Usuario novoUsuario = _servicoUsuario.adicionar(usuario);
         return new ResponseEntity<>(novoUsuario, HttpStatus.CREATED);
     }
 
     @ApiOperation(value = "Atualiza as informações de um usuário de acordo com o id")
     @PutMapping("/{id}")
-    public ResponseEntity<Usuario> atualizar(@PathVariable(value = "id") Long id, @RequestBody Usuario usuario) {
+    public ResponseEntity<Usuario> atualizar(@PathVariable(value = "id") Long id, @RequestBody UsuarioDto usuario) {
         return new ResponseEntity<>(_servicoUsuario.atualizar(id, usuario), HttpStatus.OK);
     }
 
@@ -75,6 +77,15 @@ public class UsuarioController {
     @PatchMapping("{id}")
     public ResponseEntity<Optional<Usuario>> editar(@PathVariable(value = "id") Long id, @RequestBody UsuarioDto usuario){
         Optional<Usuario> usuarioNovoStatus = _servicoUsuario.editar(id, usuario);
+        return new ResponseEntity<>(usuarioNovoStatus, HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "Adiciona um papel no usuario")
+    @PatchMapping("{idUsuario}/papel/{idPapel}")
+    public ResponseEntity<Usuario> adicionarPapel(@PathVariable(value = "idPapel") Long idPapel, @PathVariable(value = "idUsuario") Long idUsuario){
+
+        Usuario usuarioNovoStatus = _servicoUsuario.adicionarPapel(idPapel, idUsuario);
+
         return new ResponseEntity<>(usuarioNovoStatus, HttpStatus.OK);
     }
 }

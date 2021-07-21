@@ -3,12 +3,15 @@ package br.com.alterdata.pack.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.alterdata.pack.exception.BadRequestException;
 import br.com.alterdata.pack.exception.NotFoundException;
+import br.com.alterdata.pack.model.Papel;
 import br.com.alterdata.pack.model.Usuario;
+import br.com.alterdata.pack.repository.PapelRepository;
 import br.com.alterdata.pack.repository.UsuarioRepository;
 import br.com.alterdata.pack.shared.UsuarioDto;
 
@@ -18,6 +21,9 @@ public class UsuarioService {
 
 	@Autowired
 	private UsuarioRepository _repositorioUsuario;
+
+	@Autowired
+	private PapelRepository _papelRepository;
 
 	public List<Usuario> obterTodos() {
 	    return this. _repositorioUsuario.findAll();
@@ -32,77 +38,105 @@ public class UsuarioService {
 	            return encontrado;
 	    }
 
-		public Optional<Usuario> obterPorLogin(String login){
-			Optional<Usuario> usuario = _repositorioUsuario.findByLogin(login);
 
-			if(!usuario.isPresent()){
-				throw new NotFoundException("Usuário não pode ser encontrado pelo Login: " + login);
+		public List<Usuario> obterPorLogin(String login){
+
+			List<Usuario> usuarios = _repositorioUsuario.findByLoginContaining(login.toLowerCase());
+
+
+			if(usuarios.size() == 0){
+				throw new NotFoundException("Nenhum Usuário não pode ser encontrado pelo Login: " + login);
 			}
-			return usuario;
-		}
 
-	    public Usuario adicionar(Usuario usuario) {
-			usuario.setId(null);
+			return usuarios;
 
-			validarCampos(usuario);
+	}
 
-	        Usuario adicionado = this._repositorioUsuario.save(usuario);
-	        return adicionado;
-	    }
+	public Usuario adicionar(UsuarioDto usuario) {
+
+		ModelMapper mapper = new ModelMapper();
+
+		Usuario novoUsuario = mapper.map(usuario, Usuario.class);
+
+		novoUsuario.setId(null);
+
+		validarCampos(novoUsuario);
+
+	    Usuario adicionado = this._repositorioUsuario.save(novoUsuario);
+
+		return adicionado;
+	}
 
 	    
-	    public Usuario atualizar(Long id, Usuario usuario) {
-			obterPorId(id);
+	public Usuario atualizar(Long id, UsuarioDto usuario) {
 
-			validarCampos(usuario);
+		obterPorId(id);
 
-	        usuario.setId(id);
+		ModelMapper mapper = new ModelMapper();
 
-	        Usuario usuarioAtualizado = this._repositorioUsuario.save(usuario);
-	        return usuarioAtualizado;
-	    }
+		Usuario usuarioAtualizado = mapper.map(usuario, Usuario.class);
 
-	    public void deletar(Long id) {
-			obterPorId(id);
-			this._repositorioUsuario.deleteById(id);
-	    }
+		validarCampos(usuarioAtualizado);
 
-		public Optional<Usuario> editar(Long id, UsuarioDto usuario){
+	    usuarioAtualizado.setId(id);
 
-			Optional<Usuario> usuarioExistente = obterPorId(id);
+	    Usuario usuarioSalvo = this._repositorioUsuario.save(usuarioAtualizado);
 
-			if (usuario.getStatus() != null)
-			usuarioExistente.get().setStatus(usuario.getStatus());
+	    return usuarioSalvo;
 
-			if (usuario.getPapel() != null)
-			usuarioExistente.get().setPapel(usuario.getPapel());
+	}
 
-			if (usuario.getTime() != null)
-			usuarioExistente.get().setTime(usuario.getTime());
+	public void deletar(Long id) {
 
-			if (usuario.getAvatar() != null)
-			usuarioExistente.get().setAvatar(usuario.getAvatar());
-		
-			return usuarioExistente;
-			}
+		obterPorId(id);
+	      
+		this._repositorioUsuario.deleteById(id);
+	}
 
-			public void validarCampos(Usuario usuario){
+	public Optional<Usuario> editar(Long id, UsuarioDto usuario){
 
-				if (usuario.getLogin() == null)
-				throw new BadRequestException("Login não pode ser nulo!");
-
-				if (usuario.getSenha() == null)
-				throw new BadRequestException("Senha não pode ser nulo!");
-						
-				if (usuario.getNome() == null)
-				throw new BadRequestException("Nome não pode ser nulo!");
+		Optional<Usuario> usuarioExistente = obterPorId(id);
 	
-				Optional<Usuario> usuarioProcurado = this._repositorioUsuario.findByLogin(usuario.getLogin());
+		if (usuario.getStatus() != null)
+		usuarioExistente.get().setStatus(usuario.getStatus());
 
-				if (usuarioProcurado.isPresent()){
-				throw new BadRequestException("Usuário já existe com o Login: " + usuario.getLogin());
+		if (usuario.getAvatar() != null)
+		usuarioExistente.get().setAvatar(usuario.getAvatar());
+		
+		return usuarioExistente;
+	}
 
-				}
-			}
-			
+	public Usuario adicionarPapel(Long idPapel, Long idUsuario){
+
+		Optional<Papel> papel = _papelRepository.findById(idPapel);
+
+		Optional<Usuario> usuario = obterPorId(idUsuario);
+
+		if(papel.isPresent()){
+			usuario.get().setPapel(papel.get());
+
+			return _repositorioUsuario.save(usuario.get());			
+		}
+		
+		throw new NotFoundException("Papel não encontrado pelo ID: " + idPapel + " :(");
+
+	}
+
+	private void validarCampos(Usuario usuario){
+		if (usuario.getLogin() == null)
+			throw new BadRequestException("Login não pode ser nulo!");
+		
+		if (usuario.getSenha() == null)
+			throw new BadRequestException("Senha não pode ser nulo!");
+
+		if (usuario.getNome() == null)
+			throw new BadRequestException("Nome não pode ser nulo!");
+
+		Optional<Usuario> usuarioProcurado = this._repositorioUsuario.findByLogin(usuario.getLogin());
+
+		if (usuarioProcurado.isPresent()){
+			throw new BadRequestException("Usuário já existe com o Login: " + usuario.getLogin());
+		}
+	}
+	
 }

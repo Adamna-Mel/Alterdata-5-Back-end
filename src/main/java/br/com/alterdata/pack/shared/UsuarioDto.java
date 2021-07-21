@@ -7,13 +7,13 @@ public class UsuarioDto {
     private String avatar;
     private String nome;
     private String status;
-    private String papel;
+   // private Papel papel;
     private String time;
 
     public UsuarioDto() {
     }
 
-    public UsuarioDto(String login, String senha, String avatar, String nome, String status, String papel, String time) {
+    public UsuarioDto(String login, String senha, String avatar, String nome, String status, String time) {
         this.login = login;
         this.senha = senha;
         this.avatar = avatar;
@@ -60,14 +60,6 @@ public class UsuarioDto {
 
     public void setStatus(String status) {
         this.status = status;
-    }
-
-    public String getPapel() {
-        return papel;
-    }
-
-    public void setPapel(String papel) {
-        this.papel = papel;
     }
 
     public String getTime() {
