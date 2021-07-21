@@ -9,6 +9,15 @@
       "mainClass": "br.com.alterdata.pack.PackApplication",
       "projectName": "pack",
       "args": ""
+    },
+    {
+      "type": "java",
+      "name": "Spring Boot-PackApplication",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "console": "internalConsole",
+      "mainClass": "br.com.alterdata.pack.PackApplication",
+      "args": ""
     }
   ]
 }

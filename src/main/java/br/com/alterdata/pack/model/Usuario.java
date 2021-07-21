@@ -38,6 +38,7 @@ public class Usuario {
     @Column(nullable = true)
     private String time;
 
+
     public Long getId() {
         return id;
     }
@@ -103,9 +104,7 @@ public class Usuario {
     }
 
     
-    
     public Usuario() {}
-    
     
     public Usuario(String login, String senha, String avatar, String nome, String status, String papel, String time) {
         this.login = login;
@@ -117,7 +116,6 @@ public class Usuario {
         this.time = time;
     }
 
-    
     public Usuario(Long id, String login, String senha, String avatar, String nome, String status, String papel,
             String time) {
         this.id = id;
