@@ -91,6 +91,7 @@ public class UsuarioService {
 			  if (usuario.getAvatar() != null)
 						usuarioExistente.get().setAvatar(usuario.getAvatar());
 				
+				this._repositorioUsuario.save(usuarioExistente.get());
 				return usuarioExistente;
 			}
 
