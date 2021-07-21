@@ -71,8 +71,4 @@ public class UsuarioDto {
     public void setTime(String time) {
         this.time = time;
     }
-
-    
-    
-
 }

@@ -27,29 +27,28 @@ public class UsuarioService {
 
 	public List<Usuario> obterTodos() {
 	    return this. _repositorioUsuario.findAll();
-	}
-	
-	public Optional<Usuario> obterPorId(Long id){
+	    }
+	    
+	    public Optional<Usuario> obterPorId(Long id){
+			Optional<Usuario> encontrado = _repositorioUsuario.findById(id);
 
-		Optional<Usuario> encontrado = _repositorioUsuario.findById(id);
+			if(!encontrado.isPresent()){
+				throw new NotFoundException("Usuário não pode ser encontrado pelo ID:" + id);
+				}
+	            return encontrado;
+	    }
 
-		if(!encontrado.isPresent()){
-			throw new NotFoundException("Usuário não pode ser encontrado pelo ID:" + id);
-							}
-							
-		return encontrado;
-	  
-	}
 
-	public Optional<Usuario> obterPorLogin(String login){
+		public List<Usuario> obterPorLogin(String login){
 
-		Optional<Usuario> usuario = _repositorioUsuario.findByLogin(login);
+			List<Usuario> usuarios = _repositorioUsuario.findByLoginContaining(login.toLowerCase());
 
-		if(!usuario.isPresent()){
-		throw new NotFoundException("Usuário não pode ser encontrado pelo Login: " + login);
-		}
 
-		return usuario;
+			if(usuarios.size() == 0){
+				throw new NotFoundException("Nenhum Usuário não pode ser encontrado pelo Login: " + login);
+			}
+
+			return usuarios;
 
 	}
 

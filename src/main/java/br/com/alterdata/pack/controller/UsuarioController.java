@@ -6,7 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -21,8 +21,11 @@ import br.com.alterdata.pack.model.Papel;
 import br.com.alterdata.pack.model.Usuario;
 import br.com.alterdata.pack.service.UsuarioService;
 import br.com.alterdata.pack.shared.UsuarioDto;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
-
+@CrossOrigin("*")
+@Api("API PACK - Sistema de Status e Papéis")
 @RestController
 @RequestMapping("/api/usuarios")
 public class UsuarioController {
@@ -30,24 +33,26 @@ public class UsuarioController {
 	@Autowired
     UsuarioService _servicoUsuario;
 
+    @ApiOperation(value = "Retorna todos os usuários cadastradas")
     @GetMapping
     public ResponseEntity<List<Usuario>> obterTodos() {
         return new ResponseEntity<>(_servicoUsuario.obterTodos(), HttpStatus.OK);
     }
 
+    @ApiOperation(value = "Filtra os usuários cadastrados de acordo com o Id")
     @GetMapping("/{id}")
     public ResponseEntity<Optional<Usuario>> obterPorId(@PathVariable(value = "id") Long id) {
-        
         Optional<Usuario> usuario = _servicoUsuario.obterPorId(id);
-
         return  new ResponseEntity<>(usuario, HttpStatus.OK);
     }
 
+    @ApiOperation(value = "Filtra os usuários cadastrados de acordo com o login")
     @GetMapping("/login/{login}")
-    public ResponseEntity<Optional<Usuario>> obterPorLogin(@PathVariable(value = "login") String login){
+    public ResponseEntity<List<Usuario>> obterPorLogin(@PathVariable(value = "login") String login){
         return new ResponseEntity<>(_servicoUsuario.obterPorLogin(login), HttpStatus.OK);
     }
 
+    @ApiOperation(value = "Cadastra um novo usuário")
     @PostMapping
     public ResponseEntity<Usuario> adicionar(@RequestBody UsuarioDto usuario) {
 
@@ -55,22 +60,23 @@ public class UsuarioController {
         return new ResponseEntity<>(novoUsuario, HttpStatus.CREATED);
     }
 
+    @ApiOperation(value = "Atualiza as informações de um usuário de acordo com o id")
     @PutMapping("/{id}")
     public ResponseEntity<Usuario> atualizar(@PathVariable(value = "id") Long id, @RequestBody UsuarioDto usuario) {
         return new ResponseEntity<>(_servicoUsuario.atualizar(id, usuario), HttpStatus.OK);
     }
 
+    @ApiOperation(value = "Deleta um usuário de acordo com o id")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletar(@PathVariable(value = "id") Long id) {
         _servicoUsuario.deletar(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @ApiOperation(value = "Atualiza status de usuário de acordo com o id")
     @PatchMapping("{id}")
     public ResponseEntity<Optional<Usuario>> editar(@PathVariable(value = "id") Long id, @RequestBody UsuarioDto usuario){
-
         Optional<Usuario> usuarioNovoStatus = _servicoUsuario.editar(id, usuario);
-
         return new ResponseEntity<>(usuarioNovoStatus, HttpStatus.OK);
     }
 
