@@ -40,12 +40,13 @@ public class Usuario {
     @JoinColumn(name = "papel_id")
     private Papel papel;
 
-    
-    private String time;
+    @ManyToOne(cascade=CascadeType.ALL)
+    @JoinColumn(name = "time_id")
+    private Time time;
 
     public Usuario() {}
     
-    public Usuario(String login, String senha, String avatar, String nome, String status, Papel papel, String time) {
+    public Usuario(String login, String senha, String avatar, String nome, String status, Papel papel, Time time) {
         this.login = login;
         this.senha = senha;
         this.avatar = avatar;
@@ -56,7 +57,7 @@ public class Usuario {
     }
 
     public Usuario(Long id, String login, String senha, String avatar, String nome, String status, Papel papel,
-            String time) {
+            Time time) {
         this.id = id;
         this.login = login;
         this.senha = senha;
@@ -123,14 +124,12 @@ public class Usuario {
         this.papel = papel;
     }
 
-    public String getTime() {
+    public Time getTime() {
         return time;
     }
 
-    public void setTime(String time) {
+    public void setTime(Time time) {
         this.time = time;
     }
-
- 
     
 }

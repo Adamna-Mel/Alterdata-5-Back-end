@@ -1,5 +1,6 @@
 package br.com.alterdata.pack.shared;
 
+
 public class UsuarioDto {
 
     private String login;
@@ -7,19 +8,15 @@ public class UsuarioDto {
     private String avatar;
     private String nome;
     private String status;
-   // private Papel papel;
-    private String time;
+   
+    public UsuarioDto() {}
 
-    public UsuarioDto() {
-    }
-
-    public UsuarioDto(String login, String senha, String avatar, String nome, String status, String time) {
+    public UsuarioDto(String login, String senha, String avatar, String nome, String status) {
         this.login = login;
         this.senha = senha;
         this.avatar = avatar;
         this.nome = nome;
         this.status = status;
-        this.time = time;
     }
 
     public String getLogin() {
@@ -62,11 +59,4 @@ public class UsuarioDto {
         this.status = status;
     }
 
-    public String getTime() {
-        return time;
-    }
-
-    public void setTime(String time) {
-        this.time = time;
-    }
 }

@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.alterdata.pack.model.Papel;
 import br.com.alterdata.pack.model.Usuario;
 import br.com.alterdata.pack.service.UsuarioService;
 import br.com.alterdata.pack.shared.UsuarioDto;
@@ -55,7 +54,6 @@ public class UsuarioController {
     @ApiOperation(value = "Cadastra um novo usuário")
     @PostMapping
     public ResponseEntity<Usuario> adicionar(@RequestBody UsuarioDto usuario) {
-
         Usuario novoUsuario = _servicoUsuario.adicionar(usuario);
         return new ResponseEntity<>(novoUsuario, HttpStatus.CREATED);
     }
@@ -83,9 +81,15 @@ public class UsuarioController {
     @ApiOperation(value = "Adiciona um papel no usuario")
     @PatchMapping("{idUsuario}/papel/{idPapel}")
     public ResponseEntity<Usuario> adicionarPapel(@PathVariable(value = "idPapel") Long idPapel, @PathVariable(value = "idUsuario") Long idUsuario){
-
         Usuario usuarioNovoStatus = _servicoUsuario.adicionarPapel(idPapel, idUsuario);
-
         return new ResponseEntity<>(usuarioNovoStatus, HttpStatus.OK);
     }
+
+    @ApiOperation(value = "Adiciona um time no usuario")
+    @PatchMapping("{idUsuario}/time/{idTime}")
+    public ResponseEntity<Usuario> adicionarTime(@PathVariable(value = "idTime") Long idTime, @PathVariable(value = "idUsuario") Long idUsuario){
+        Usuario usuarioNovoStatus = _servicoUsuario.adicionarTime(idUsuario, idTime);
+        return new ResponseEntity<>(usuarioNovoStatus, HttpStatus.OK);
+    }
+   
 }

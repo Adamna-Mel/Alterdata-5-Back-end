@@ -72,10 +72,9 @@ public class TimeService {
     }
 
     public void verificarSeTimeExiste(Time time){
+        Optional<Time> timeExiste =_repositorioTime.findByNome(time.getNome());
 
-        List<Time> papelExiste =_repositorioTime.findByNomeContainingIgnoreCase(time.getNome());
-
-        if(papelExiste.size() ==0){
+        if(timeExiste.isPresent()){
            throw new BadRequestException("Opa! Já existe time com esse nome."); 
         }
     }

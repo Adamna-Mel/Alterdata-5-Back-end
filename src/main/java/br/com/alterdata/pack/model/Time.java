@@ -1,15 +1,10 @@
 package br.com.alterdata.pack.model;
 
-import java.util.List;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -24,9 +19,6 @@ public class Time {
 
     @Column(unique = true, nullable = false)
     private String nome;
-
-    @OneToMany(mappedBy = "usuario")
-    private List<Usuario> usuarios;
 
 
     public Long getId() {

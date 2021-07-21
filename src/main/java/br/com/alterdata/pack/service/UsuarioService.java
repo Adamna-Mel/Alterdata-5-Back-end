@@ -10,8 +10,10 @@ import org.springframework.stereotype.Service;
 import br.com.alterdata.pack.exception.BadRequestException;
 import br.com.alterdata.pack.exception.NotFoundException;
 import br.com.alterdata.pack.model.Papel;
+import br.com.alterdata.pack.model.Time;
 import br.com.alterdata.pack.model.Usuario;
 import br.com.alterdata.pack.repository.PapelRepository;
+import br.com.alterdata.pack.repository.TimeRepository;
 import br.com.alterdata.pack.repository.UsuarioRepository;
 import br.com.alterdata.pack.shared.UsuarioDto;
 
@@ -24,6 +26,9 @@ public class UsuarioService {
 
 	@Autowired
 	private PapelRepository _papelRepository;
+
+	@Autowired
+	private TimeRepository _repositorioTime;
 
 	public List<Usuario> obterTodos() {
 	    return this. _repositorioUsuario.findAll();
@@ -83,7 +88,6 @@ public class UsuarioService {
 	    Usuario usuarioSalvo = this._repositorioUsuario.save(usuarioAtualizado);
 
 	    return usuarioSalvo;
-
 	}
 
 	public void deletar(Long id) {
@@ -119,9 +123,21 @@ public class UsuarioService {
 		}
 		
 		throw new NotFoundException("Papel não encontrado pelo ID: " + idPapel + " :(");
-
 	}
 
+	public Usuario adicionarTime(Long idUsuario, Long idTime){
+		Optional<Time> time = _repositorioTime.findById(idTime);
+
+		Optional<Usuario> usuario = obterPorId(idUsuario);
+
+		if(time.isPresent()) {
+			usuario.get().setTime(time.get());
+
+			return _repositorioUsuario.save(usuario.get());
+		}
+		throw new NotFoundException("Time não encontrado pelo ID: " + idTime + " :(");
+	}
+	
 	private void validarCampos(Usuario usuario){
 		if (usuario.getLogin() == null)
 			throw new BadRequestException("Login não pode ser nulo!");
