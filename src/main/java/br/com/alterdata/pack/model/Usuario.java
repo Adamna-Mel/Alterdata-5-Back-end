@@ -1,10 +1,14 @@
 package br.com.alterdata.pack.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -32,11 +36,36 @@ public class Usuario {
     @Column(nullable = true)
     private String status;
 
-    @Column(nullable = true)
-    private String papel;
+    @ManyToOne(cascade=CascadeType.ALL)
+    @JoinColumn(name = "papel_id")
+    private Papel papel;
 
     @Column(nullable = true)
     private String time;
+
+    public Usuario() {}
+    
+    public Usuario(String login, String senha, String avatar, String nome, String status, Papel papel, String time) {
+        this.login = login;
+        this.senha = senha;
+        this.avatar = avatar;
+        this.nome = nome;
+        this.status = status;
+        this.papel = papel;
+        this.time = time;
+    }
+
+    public Usuario(Long id, String login, String senha, String avatar, String nome, String status, Papel papel,
+            String time) {
+        this.id = id;
+        this.login = login;
+        this.senha = senha;
+        this.avatar = avatar;
+        this.nome = nome;
+        this.status = status;
+        this.papel = papel;
+        this.time = time;
+    }
 
     public Long getId() {
         return id;
@@ -86,11 +115,11 @@ public class Usuario {
         this.status = status;
     }
 
-    public String getPapel() {
+    public Papel getPapel() {
         return papel;
     }
 
-    public void setPapel(String papel) {
+    public void setPapel(Papel papel) {
         this.papel = papel;
     }
 
@@ -102,32 +131,6 @@ public class Usuario {
         this.time = time;
     }
 
-    
-    
-    public Usuario() {}
-    
-    
-    public Usuario(String login, String senha, String avatar, String nome, String status, String papel, String time) {
-        this.login = login;
-        this.senha = senha;
-        this.avatar = avatar;
-        this.nome = nome;
-        this.status = status;
-        this.papel = papel;
-        this.time = time;
-    }
-
-    
-    public Usuario(Long id, String login, String senha, String avatar, String nome, String status, String papel,
-            String time) {
-        this.id = id;
-        this.login = login;
-        this.senha = senha;
-        this.avatar = avatar;
-        this.nome = nome;
-        this.status = status;
-        this.papel = papel;
-        this.time = time;
-    }
+ 
     
 }

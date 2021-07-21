@@ -11,5 +11,7 @@ public interface PapelRepository extends JpaRepository<Papel, Long>{
 
     Optional<Papel> findById(Long id);
 
+    Optional<Papel> findByNome(String nome);
+
     List<Papel> findByNomeContainingIgnoreCase(String nome);
 }

@@ -52,9 +52,9 @@ public class PapelController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Optional<Papel>> atualizar(@PathVariable(value = "id") Long id, @RequestBody PapelDto papel) {
+    public ResponseEntity<Papel> atualizar(@PathVariable(value = "id") Long id, @RequestBody PapelDto papel) {
         
-        Optional<Papel> papelAtt= _papelUsuario.atualizar(id, papel);
+        Papel papelAtt= _papelUsuario.atualizar(id, papel);
 
         return new ResponseEntity<>(papelAtt, HttpStatus.OK);
     }
