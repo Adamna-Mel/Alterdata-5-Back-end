@@ -28,44 +28,45 @@ import io.swagger.annotations.ApiOperation;
 public class TimeController {
 
     @Autowired
-    TimeService _servicoTime;
+    TimeService _timeUsuario;
 
     @ApiOperation(value = "Retorna todos os times cadastradas")
     @GetMapping
     public ResponseEntity<List<Time>> obterTodos() {
-        return new ResponseEntity<>(_servicoTime.obterTodos(), HttpStatus.OK);
+        return new ResponseEntity<>(_timeUsuario.obterTodos(), HttpStatus.OK);
     }
     
     @ApiOperation(value = "Filtra os times cadastrados de acordo com o Id")
     @GetMapping("/{id}")
     public ResponseEntity<Optional<Time>> obterPorId(@PathVariable(value = "id") Long id) {
-        Optional<Time> time = _servicoTime.obterPorId(id);
+        Optional<Time> time = _timeUsuario.obterPorId(id);
         return  new ResponseEntity<>(time, HttpStatus.OK);
     }
 
     @ApiOperation(value = "Filtra os times cadastrados de acordo com o nome")
     @GetMapping("/nome/{nome}")
-	public ResponseEntity<Optional<Time>> obterPorNome(@PathVariable ("nome") String nome) {
-		return new ResponseEntity<>(_servicoTime.obterPorNome(nome), HttpStatus.OK);
+	public ResponseEntity<List<Time>> obterPorNome(@PathVariable ("nome") String nome) {
+		return new ResponseEntity<>(_timeUsuario.obterPorNome(nome), HttpStatus.OK);
 	}
 
     @ApiOperation(value = "Cadastra um novo time")
     @PostMapping
     public ResponseEntity<Time> adicionar(@RequestBody Time time) {
-        Time novoTime = _servicoTime.adicionar(time);
+        Time novoTime = _timeUsuario.criarTime(time);
         return new ResponseEntity<>(novoTime, HttpStatus.CREATED );
     }
 
     @ApiOperation(value = "Atualiza as informações de um time de acordo com o id")
     @PutMapping("/{id}")
     public ResponseEntity<Time> atualizar(@PathVariable(value = "id") Long id, @RequestBody Time time) {
-        return new ResponseEntity<>(_servicoTime.atualizar(id, time), HttpStatus.OK);
+        Time timeAtualizado = _timeUsuario.atualizar(id, time);
+        return new ResponseEntity<>(timeAtualizado, HttpStatus.OK);
     }
 
     @ApiOperation(value = "Deleta um time de acordo com o id")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletar(@PathVariable(value = "id") Long id) {
-        _servicoTime.deletar(id);
+        _timeUsuario.deletar(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
    

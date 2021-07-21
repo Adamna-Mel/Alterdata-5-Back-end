@@ -31,17 +31,19 @@ public class TimeService {
         return encontrado;
     }
 
-    public Optional<Time> obterPorNome(String nome) {
-        Optional<Time> encontrado = _repositorioTime.findByNomeContainingIgnoreCase(nome);
+    public List<Time> obterPorNome(String nome) {
+        List<Time> encontrado = _repositorioTime.findByNomeContainingIgnoreCase(nome);
 
-        if(!encontrado.isPresent()) {
+        if(encontrado.size()==0) {
             throw new NotFoundException("Não foi encontrado time com o nome: " + nome);
         }
         return encontrado;
     }
 
-    public Time adicionar(Time time) {
+    public Time criarTime(Time time) {
         time.setId(null);
+
+        verificarSeTimeExiste(time);
 
         if(time.getNome() == "" || time.getNome() == null){
             throw new BadRequestException("Nome não pode ser nulo!");
@@ -67,5 +69,14 @@ public class TimeService {
 			throw new NotFoundException("Não existe time com o id informado: " + id);	
 		}
         this._repositorioTime.deleteById(id);
+    }
+
+    public void verificarSeTimeExiste(Time time){
+
+        List<Time> papelExiste =_repositorioTime.findByNomeContainingIgnoreCase(time.getNome());
+
+        if(papelExiste.size() ==0){
+           throw new BadRequestException("Opa! Já existe time com esse nome."); 
+        }
     }
 }

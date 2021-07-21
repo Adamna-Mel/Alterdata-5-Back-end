@@ -8,6 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+
 @Entity
 @Table(name= "usuario")
 @SequenceGenerator(name = "generator_usuario", sequenceName = "sequence_usuario", initialValue = 1, allocationSize = 1)
@@ -35,7 +36,7 @@ public class Usuario {
     @Column(nullable = true)
     private String papel;
 
-    @Column(nullable = true)
+    
     private String time;
 
 
