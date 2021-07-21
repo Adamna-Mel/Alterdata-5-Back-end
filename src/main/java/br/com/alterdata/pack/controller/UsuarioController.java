@@ -80,6 +80,7 @@ public class UsuarioController {
         return new ResponseEntity<>(usuarioNovoStatus, HttpStatus.OK);
     }
 
+    @ApiOperation(value = "Adiciona um papel no usuario")
     @PatchMapping("{idUsuario}/papel/{idPapel}")
     public ResponseEntity<Usuario> adicionarPapel(@PathVariable(value = "idPapel") Long idPapel, @PathVariable(value = "idUsuario") Long idUsuario){
 
