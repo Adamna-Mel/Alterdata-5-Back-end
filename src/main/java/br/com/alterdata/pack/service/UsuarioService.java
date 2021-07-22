@@ -14,6 +14,7 @@ import br.com.alterdata.pack.model.Usuario;
 import br.com.alterdata.pack.repository.PapelRepository;
 import br.com.alterdata.pack.repository.UsuarioRepository;
 import br.com.alterdata.pack.shared.UsuarioDto;
+import br.com.alterdata.pack.shared.login.LoginResponse;
 
 
 @Service
@@ -121,6 +122,24 @@ public class UsuarioService {
 		throw new NotFoundException("Papel não encontrado pelo ID: " + idPapel + " :(");
 
 	}
+
+	public LoginResponse logar(String login, String senha){
+
+		Optional<Usuario> usuario = _repositorioUsuario.findByLogin(login);
+
+		if(!usuario.isPresent()){
+			
+			throw new BadRequestException("Credenciais invalidas :(");
+
+		}
+		if(usuario.get().getSenha().equals(senha)){
+
+			return new LoginResponse(usuario.get());
+
+		}
+			throw new BadRequestException("Credenciais invalidas :(");
+
+		}
 
 	private void validarCampos(Usuario usuario){
 		if (usuario.getLogin() == null)
