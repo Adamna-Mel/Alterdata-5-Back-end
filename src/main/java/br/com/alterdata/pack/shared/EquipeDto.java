@@ -1,12 +1,12 @@
 package br.com.alterdata.pack.shared;
 
-public class TimeDto {
+public class EquipeDto {
     private Long id;
     private String nome;
 
-    public TimeDto() {}
+    public EquipeDto() {}
 
-    public TimeDto(Long id, String nome) {
+    public EquipeDto(Long id, String nome) {
         this.id = id;
         this.nome = nome;
     }

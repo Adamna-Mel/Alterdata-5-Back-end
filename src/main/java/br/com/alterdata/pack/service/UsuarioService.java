@@ -9,11 +9,11 @@ import org.springframework.stereotype.Service;
 
 import br.com.alterdata.pack.exception.BadRequestException;
 import br.com.alterdata.pack.exception.NotFoundException;
-import br.com.alterdata.pack.model.Papel;
-import br.com.alterdata.pack.model.Time;
+import br.com.alterdata.pack.model.Cargo;
+import br.com.alterdata.pack.model.Equipe;
 import br.com.alterdata.pack.model.Usuario;
-import br.com.alterdata.pack.repository.PapelRepository;
-import br.com.alterdata.pack.repository.TimeRepository;
+import br.com.alterdata.pack.repository.CargoRepository;
+import br.com.alterdata.pack.repository.EquipeRepository;
 import br.com.alterdata.pack.repository.UsuarioRepository;
 import br.com.alterdata.pack.shared.UsuarioDto;
 
@@ -25,10 +25,10 @@ public class UsuarioService {
 	private UsuarioRepository _repositorioUsuario;
 
 	@Autowired
-	private PapelRepository _papelRepository;
+	private CargoRepository _cargoRepository;
 
 	@Autowired
-	private TimeRepository _repositorioTime;
+	private EquipeRepository _repositorioEquipe;
 
 	public List<Usuario> obterTodos() {
 	    return this. _repositorioUsuario.findAll();
@@ -50,7 +50,7 @@ public class UsuarioService {
 
 
 			if(usuarios.size() == 0){
-				throw new NotFoundException("Nenhum Usuário não pode ser encontrado pelo Login: " + login);
+				throw new NotFoundException("Nenhum usuário encontrado pelo Login: " + login);
 			}
 
 			return usuarios;
@@ -110,32 +110,32 @@ public class UsuarioService {
 		return usuarioExistente;
 	}
 
-	public Usuario adicionarPapel(Long idPapel, Long idUsuario){
+	public Usuario adicionarCargo(Long idCargo, Long idUsuario){
 
-		Optional<Papel> papel = _papelRepository.findById(idPapel);
+		Optional<Cargo> cargo = _cargoRepository.findById(idCargo);
 
 		Optional<Usuario> usuario = obterPorId(idUsuario);
 
-		if(papel.isPresent()){
-			usuario.get().setPapel(papel.get());
+		if(cargo.isPresent()){
+			usuario.get().setPapel(cargo.get());
 
 			return _repositorioUsuario.save(usuario.get());			
 		}
 		
-		throw new NotFoundException("Papel não encontrado pelo ID: " + idPapel + " :(");
+		throw new NotFoundException("Cargo não encontrado pelo ID: " + idCargo + " :(");
 	}
 
-	public Usuario adicionarTime(Long idUsuario, Long idTime){
-		Optional<Time> time = _repositorioTime.findById(idTime);
+	public Usuario adicionarEquipe(Long idUsuario, Long idEquipe){
+		Optional<Equipe> equipe = _repositorioEquipe.findById(idEquipe);
 
 		Optional<Usuario> usuario = obterPorId(idUsuario);
 
-		if(time.isPresent()) {
-			usuario.get().setTime(time.get());
+		if(equipe.isPresent()) {
+			usuario.get().setEquipe(equipe.get());
 
 			return _repositorioUsuario.save(usuario.get());
 		}
-		throw new NotFoundException("Time não encontrado pelo ID: " + idTime + " :(");
+		throw new NotFoundException("Equipe não encontrado pelo ID: " + idEquipe + " :(");
 	}
 	
 	private void validarCampos(Usuario usuario){

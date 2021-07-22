@@ -1,15 +1,18 @@
 package br.com.alterdata.pack.model;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.SequenceGenerator;
 
 @Entity
-@SequenceGenerator(name = "generator_papel", sequenceName = "sequence_papel", initialValue = 1, allocationSize = 1)
-public class Papel {
+@SequenceGenerator(name = "generator_cargo", sequenceName = "sequence_cargo", initialValue = 1, allocationSize = 1)
+public class Cargo {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "generator_usuario")
@@ -19,16 +22,18 @@ public class Papel {
     private String nome;
     
     private String icone;
-    
-    public Papel() {
-    }
 
-    public Papel(String nome, String icone) {
+    @JoinColumn(name = "id_usuario")
+    List<Usuario> usuarios;
+    
+    public Cargo() {}
+
+    public Cargo(String nome, String icone) {
         this.nome = nome;
         this.icone = icone;
     }
 
-    public Papel(Long id, String nome, String icone) {
+    public Cargo(Long id, String nome, String icone) {
         this.id = id;
         this.nome = nome;
         this.icone = icone;

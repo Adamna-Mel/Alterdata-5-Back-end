@@ -15,53 +15,55 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.alterdata.pack.model.Papel;
-import br.com.alterdata.pack.service.PapelService;
-import br.com.alterdata.pack.shared.PapelDto;
+import br.com.alterdata.pack.model.Cargo;
+import br.com.alterdata.pack.service.CargoService;
+import br.com.alterdata.pack.shared.CargoDto;
+import io.swagger.annotations.ApiOperation;
 
 @RestController
-@RequestMapping("/api/papeis")
+@RequestMapping("/api/cargos")
 public class PapelController {
     
     @Autowired
-    PapelService _papelUsuario;
+    CargoService _cargoUsuario;
 
+    @ApiOperation(value = "Retorna todos os cargos cadastradas")
     @GetMapping
-    public ResponseEntity<List<Papel>> obterTodos() {
-        return new ResponseEntity<>(_papelUsuario.obterTodos(), HttpStatus.OK);
+    public ResponseEntity<List<Cargo>> obterTodos() {
+        return new ResponseEntity<>(_cargoUsuario.obterTodos(), HttpStatus.OK);
     }
 
+    @ApiOperation(value = "Filtra os cargos cadastrados de acordo com o Id")
     @GetMapping("/{id}")
-    public ResponseEntity<Optional<Papel>> obterPorId(@PathVariable(value = "id") Long id) {
-        
-        Optional<Papel> papel = _papelUsuario.obterPorId(id);
-
-        return  new ResponseEntity<>(papel, HttpStatus.OK);
+    public ResponseEntity<Optional<Cargo>> obterPorId(@PathVariable(value = "id") Long id) {
+        Optional<Cargo> cargo = _cargoUsuario.obterPorId(id);
+        return  new ResponseEntity<>(cargo, HttpStatus.OK);
     }
-   
+    
+    @ApiOperation(value = "Filtra os cargos cadastrados de acordo com o nome")
     @GetMapping("/nome/{nome}")
-    public ResponseEntity<List<Papel>> obterPorNome(@PathVariable(value = "nome") String nome){
-        return new ResponseEntity<>(_papelUsuario.obterPorNome(nome), HttpStatus.OK);
+    public ResponseEntity<List<Cargo>> obterPorNome(@PathVariable(value = "nome") String nome){
+        return new ResponseEntity<>(_cargoUsuario.obterPorNome(nome), HttpStatus.OK);
     }
 
+    @ApiOperation(value = "Cadastra um novo cargo")
     @PostMapping
-    public ResponseEntity<Papel> adicionar(@RequestBody Papel papel) {
-
-        Papel novoCargo = _papelUsuario.adicionarCargo(papel);
+    public ResponseEntity<Cargo> adicionar(@RequestBody Cargo cargo) {
+        Cargo novoCargo = _cargoUsuario.adicionarCargo(cargo);
         return new ResponseEntity<>(novoCargo, HttpStatus.CREATED);
     }
 
+    @ApiOperation(value = "Atualiza as informações de um cargo de acordo com o id")
     @PutMapping("/{id}")
-    public ResponseEntity<Papel> atualizar(@PathVariable(value = "id") Long id, @RequestBody PapelDto papel) {
-        
-        Papel papelAtt= _papelUsuario.atualizar(id, papel);
-
-        return new ResponseEntity<>(papelAtt, HttpStatus.OK);
+    public ResponseEntity<Cargo> atualizar(@PathVariable(value = "id") Long id, @RequestBody CargoDto cargo) {
+        Cargo cargoAtt= _cargoUsuario.atualizar(id, cargo);
+        return new ResponseEntity<>(cargoAtt, HttpStatus.OK);
     }
 
+    @ApiOperation(value = "Deleta um cargo de acordo com o id")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletar(@PathVariable(value = "id") Long id) {
-        _papelUsuario.deletar(id);
+        _cargoUsuario.deletar(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

@@ -37,35 +37,35 @@ public class Usuario {
     private String status;
 
     @ManyToOne(cascade=CascadeType.ALL)
-    @JoinColumn(name = "papel_id")
-    private Papel papel;
+    @JoinColumn(name = "cargo_id")
+    private Cargo cargo;
 
     @ManyToOne(cascade=CascadeType.ALL)
-    @JoinColumn(name = "time_id")
-    private Time time;
+    @JoinColumn(name = "equipe_id")
+    private Equipe equipe;
 
     public Usuario() {}
     
-    public Usuario(String login, String senha, String avatar, String nome, String status, Papel papel, Time time) {
+    public Usuario(String login, String senha, String avatar, String nome, String status, Cargo cargo, Equipe equipe) {
         this.login = login;
         this.senha = senha;
         this.avatar = avatar;
         this.nome = nome;
         this.status = status;
-        this.papel = papel;
-        this.time = time;
+        this.cargo = cargo;
+        this.equipe = equipe;
     }
 
-    public Usuario(Long id, String login, String senha, String avatar, String nome, String status, Papel papel,
-            Time time) {
+    public Usuario(Long id, String login, String senha, String avatar, String nome, String status, Cargo cargo,
+            Equipe equipe) {
         this.id = id;
         this.login = login;
         this.senha = senha;
         this.avatar = avatar;
         this.nome = nome;
         this.status = status;
-        this.papel = papel;
-        this.time = time;
+        this.cargo = cargo;
+        this.equipe = equipe;
     }
 
     public Long getId() {
@@ -116,20 +116,20 @@ public class Usuario {
         this.status = status;
     }
 
-    public Papel getPapel() {
-        return papel;
+    public Cargo getCargo() {
+        return cargo;
     }
 
-    public void setPapel(Papel papel) {
-        this.papel = papel;
+    public void setPapel(Cargo cargo) {
+        this.cargo = cargo;
     }
 
-    public Time getTime() {
-        return time;
+    public Equipe getEquipe() {
+        return equipe;
     }
 
-    public void setTime(Time time) {
-        this.time = time;
+    public void setEquipe(Equipe equipe) {
+        this.equipe = equipe;
     }
     
 }
