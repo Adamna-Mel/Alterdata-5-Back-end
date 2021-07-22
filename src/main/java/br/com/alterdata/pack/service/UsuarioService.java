@@ -16,6 +16,7 @@ import br.com.alterdata.pack.repository.CargoRepository;
 import br.com.alterdata.pack.repository.EquipeRepository;
 import br.com.alterdata.pack.repository.UsuarioRepository;
 import br.com.alterdata.pack.shared.UsuarioDto;
+import br.com.alterdata.pack.shared.login.LoginResponse;
 
 @Service
 public class UsuarioService {
@@ -136,7 +137,25 @@ public class UsuarioService {
 		throw new NotFoundException("Equipe não encontrado pelo ID: " + idEquipe + " :(");
 	}
 
-	private void validarCampos(Usuario usuario) {
+	public LoginResponse logar(String login, String senha){
+
+		Optional<Usuario> usuario = _repositorioUsuario.findByLogin(login);
+
+		if(!usuario.isPresent()){
+			
+			throw new BadRequestException("Credenciais invalidas :(");
+
+		}
+		if(usuario.get().getSenha().equals(senha)){
+
+			return new LoginResponse(usuario.get());
+
+		}
+			throw new BadRequestException("Credenciais invalidas :(");
+
+		}
+
+	private void validarCampos(Usuario usuario){
 		if (usuario.getLogin() == null)
 			throw new BadRequestException("Login não pode ser nulo!");
 
