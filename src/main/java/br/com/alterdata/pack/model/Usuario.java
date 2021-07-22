@@ -11,17 +11,16 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-
 @Entity
-@Table(name= "usuario")
+@Table(name = "usuario")
 @SequenceGenerator(name = "generator_usuario", sequenceName = "sequence_usuario", initialValue = 1, allocationSize = 1)
 public class Usuario {
-	
-	@Id
+
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "generator_usuario")
     private Long id;
 
-    @Column(unique = true,nullable = false)
+    @Column(unique = true, nullable = false)
     private String login;
 
     @Column(nullable = false)
@@ -120,7 +119,7 @@ public class Usuario {
         return cargo;
     }
 
-    public void setPapel(Cargo cargo) {
+    public void setCargo(Cargo cargo) {
         this.cargo = cargo;
     }
 
@@ -131,5 +130,5 @@ public class Usuario {
     public void setEquipe(Equipe equipe) {
         this.equipe = equipe;
     }
-    
+
 }

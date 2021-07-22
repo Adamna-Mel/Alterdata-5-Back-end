@@ -9,8 +9,6 @@ import br.com.alterdata.pack.model.Equipe;
 
 public interface EquipeRepository extends JpaRepository<Equipe, Long> {
     Optional<Equipe> findById(Long id);
-
     Optional<Equipe> findByNome(String nome);
-    
     List<Equipe> findByNomeContainingIgnoreCase(String nome);
 }

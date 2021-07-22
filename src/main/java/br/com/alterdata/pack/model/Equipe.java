@@ -7,7 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -15,7 +15,6 @@ import javax.persistence.Table;
 @Table(name = "equipe")
 @SequenceGenerator(name = "generator_equipe", sequenceName = "sequence_equipe", initialValue = 1, allocationSize = 1)
 public class Equipe {
-    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "generator_equipe")
     private Long id;
@@ -23,9 +22,8 @@ public class Equipe {
     @Column(unique = true, nullable = false)
     private String nome;
 
-    @JoinColumn(name = "id_usuario")
-    List<Usuario> usuarios;
-
+    @OneToMany(mappedBy="equipe")
+    private List<Usuario> membros;
 
     public Long getId() {
         return id;
@@ -43,12 +41,11 @@ public class Equipe {
         this.nome = nome;
     }
 
-
     public Equipe() {}
 
     public Equipe(Long id, String nome) {
         this.id = id;
         this.nome = nome;
-    }   
-    
+    }
+
 }

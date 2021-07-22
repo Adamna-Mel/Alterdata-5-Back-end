@@ -22,8 +22,8 @@ import io.swagger.annotations.ApiOperation;
 
 @RestController
 @RequestMapping("/api/cargos")
-public class PapelController {
-    
+public class CargoController {
+
     @Autowired
     CargoService _cargoUsuario;
 
@@ -36,13 +36,14 @@ public class PapelController {
     @ApiOperation(value = "Filtra os cargos cadastrados de acordo com o Id")
     @GetMapping("/{id}")
     public ResponseEntity<Optional<Cargo>> obterPorId(@PathVariable(value = "id") Long id) {
+
         Optional<Cargo> cargo = _cargoUsuario.obterPorId(id);
-        return  new ResponseEntity<>(cargo, HttpStatus.OK);
+
+        return new ResponseEntity<>(cargo, HttpStatus.OK);
     }
-    
-    @ApiOperation(value = "Filtra os cargos cadastrados de acordo com o nome")
+
     @GetMapping("/nome/{nome}")
-    public ResponseEntity<List<Cargo>> obterPorNome(@PathVariable(value = "nome") String nome){
+    public ResponseEntity<List<Cargo>> obterPorNome(@PathVariable(value = "nome") String nome) {
         return new ResponseEntity<>(_cargoUsuario.obterPorNome(nome), HttpStatus.OK);
     }
 
@@ -56,7 +57,9 @@ public class PapelController {
     @ApiOperation(value = "Atualiza as informações de um cargo de acordo com o id")
     @PutMapping("/{id}")
     public ResponseEntity<Cargo> atualizar(@PathVariable(value = "id") Long id, @RequestBody CargoDto cargo) {
-        Cargo cargoAtt= _cargoUsuario.atualizar(id, cargo);
+
+        Cargo cargoAtt = _cargoUsuario.atualizar(id, cargo);
+
         return new ResponseEntity<>(cargoAtt, HttpStatus.OK);
     }
 

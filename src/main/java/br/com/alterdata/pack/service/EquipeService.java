@@ -11,7 +11,6 @@ import br.com.alterdata.pack.exception.NotFoundException;
 import br.com.alterdata.pack.model.Equipe;
 import br.com.alterdata.pack.repository.EquipeRepository;
 
-
 @Service
 public class EquipeService {
 
@@ -19,7 +18,7 @@ public class EquipeService {
     private EquipeRepository _repositorioEquipe;
 
     public List<Equipe> obterTodos() {
-        return this._repositorioEquipe.findAll();    
+        return this._repositorioEquipe.findAll();
     }
 
     public Optional<Equipe> obterPorId(Long id) {
@@ -34,7 +33,7 @@ public class EquipeService {
     public List<Equipe> obterPorNome(String nome) {
         List<Equipe> encontrado = _repositorioEquipe.findByNomeContainingIgnoreCase(nome);
 
-        if(encontrado.size()==0) {
+        if (encontrado.size() == 0) {
             throw new NotFoundException("Não foi encontrado equipe com o nome: " + nome);
         }
         return encontrado;
@@ -43,9 +42,9 @@ public class EquipeService {
     public Equipe criarEquipe(Equipe equipe) {
         equipe.setId(null);
 
-        verificarSeequipeExiste(equipe);
+        verificarSeEquipeExiste(equipe);
 
-        if(equipe.getNome() == "" || equipe.getNome() == null){
+        if (equipe.getNome() == "" || equipe.getNome() == null) {
             throw new BadRequestException("Nome não pode ser nulo!");
         }
         Equipe novoEquipe = _repositorioEquipe.save(equipe);
@@ -64,18 +63,18 @@ public class EquipeService {
 
     public void deletar(Long id) {
         Optional<Equipe> existe = _repositorioEquipe.findById(id);
-		
-        if(!existe.isPresent()) {
-			throw new NotFoundException("Não existe equipe com o id informado: " + id);	
-		}
+
+        if (!existe.isPresent()) {
+            throw new NotFoundException("Não existe equipe com o id informado: " + id);
+        }
         this._repositorioEquipe.deleteById(id);
     }
 
-    public void verificarSeequipeExiste(Equipe equipe){
-        Optional<Equipe> equipeExiste =_repositorioEquipe.findByNome(equipe.getNome());
+    public void verificarSeEquipeExiste(Equipe equipe) {
+        Optional<Equipe> equipeExiste = _repositorioEquipe.findByNome(equipe.getNome());
 
-        if(equipeExiste.isPresent()){
-           throw new BadRequestException("Opa! Já existe equipe com esse nome."); 
+        if (equipeExiste.isPresent()) {
+            throw new BadRequestException("Opa! Já existe equipe com esse nome.");
         }
     }
 }

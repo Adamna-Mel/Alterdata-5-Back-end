@@ -17,7 +17,6 @@ import br.com.alterdata.pack.repository.EquipeRepository;
 import br.com.alterdata.pack.repository.UsuarioRepository;
 import br.com.alterdata.pack.shared.UsuarioDto;
 
-
 @Service
 public class UsuarioService {
 
@@ -31,29 +30,27 @@ public class UsuarioService {
 	private EquipeRepository _repositorioEquipe;
 
 	public List<Usuario> obterTodos() {
-	    return this. _repositorioUsuario.findAll();
-	    }
-	    
-	    public Optional<Usuario> obterPorId(Long id){
-			Optional<Usuario> encontrado = _repositorioUsuario.findById(id);
+		return this._repositorioUsuario.findAll();
+	}
 
-			if(!encontrado.isPresent()){
-				throw new NotFoundException("Usuário não pode ser encontrado pelo ID:" + id);
-				}
-	            return encontrado;
-	    }
+	public Optional<Usuario> obterPorId(Long id) {
+		Optional<Usuario> encontrado = _repositorioUsuario.findById(id);
 
+		if (!encontrado.isPresent()) {
+			throw new NotFoundException("Usuário não pode ser encontrado pelo ID:" + id);
+		}
+		return encontrado;
+	}
 
-		public List<Usuario> obterPorLogin(String login){
+	public List<Usuario> obterPorLogin(String login) {
 
-			List<Usuario> usuarios = _repositorioUsuario.findByLoginContaining(login.toLowerCase());
-
+		List<Usuario> usuarios = _repositorioUsuario.findByLoginContaining(login.toLowerCase());
 
 			if(usuarios.size() == 0){
 				throw new NotFoundException("Nenhum usuário encontrado pelo Login: " + login);
 			}
 
-			return usuarios;
+		return usuarios;
 
 	}
 
@@ -67,12 +64,11 @@ public class UsuarioService {
 
 		validarCampos(novoUsuario);
 
-	    Usuario adicionado = this._repositorioUsuario.save(novoUsuario);
+		Usuario adicionado = this._repositorioUsuario.save(novoUsuario);
 
 		return adicionado;
 	}
 
-	    
 	public Usuario atualizar(Long id, UsuarioDto usuario) {
 
 		obterPorId(id);
@@ -83,31 +79,33 @@ public class UsuarioService {
 
 		validarCampos(usuarioAtualizado);
 
-	    usuarioAtualizado.setId(id);
+		usuarioAtualizado.setId(id);
 
-	    Usuario usuarioSalvo = this._repositorioUsuario.save(usuarioAtualizado);
+		Usuario usuarioSalvo = this._repositorioUsuario.save(usuarioAtualizado);
 
-	    return usuarioSalvo;
+		return usuarioSalvo;
 	}
 
 	public void deletar(Long id) {
 
 		obterPorId(id);
-	      
+
 		this._repositorioUsuario.deleteById(id);
 	}
 
-	public Optional<Usuario> editar(Long id, UsuarioDto usuario){
+	public Usuario editar(Long id, UsuarioDto usuario) {
 
 		Optional<Usuario> usuarioExistente = obterPorId(id);
-	
+
 		if (usuario.getStatus() != null)
-		usuarioExistente.get().setStatus(usuario.getStatus());
+			usuarioExistente.get().setStatus(usuario.getStatus());
 
 		if (usuario.getAvatar() != null)
-		usuarioExistente.get().setAvatar(usuario.getAvatar());
-		
-		return usuarioExistente;
+			usuarioExistente.get().setAvatar(usuario.getAvatar());
+
+		Usuario usuarioSalvo = this._repositorioUsuario.save(usuarioExistente.get());
+
+		return usuarioSalvo;
 	}
 
 	public Usuario adicionarCargo(Long idCargo, Long idUsuario){
@@ -116,10 +114,10 @@ public class UsuarioService {
 
 		Optional<Usuario> usuario = obterPorId(idUsuario);
 
-		if(cargo.isPresent()){
-			usuario.get().setPapel(cargo.get());
+		if (cargo.isPresent()) {
+			usuario.get().setCargo(cargo.get());
 
-			return _repositorioUsuario.save(usuario.get());			
+			return _repositorioUsuario.save(usuario.get());
 		}
 		
 		throw new NotFoundException("Cargo não encontrado pelo ID: " + idCargo + " :(");
@@ -137,11 +135,11 @@ public class UsuarioService {
 		}
 		throw new NotFoundException("Equipe não encontrado pelo ID: " + idEquipe + " :(");
 	}
-	
-	private void validarCampos(Usuario usuario){
+
+	private void validarCampos(Usuario usuario) {
 		if (usuario.getLogin() == null)
 			throw new BadRequestException("Login não pode ser nulo!");
-		
+
 		if (usuario.getSenha() == null)
 			throw new BadRequestException("Senha não pode ser nulo!");
 
@@ -150,9 +148,9 @@ public class UsuarioService {
 
 		Optional<Usuario> usuarioProcurado = this._repositorioUsuario.findByLogin(usuario.getLogin());
 
-		if (usuarioProcurado.isPresent()){
+		if (usuarioProcurado.isPresent()) {
 			throw new BadRequestException("Usuário já existe com o Login: " + usuario.getLogin());
 		}
 	}
-	
+
 }

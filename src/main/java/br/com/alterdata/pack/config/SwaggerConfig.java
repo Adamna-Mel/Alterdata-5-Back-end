@@ -18,28 +18,17 @@ import java.util.ArrayList;
 @EnableSwagger2
 public class SwaggerConfig {
 
-    @Bean
+	@Bean
 	public Docket swagger() {
-		return new Docket(DocumentationType.SWAGGER_2) 
-				.select() 
-				.apis(RequestHandlerSelectors.any()) 
-				.paths(regex("/api.*"))
-				.build()
-                .apiInfo(info()); 
+		return new Docket(DocumentationType.SWAGGER_2).select().apis(RequestHandlerSelectors.any()).paths(regex("/api.*"))
+				.build().apiInfo(info());
 
 	}
-    
-    private ApiInfo info() {
-		return new ApiInfo(
-				"Aplicação PACK", 
-				"Api para Sistema de Status e Papéis", 
-				"1.0", 
-				"Termos de Serviços", 
-				new Contact("Time Alterdata 5", 
-						"https://github.com/Adamna-Mel/Alterdata-5-Back-end", 
-						"amanda9@estudante.firjan.senai.br"), 
-				"Apache License Version 2.0", 
-				"https://www.apache.org/licesen.html", 
-				new ArrayList<VendorExtension>());
+
+	private ApiInfo info() {
+		return new ApiInfo("Aplicação PACK", "Api para Sistema de Status e Papéis", "1.0", "Termos de Serviços",
+				new Contact("Equipe Alterdata 5", "https://github.com/Adamna-Mel/Alterdata-5-Back-end",
+						"amanda9@estudante.firjan.senai.br"),
+				"Apache License Version 2.0", "https://www.apache.org/licesen.html", new ArrayList<VendorExtension>());
 	}
 }
