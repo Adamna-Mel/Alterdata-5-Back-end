@@ -9,14 +9,13 @@ import org.springframework.stereotype.Service;
 
 import br.com.alterdata.pack.exception.BadRequestException;
 import br.com.alterdata.pack.exception.NotFoundException;
-import br.com.alterdata.pack.model.Papel;
-import br.com.alterdata.pack.model.Time;
+import br.com.alterdata.pack.model.Cargo;
+import br.com.alterdata.pack.model.Equipe;
 import br.com.alterdata.pack.model.Usuario;
-import br.com.alterdata.pack.repository.PapelRepository;
-import br.com.alterdata.pack.repository.TimeRepository;
+import br.com.alterdata.pack.repository.CargoRepository;
+import br.com.alterdata.pack.repository.EquipeRepository;
 import br.com.alterdata.pack.repository.UsuarioRepository;
 import br.com.alterdata.pack.shared.UsuarioDto;
-
 
 @Service
 public class UsuarioService {
@@ -25,35 +24,33 @@ public class UsuarioService {
 	private UsuarioRepository _repositorioUsuario;
 
 	@Autowired
-	private PapelRepository _papelRepository;
+	private CargoRepository _cargoRepository;
 
 	@Autowired
-	private TimeRepository _repositorioTime;
+	private EquipeRepository _repositorioEquipe;
 
 	public List<Usuario> obterTodos() {
-	    return this. _repositorioUsuario.findAll();
-	    }
-	    
-	    public Optional<Usuario> obterPorId(Long id){
-			Optional<Usuario> encontrado = _repositorioUsuario.findById(id);
+		return this._repositorioUsuario.findAll();
+	}
 
-			if(!encontrado.isPresent()){
-				throw new NotFoundException("Usuário não pode ser encontrado pelo ID:" + id);
-				}
-	            return encontrado;
-	    }
+	public Optional<Usuario> obterPorId(Long id) {
+		Optional<Usuario> encontrado = _repositorioUsuario.findById(id);
 
+		if (!encontrado.isPresent()) {
+			throw new NotFoundException("Usuário não pode ser encontrado pelo ID:" + id);
+		}
+		return encontrado;
+	}
 
-		public List<Usuario> obterPorLogin(String login){
+	public List<Usuario> obterPorLogin(String login) {
 
-			List<Usuario> usuarios = _repositorioUsuario.findByLoginContaining(login.toLowerCase());
+		List<Usuario> usuarios = _repositorioUsuario.findByLoginContaining(login.toLowerCase());
 
+		if (usuarios.size() == 0) {
+			throw new NotFoundException("Nenhum Usuário não pode ser encontrado pelo Login: " + login);
+		}
 
-			if(usuarios.size() == 0){
-				throw new NotFoundException("Nenhum Usuário não pode ser encontrado pelo Login: " + login);
-			}
-
-			return usuarios;
+		return usuarios;
 
 	}
 
@@ -67,12 +64,11 @@ public class UsuarioService {
 
 		validarCampos(novoUsuario);
 
-	    Usuario adicionado = this._repositorioUsuario.save(novoUsuario);
+		Usuario adicionado = this._repositorioUsuario.save(novoUsuario);
 
 		return adicionado;
 	}
 
-	    
 	public Usuario atualizar(Long id, UsuarioDto usuario) {
 
 		obterPorId(id);
@@ -83,65 +79,67 @@ public class UsuarioService {
 
 		validarCampos(usuarioAtualizado);
 
-	    usuarioAtualizado.setId(id);
+		usuarioAtualizado.setId(id);
 
-	    Usuario usuarioSalvo = this._repositorioUsuario.save(usuarioAtualizado);
+		Usuario usuarioSalvo = this._repositorioUsuario.save(usuarioAtualizado);
 
-	    return usuarioSalvo;
+		return usuarioSalvo;
 	}
 
 	public void deletar(Long id) {
 
 		obterPorId(id);
-	      
+
 		this._repositorioUsuario.deleteById(id);
 	}
 
-	public Optional<Usuario> editar(Long id, UsuarioDto usuario){
+	public Usuario editar(Long id, UsuarioDto usuario) {
 
 		Optional<Usuario> usuarioExistente = obterPorId(id);
-	
+
 		if (usuario.getStatus() != null)
-		usuarioExistente.get().setStatus(usuario.getStatus());
+			usuarioExistente.get().setStatus(usuario.getStatus());
 
 		if (usuario.getAvatar() != null)
-		usuarioExistente.get().setAvatar(usuario.getAvatar());
-		
-		return usuarioExistente;
+			usuarioExistente.get().setAvatar(usuario.getAvatar());
+
+		Usuario usuarioSalvo = this._repositorioUsuario.save(usuarioExistente.get());
+
+		return usuarioSalvo;
 	}
 
-	public Usuario adicionarPapel(Long idPapel, Long idUsuario){
+	public Usuario adicionarPapel(Long idCargo, Long idUsuario) {
 
-		Optional<Papel> papel = _papelRepository.findById(idPapel);
+		Optional<Cargo> cargo = _cargoRepository.findById(idCargo);
 
 		Optional<Usuario> usuario = obterPorId(idUsuario);
 
-		if(papel.isPresent()){
-			usuario.get().setPapel(papel.get());
-
-			return _repositorioUsuario.save(usuario.get());			
-		}
-		
-		throw new NotFoundException("Papel não encontrado pelo ID: " + idPapel + " :(");
-	}
-
-	public Usuario adicionarTime(Long idUsuario, Long idTime){
-		Optional<Time> time = _repositorioTime.findById(idTime);
-
-		Optional<Usuario> usuario = obterPorId(idUsuario);
-
-		if(time.isPresent()) {
-			usuario.get().setTime(time.get());
+		if (cargo.isPresent()) {
+			usuario.get().setCargo(cargo.get());
 
 			return _repositorioUsuario.save(usuario.get());
 		}
-		throw new NotFoundException("Time não encontrado pelo ID: " + idTime + " :(");
+
+		throw new NotFoundException("Cargo não encontrado pelo ID: " + idCargo + " :(");
 	}
-	
-	private void validarCampos(Usuario usuario){
+
+	public Usuario adicionarEquipe(Long idUsuario, Long idEquipe) {
+		Optional<Equipe> equipe = _repositorioEquipe.findById(idEquipe);
+
+		Optional<Usuario> usuario = obterPorId(idUsuario);
+
+		if (equipe.isPresent()) {
+			usuario.get().setEquipe(equipe.get());
+
+			return _repositorioUsuario.save(usuario.get());
+		}
+		throw new NotFoundException("Equipe não encontrado pelo ID: " + idEquipe + " :(");
+	}
+
+	private void validarCampos(Usuario usuario) {
 		if (usuario.getLogin() == null)
 			throw new BadRequestException("Login não pode ser nulo!");
-		
+
 		if (usuario.getSenha() == null)
 			throw new BadRequestException("Senha não pode ser nulo!");
 
@@ -150,9 +148,9 @@ public class UsuarioService {
 
 		Optional<Usuario> usuarioProcurado = this._repositorioUsuario.findByLogin(usuario.getLogin());
 
-		if (usuarioProcurado.isPresent()){
+		if (usuarioProcurado.isPresent()) {
 			throw new BadRequestException("Usuário já existe com o Login: " + usuario.getLogin());
 		}
 	}
-	
+
 }

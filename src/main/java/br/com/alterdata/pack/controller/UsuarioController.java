@@ -24,12 +24,12 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
 @CrossOrigin("*")
-@Api("API PACK - Sistema de Status e Papéis")
+@Api("API PACK - Sistema de Status e Cargos")
 @RestController
 @RequestMapping("/api/usuarios")
 public class UsuarioController {
-	
-	@Autowired
+
+    @Autowired
     UsuarioService _servicoUsuario;
 
     @ApiOperation(value = "Retorna todos os usuários cadastradas")
@@ -42,12 +42,12 @@ public class UsuarioController {
     @GetMapping("/{id}")
     public ResponseEntity<Optional<Usuario>> obterPorId(@PathVariable(value = "id") Long id) {
         Optional<Usuario> usuario = _servicoUsuario.obterPorId(id);
-        return  new ResponseEntity<>(usuario, HttpStatus.OK);
+        return new ResponseEntity<>(usuario, HttpStatus.OK);
     }
 
     @ApiOperation(value = "Filtra os usuários cadastrados de acordo com o login")
     @GetMapping("/login/{login}")
-    public ResponseEntity<List<Usuario>> obterPorLogin(@PathVariable(value = "login") String login){
+    public ResponseEntity<List<Usuario>> obterPorLogin(@PathVariable(value = "login") String login) {
         return new ResponseEntity<>(_servicoUsuario.obterPorLogin(login), HttpStatus.OK);
     }
 
@@ -73,23 +73,26 @@ public class UsuarioController {
 
     @ApiOperation(value = "Atualiza status de usuário de acordo com o id")
     @PatchMapping("{id}")
-    public ResponseEntity<Optional<Usuario>> editar(@PathVariable(value = "id") Long id, @RequestBody UsuarioDto usuario){
-        Optional<Usuario> usuarioNovoStatus = _servicoUsuario.editar(id, usuario);
+    public ResponseEntity<Usuario> editar(@PathVariable(value = "id") Long id,
+            @RequestBody UsuarioDto usuario) {
+        Usuario usuarioNovoStatus = _servicoUsuario.editar(id, usuario);
         return new ResponseEntity<>(usuarioNovoStatus, HttpStatus.OK);
     }
 
-    @ApiOperation(value = "Adiciona um papel no usuario")
-    @PatchMapping("{idUsuario}/papel/{idPapel}")
-    public ResponseEntity<Usuario> adicionarPapel(@PathVariable(value = "idPapel") Long idPapel, @PathVariable(value = "idUsuario") Long idUsuario){
-        Usuario usuarioNovoStatus = _servicoUsuario.adicionarPapel(idPapel, idUsuario);
+    @ApiOperation(value = "Adiciona um cargo no usuario")
+    @PatchMapping("{idUsuario}/cargo/{idCargo}")
+    public ResponseEntity<Usuario> adicionarPapel(@PathVariable(value = "idCargo") Long idCargo,
+            @PathVariable(value = "idUsuario") Long idUsuario) {
+        Usuario usuarioNovoStatus = _servicoUsuario.adicionarPapel(idCargo, idUsuario);
         return new ResponseEntity<>(usuarioNovoStatus, HttpStatus.OK);
     }
 
-    @ApiOperation(value = "Adiciona um time no usuario")
-    @PatchMapping("{idUsuario}/time/{idTime}")
-    public ResponseEntity<Usuario> adicionarTime(@PathVariable(value = "idTime") Long idTime, @PathVariable(value = "idUsuario") Long idUsuario){
-        Usuario usuarioNovoStatus = _servicoUsuario.adicionarTime(idUsuario, idTime);
+    @ApiOperation(value = "Adiciona um equipe no usuario")
+    @PatchMapping("{idUsuario}/equipe/{idEquipe}")
+    public ResponseEntity<Usuario> adicionarEquipe(@PathVariable(value = "idEquipe") Long idEquipe,
+            @PathVariable(value = "idUsuario") Long idUsuario) {
+        Usuario usuarioNovoStatus = _servicoUsuario.adicionarEquipe(idUsuario, idEquipe);
         return new ResponseEntity<>(usuarioNovoStatus, HttpStatus.OK);
     }
-   
+
 }

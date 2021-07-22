@@ -1,15 +1,15 @@
 package br.com.alterdata.pack.shared;
 
-public class PapelDto {
+public class CargoDto {
 
     private String nome;
     
     private String icone;
 
-    public PapelDto() {
+    public CargoDto() {
     }
 
-    public PapelDto(String nome, String icone) {
+    public CargoDto(String nome, String icone) {
         this.nome = nome;
         this.icone = icone;
     }
