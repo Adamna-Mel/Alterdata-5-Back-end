@@ -50,8 +50,6 @@ public class PapelService {
 
         verificarSePapelExiste(papel);
 
-        papel.setId(null);
-
         Papel novoPapel = _repositorioPapel.save(papel);
 
         return novoPapel;
