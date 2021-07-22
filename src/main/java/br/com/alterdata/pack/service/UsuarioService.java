@@ -16,6 +16,7 @@ import br.com.alterdata.pack.repository.CargoRepository;
 import br.com.alterdata.pack.repository.EquipeRepository;
 import br.com.alterdata.pack.repository.UsuarioRepository;
 import br.com.alterdata.pack.shared.UsuarioDto;
+import br.com.alterdata.pack.shared.login.LoginResponse;
 
 @Service
 public class UsuarioService {
@@ -64,6 +65,12 @@ public class UsuarioService {
 
 		validarCampos(novoUsuario);
 
+		Optional<Usuario> usuarioProcurado = this._repositorioUsuario.findByLogin(novoUsuario.getLogin());
+
+		if (usuarioProcurado.isPresent()) {
+			throw new BadRequestException("Usuário já existe com o Login: " + usuario.getLogin());
+		}
+
 		Usuario adicionado = this._repositorioUsuario.save(novoUsuario);
 
 		return adicionado;
@@ -71,7 +78,11 @@ public class UsuarioService {
 
 	public Usuario atualizar(Long id, UsuarioDto usuario) {
 
-		obterPorId(id);
+		Optional<Usuario> usuarioAntigo = obterPorId(id);
+
+		if(usuario.getLogin().equals(usuarioAntigo.get().getLogin()) || usuario.getLogin().isBlank()){
+
+		}
 
 		ModelMapper mapper = new ModelMapper();
 
@@ -80,6 +91,13 @@ public class UsuarioService {
 		validarCampos(usuarioAtualizado);
 
 		usuarioAtualizado.setId(id);
+
+		
+		Optional<Usuario> usuarioProcurado = this._repositorioUsuario.findByLogin(usuarioAtualizado.getLogin());
+
+		if (!usuarioProcurado.get().getId().equals(id)){
+			throw new BadRequestException("Usuário já existe com o Login: " + usuarioAtualizado.getLogin());
+		}
 
 		Usuario usuarioSalvo = this._repositorioUsuario.save(usuarioAtualizado);
 
@@ -136,21 +154,35 @@ public class UsuarioService {
 		throw new NotFoundException("Equipe não encontrado pelo ID: " + idEquipe + " :(");
 	}
 
-	private void validarCampos(Usuario usuario) {
-		if (usuario.getLogin() == null)
+	public LoginResponse logar(String login, String senha){
+
+		Optional<Usuario> usuario = _repositorioUsuario.findByLogin(login);
+
+		if(!usuario.isPresent()){
+			
+			throw new BadRequestException("Credenciais invalidas :(");
+
+		}
+		if(usuario.get().getSenha().equals(senha)){
+
+			return new LoginResponse(usuario.get());
+
+		}
+			throw new BadRequestException("Credenciais invalidas :(");
+
+		}
+
+	private void validarCampos(Usuario usuario){
+		if (usuario.getLogin() == null || usuario.getLogin().isBlank())
 			throw new BadRequestException("Login não pode ser nulo!");
 
-		if (usuario.getSenha() == null)
+		if (usuario.getSenha() == null || usuario.getSenha().isBlank())
 			throw new BadRequestException("Senha não pode ser nulo!");
 
-		if (usuario.getNome() == null)
-			throw new BadRequestException("Nome não pode ser nulo!");
+		if (usuario.getNome() == null || usuario.getNome().isBlank())
+			throw new BadRequestException("Nome não pode ser nulo ou vazio :(");
 
-		Optional<Usuario> usuarioProcurado = this._repositorioUsuario.findByLogin(usuario.getLogin());
-
-		if (usuarioProcurado.isPresent()) {
-			throw new BadRequestException("Usuário já existe com o Login: " + usuario.getLogin());
-		}
+		
 	}
 
 }

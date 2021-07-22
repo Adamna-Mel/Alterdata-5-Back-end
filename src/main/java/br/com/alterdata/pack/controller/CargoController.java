@@ -19,6 +19,7 @@ import br.com.alterdata.pack.model.Cargo;
 import br.com.alterdata.pack.service.CargoService;
 import br.com.alterdata.pack.shared.CargoDto;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 
 @RestController
 @RequestMapping("/api/cargos")
@@ -48,6 +49,7 @@ public class CargoController {
     }
 
     @ApiOperation(value = "Cadastra um novo cargo")
+    @ApiParam
     @PostMapping
     public ResponseEntity<Cargo> adicionar(@RequestBody Cargo cargo) {
         Cargo novoCargo = _cargoUsuario.adicionarCargo(cargo);
