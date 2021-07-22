@@ -22,7 +22,7 @@ public class EquipeService {
     }
 
     public Optional<Equipe> obterPorId(Long id) {
-        Optional<Equipe> encontrado = _repositorioEquipe.findById(id);
+        Optional<Equipe> encontrado = _repositorioEquipe.findByIdEquipe(id);
 
         if(!encontrado.isPresent()) {
             throw new NotFoundException("Não foi encontrado equipe com o ID: " + id);
@@ -40,7 +40,7 @@ public class EquipeService {
     }
 
     public Equipe criarEquipe(Equipe equipe) {
-        equipe.setId(null);
+        equipe.setIdEquipe(null);
 
         verificarSeEquipeExiste(equipe);
 
@@ -52,7 +52,7 @@ public class EquipeService {
     }
     
     public Equipe atualizar(Long id, Equipe equipe) {
-        equipe.setId(id);
+        equipe.setIdEquipe(id);
 
         if(equipe.getNome() == "" || equipe.getNome() == null){
             throw new BadRequestException("Nome não pode ser nulo!");

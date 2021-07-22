@@ -17,7 +17,7 @@ import javax.persistence.Table;
 public class Equipe {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "generator_equipe")
-    private Long id;
+    private Long idEquipe;
 
     @Column(unique = true, nullable = false)
     private String nome;
@@ -27,12 +27,12 @@ public class Equipe {
     @OneToMany(mappedBy="equipe")
     private List<Usuario> membros;
 
-    public Long getId() {
-        return id;
+    public Long getIdEquipe() {
+        return idEquipe;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setIdEquipe(Long idEquipe) {
+        this.idEquipe = idEquipe;
     }
 
     public String getNome() {
@@ -53,8 +53,8 @@ public class Equipe {
 
     public Equipe() {}
 
-    public Equipe(Long id, String nome, String icone) {
-        this.id = id;
+    public Equipe(Long idEquipe, String nome, String icone) {
+        this.idEquipe = idEquipe;
         this.nome = nome;
         this.icone = icone;
     }

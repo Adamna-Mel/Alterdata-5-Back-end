@@ -25,7 +25,7 @@ public class CargoService {
 
 	public Optional<Cargo> obterPorId(Long id){
 
-        Optional<Cargo> encontrado = _repositorioCargo.findById(id);
+        Optional<Cargo> encontrado = _repositorioCargo.findByIdCargo(id);
 
         if(!encontrado.isPresent()){
             throw new NotFoundException("Cargo não encontrado pelo ID:" + id);
@@ -50,7 +50,7 @@ public class CargoService {
 
         verificarSeCargoExiste(cargo);
 
-        cargo.setId(null);
+        cargo.setIdCargo(null);
 
         Cargo novoCargo = _repositorioCargo.save(cargo);
 

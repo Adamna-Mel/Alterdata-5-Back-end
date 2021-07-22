@@ -18,7 +18,7 @@ public class Cargo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "generator_cargo")
-    private Long id;
+    private Long idCargo;
 
     @Column(unique = true, nullable = false)
     private String nome;
@@ -36,18 +36,18 @@ public class Cargo {
         this.icone = icone;
     }
 
-    public Cargo(Long id, String nome, String icone) {
-        this.id = id;
+    public Cargo(Long idCargo, String nome, String icone) {
+        this.idCargo = idCargo;
         this.nome = nome;
         this.icone = icone;
     }
 
-    public Long getId() {
-        return id;
+    public Long getIdCargo() {
+        return idCargo;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setIdCargo(Long idCargo) {
+        this.idCargo = idCargo;
     }
 
     public String getNome() {
