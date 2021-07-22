@@ -22,13 +22,13 @@ import io.swagger.annotations.ApiOperation;
 public class LoginController {
     
     @Autowired
-    private UsuarioService _usuarioRepository;
+    private UsuarioService _usuarioService;
 
     @ApiOperation("Fazer Login")
     @PostMapping
     public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request) throws Exception {
        
-        return new ResponseEntity<>(_usuarioRepository.logar(request.getLogin(), request.getSenha()), HttpStatus.OK);
-     
+        return new ResponseEntity<>(_usuarioService.logar(request.getLogin(), request.getSenha()), HttpStatus.OK);
+
     }
 }

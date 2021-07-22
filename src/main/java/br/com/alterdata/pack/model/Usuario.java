@@ -12,15 +12,15 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
-@Table(name= "usuario")
+@Table(name = "usuario")
 @SequenceGenerator(name = "generator_usuario", sequenceName = "sequence_usuario", initialValue = 1, allocationSize = 1)
 public class Usuario {
-	
-	@Id
+
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "generator_usuario")
     private Long id;
 
-    @Column(unique = true,nullable = false)
+    @Column(unique = true, nullable = false)
     private String login;
 
     @Column(nullable = false)
@@ -36,34 +36,35 @@ public class Usuario {
     private String status;
 
     @ManyToOne(cascade=CascadeType.ALL)
-    @JoinColumn(name = "papel_id")
-    private Papel papel;
+    @JoinColumn(name = "cargo_id")
+    private Cargo cargo;
 
-    @Column(nullable = true)
-    private String time;
+    @ManyToOne(cascade=CascadeType.ALL)
+    @JoinColumn(name = "equipe_id")
+    private Equipe equipe;
 
     public Usuario() {}
     
-    public Usuario(String login, String senha, String avatar, String nome, String status, Papel papel, String time) {
+    public Usuario(String login, String senha, String avatar, String nome, String status, Cargo cargo, Equipe equipe) {
         this.login = login;
         this.senha = senha;
         this.avatar = avatar;
         this.nome = nome;
         this.status = status;
-        this.papel = papel;
-        this.time = time;
+        this.cargo = cargo;
+        this.equipe = equipe;
     }
 
-    public Usuario(Long id, String login, String senha, String avatar, String nome, String status, Papel papel,
-            String time) {
+    public Usuario(Long id, String login, String senha, String avatar, String nome, String status, Cargo cargo,
+            Equipe equipe) {
         this.id = id;
         this.login = login;
         this.senha = senha;
         this.avatar = avatar;
         this.nome = nome;
         this.status = status;
-        this.papel = papel;
-        this.time = time;
+        this.cargo = cargo;
+        this.equipe = equipe;
     }
 
     public Long getId() {
@@ -114,22 +115,20 @@ public class Usuario {
         this.status = status;
     }
 
-    public Papel getPapel() {
-        return papel;
+    public Cargo getCargo() {
+        return cargo;
     }
 
-    public void setPapel(Papel papel) {
-        this.papel = papel;
+    public void setCargo(Cargo cargo) {
+        this.cargo = cargo;
     }
 
-    public String getTime() {
-        return time;
+    public Equipe getEquipe() {
+        return equipe;
     }
 
-    public void setTime(String time) {
-        this.time = time;
+    public void setEquipe(Equipe equipe) {
+        this.equipe = equipe;
     }
 
- 
-    
 }

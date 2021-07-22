@@ -9,9 +9,9 @@ public class NotFoundException extends RuntimeException {
 	public NotFoundException() {
 		super("Recurso não foi encontrado");
 	}
-	
+
 	public NotFoundException(String mensagem) {
 		super(mensagem);
-	}	
-	
+	}
+
 }
