@@ -17,7 +17,7 @@ import javax.persistence.Table;
 public class Cargo {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "generator_usuario")
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "generator_cargo")
     private Long id;
 
     @Column(unique = true, nullable = false)
