@@ -3,6 +3,7 @@ package br.com.alterdata.pack.shared;
 public class EquipeDto {
     private Long id;
     private String nome;
+    private String icone;
 
     public EquipeDto() {}
 
@@ -25,6 +26,14 @@ public class EquipeDto {
 
     public void setNome(String nome) {
         this.nome = nome;
+    }
+
+    public String getIcone() {
+        return icone;
+    }
+
+    public void setIcone(String icone) {
+        this.icone = icone;
     }
 
 }

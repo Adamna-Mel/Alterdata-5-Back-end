@@ -22,6 +22,8 @@ public class Equipe {
     @Column(unique = true, nullable = false)
     private String nome;
 
+    private String icone;
+
     @OneToMany(mappedBy="equipe")
     private List<Usuario> membros;
 
@@ -41,11 +43,20 @@ public class Equipe {
         this.nome = nome;
     }
 
+    public String getIcone() {
+        return icone;
+    }
+
+    public void setIcone(String icone) {
+        this.icone = icone;
+    }
+
     public Equipe() {}
 
-    public Equipe(Long id, String nome) {
+    public Equipe(Long id, String nome, String icone) {
         this.id = id;
         this.nome = nome;
+        this.icone = icone;
     }
 
 }
