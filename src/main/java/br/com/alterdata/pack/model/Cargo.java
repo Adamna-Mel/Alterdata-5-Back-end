@@ -18,7 +18,6 @@ public class Cargo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "generator_cargo")
-    @Column(name = "id")
     private Long idCargo;
 
     @Column(unique = true, nullable = false)
