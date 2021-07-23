@@ -35,11 +35,11 @@ public class Usuario {
     @Column(nullable = true)
     private String status;
 
-    @ManyToOne(cascade=CascadeType.ALL)
+    @ManyToOne()
     @JoinColumn(name = "cargo_id")
     private Cargo cargo;
 
-    @ManyToOne(cascade=CascadeType.ALL)
+    @ManyToOne()
     @JoinColumn(name = "equipe_id")
     private Equipe equipe;
 

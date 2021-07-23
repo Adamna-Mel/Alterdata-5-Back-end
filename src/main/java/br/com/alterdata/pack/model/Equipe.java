@@ -2,6 +2,7 @@ package br.com.alterdata.pack.model;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -15,6 +16,7 @@ import javax.persistence.Table;
 @Table(name = "equipe")
 @SequenceGenerator(name = "generator_equipe", sequenceName = "sequence_equipe", initialValue = 1, allocationSize = 1)
 public class Equipe {
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "generator_equipe")
     private Long idEquipe;

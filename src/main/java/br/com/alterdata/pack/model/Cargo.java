@@ -2,6 +2,7 @@ package br.com.alterdata.pack.model;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -17,7 +18,8 @@ import javax.persistence.Table;
 public class Cargo {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "generator_cargo")
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "generator_cargo")    
+
     private Long idCargo;
 
     @Column(unique = true, nullable = false)
