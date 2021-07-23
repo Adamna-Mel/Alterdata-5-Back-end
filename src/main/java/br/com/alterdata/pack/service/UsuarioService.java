@@ -73,9 +73,9 @@ public class UsuarioService {
 
 		Usuario adicionado = this._repositorioUsuario.save(novoUsuario);
 
-		adicionarCargo(6L, adicionado.getId());
+		adicionarCargo(1L, adicionado.getId());
 
-		adicionarEquipe(adicionado.getId(), 3L);
+		adicionarEquipe(adicionado.getId(), 1L);
 
 		return adicionado;
 	}
