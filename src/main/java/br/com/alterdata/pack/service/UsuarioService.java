@@ -117,7 +117,11 @@ public class UsuarioService {
 
 	public void deletar(Long id) {
 
-		obterPorId(id);
+		Optional<Usuario> usuario = obterPorId(id);
+
+		if (!usuario.isPresent()) {
+            throw new NotFoundException("Não existe equipe com o id informado: " + id);
+        }
 
 		this._repositorioUsuario.deleteById(id);
 	}

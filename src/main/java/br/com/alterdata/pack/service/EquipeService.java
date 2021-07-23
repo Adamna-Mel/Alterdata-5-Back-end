@@ -67,7 +67,7 @@ public class EquipeService {
 
         if(equipe.isPresent()){
             if(equipe.get().getIdEquipe() == 1L){
-                throw new BadRequestException("Esse cargo é default e não pode ser apagado :(");
+                throw new BadRequestException("Essa equipe é default e não pode ser apagada :(");
             }
         }
         if (!equipe.isPresent()) {
