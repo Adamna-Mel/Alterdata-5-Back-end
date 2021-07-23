@@ -62,9 +62,15 @@ public class EquipeService {
     }
 
     public void deletar(Long id) {
-        Optional<Equipe> existe = _repositorioEquipe.findById(id);
 
-        if (!existe.isPresent()) {
+        Optional<Equipe> equipe = obterPorId(id);
+
+        if(equipe.isPresent()){
+            if(equipe.get().getIdEquipe() == 1L){
+                throw new BadRequestException("Esse cargo é default e não pode ser apagado :(");
+            }
+        }
+        if (!equipe.isPresent()) {
             throw new NotFoundException("Não existe equipe com o id informado: " + id);
         }
         this._repositorioEquipe.deleteById(id);

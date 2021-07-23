@@ -80,6 +80,13 @@ public class CargoService {
  
     public void deletar(Long id) {
 
+        Optional<Cargo> cargo = obterPorId(id);
+
+        if(cargo.isPresent()){
+            if(cargo.get().getIdCargo() == 1L){
+                throw new BadRequestException("Esse cargo é default e não pode ser apagado :(");
+            }
+        }
 		this._repositorioCargo.deleteById(id);
 	}
 
