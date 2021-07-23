@@ -73,9 +73,9 @@ public class UsuarioService {
 
 		Usuario adicionado = this._repositorioUsuario.save(novoUsuario);
 
-		adicionarCargo(1L, adicionado.getId());
+		adicionarCargo(6L, adicionado.getId());
 
-		adicionarEquipe(adicionado.getId(), 1L);
+		adicionarEquipe(adicionado.getId(), 3L);
 
 		return adicionado;
 	}
@@ -84,7 +84,7 @@ public class UsuarioService {
 
 		Optional<Usuario> usuarioAntigo = obterPorId(id);
 
-		if(usuario.getLogin().equals(usuarioAntigo.get().getLogin()) || usuario.getLogin().isBlank()){
+		if(usuario.getLogin().equals(usuarioAntigo.get().getLogin()) || usuario.getLogin().equals("")){
 
 		}
 
@@ -184,13 +184,13 @@ public class UsuarioService {
 		}
 
 	private void validarCampos(Usuario usuario){
-		if (usuario.getLogin() == null || usuario.getLogin().isBlank())
+		if (usuario.getLogin() == null || usuario.getLogin().equals(""))
 			throw new BadRequestException("Login não pode ser nulo!");
 
-		if (usuario.getSenha() == null || usuario.getSenha().isBlank())
+		if (usuario.getSenha() == null || usuario.getSenha().equals(""))
 			throw new BadRequestException("Senha não pode ser nulo!");
 
-		if (usuario.getNome() == null || usuario.getNome().isBlank())
+		if (usuario.getNome() == null || usuario.getNome().equals(""))
 			throw new BadRequestException("Nome não pode ser nulo ou vazio :(");
 
 	}

@@ -80,8 +80,8 @@ public class CargoService {
  
     public void deletar(Long id) {
 
-		obterPorId(id);
-	      
+        Optional<Cargo> cargo = obterPorId(id);
+
 		this._repositorioCargo.deleteById(id);
 	}
 
