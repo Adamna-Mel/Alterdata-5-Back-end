@@ -19,6 +19,7 @@ public class Cargo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "generator_cargo")    
+
     private Long idCargo;
 
     @Column(unique = true, nullable = false)
