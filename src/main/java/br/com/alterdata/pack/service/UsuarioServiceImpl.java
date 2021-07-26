@@ -2,9 +2,15 @@ package br.com.alterdata.pack.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Collections;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import br.com.alterdata.pack.exception.BadRequestException;
@@ -15,11 +21,13 @@ import br.com.alterdata.pack.model.Usuario;
 import br.com.alterdata.pack.repository.CargoRepository;
 import br.com.alterdata.pack.repository.EquipeRepository;
 import br.com.alterdata.pack.repository.UsuarioRepository;
+import br.com.alterdata.pack.security.JWTService;
 import br.com.alterdata.pack.shared.UsuarioDto;
 import br.com.alterdata.pack.shared.login.LoginResponse;
 
 @Service
 public class UsuarioServiceImpl implements UsuarioService{
+	private static final String headerPrefix = "Bearer ";
     
     
 	@Autowired
@@ -30,6 +38,15 @@ public class UsuarioServiceImpl implements UsuarioService{
 
 	@Autowired
 	private EquipeRepository _repositorioEquipe;
+
+	@Autowired
+    private JWTService jwtService;
+
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Override
 	public List<Usuario> obterTodos() {
@@ -56,7 +73,6 @@ public class UsuarioServiceImpl implements UsuarioService{
 			}
 
 		return usuarios;
-
 	}
 
     @Override
@@ -65,8 +81,10 @@ public class UsuarioServiceImpl implements UsuarioService{
 		ModelMapper mapper = new ModelMapper();
 
 		Usuario novoUsuario = mapper.map(usuario, Usuario.class);
-
 		novoUsuario.setId(null);
+
+		String senha = passwordEncoder.encode(novoUsuario.getSenha());
+        novoUsuario.setSenha(senha);
 
 		validarCampos(novoUsuario);
 
@@ -113,7 +131,6 @@ public class UsuarioServiceImpl implements UsuarioService{
 			if (!usuarioProcurado.get().getId().equals(id)){
 				throw new BadRequestException("Usuário já existe com o Login: " + usuarioAtualizado.getLogin());
 			}
-
 		}
 
 		Usuario usuarioSalvo = this._repositorioUsuario.save(usuarioAtualizado);
@@ -181,21 +198,20 @@ public class UsuarioServiceImpl implements UsuarioService{
 
     @Override
 	public LoginResponse logar(String login, String senha){
+		Authentication autenticacao = authenticationManager.authenticate(
+            new UsernamePasswordAuthenticationToken(login, senha, Collections.emptyList()));
+
+        SecurityContextHolder.getContext().setAuthentication(autenticacao);
+
+        String token = headerPrefix + jwtService.gerarToken(autenticacao);
 
 		Optional<Usuario> usuario = _repositorioUsuario.findByLogin(login);
 
 		if(!usuario.isPresent()){
 			
 			throw new BadRequestException("Credenciais invalidas :(");
-
 		}
-		if(usuario.get().getSenha().equals(senha)){
-
-			return new LoginResponse(usuario.get());
-
-		}
-			throw new BadRequestException("Credenciais invalidas :(");
-
+			return new LoginResponse(usuario.get(), token);
 		}
 
 	private void validarCampos(Usuario usuario){

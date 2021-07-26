@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import br.com.alterdata.pack.exception.BadRequestException;
 import br.com.alterdata.pack.exception.NotFoundException;
 import br.com.alterdata.pack.model.Equipe;
-import br.com.alterdata.pack.model.Usuario;
 import br.com.alterdata.pack.repository.EquipeRepository;
 import br.com.alterdata.pack.shared.EquipeDto;
 
