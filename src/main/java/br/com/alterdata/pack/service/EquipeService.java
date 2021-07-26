@@ -4,10 +4,11 @@ import java.util.List;
 import java.util.Optional;
 
 import br.com.alterdata.pack.model.Equipe;
+import br.com.alterdata.pack.shared.EquipeDto;
 
 public interface EquipeService {
 
-    List<Equipe> obterTodos();
+    List<EquipeDto> obterTodos();
     Optional<Equipe> obterPorId(Long id);
     List<Equipe> obterPorNome(String nome);
     Equipe criarEquipe(Equipe equipe);
