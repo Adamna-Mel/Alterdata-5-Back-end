@@ -9,7 +9,7 @@ import br.com.alterdata.pack.shared.CargoDto;
 
 public interface CargoService {
 
-    List<Cargo> obterTodos();
+    List<CargoDto> obterTodos();
     Optional<Cargo> obterPorId(Long id);
     List<Cargo> obterPorNome(String nome);
     Cargo adicionarCargo(Cargo cargo);

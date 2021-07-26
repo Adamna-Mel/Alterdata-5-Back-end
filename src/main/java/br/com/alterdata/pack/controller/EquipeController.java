@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.alterdata.pack.model.Equipe;
 import br.com.alterdata.pack.service.EquipeService;
+import br.com.alterdata.pack.shared.EquipeDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
@@ -32,7 +33,7 @@ public class EquipeController {
 
     @ApiOperation(value = "Retorna todas as equipes cadastradas")
     @GetMapping
-    public ResponseEntity<List<Equipe>> obterTodos() {
+    public ResponseEntity<List<EquipeDto>> obterTodos() {
         return new ResponseEntity<>(_equipeUsuario.obterTodos(), HttpStatus.OK);
     }
     

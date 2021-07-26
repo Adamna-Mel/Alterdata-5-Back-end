@@ -2,6 +2,7 @@ package br.com.alterdata.pack.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +22,12 @@ public class CargoServiceImpl implements CargoService{
 	private CargoRepository _repositorioCargo;
 
     @Override
-    public List<Cargo> obterTodos() {
-	    return this. _repositorioCargo.findAll();
+    public List<CargoDto> obterTodos() {
+
+        List<Cargo> cargos = _repositorioCargo.findAll();
+
+	    return cargos.stream().map(cargo -> new ModelMapper().map(cargo, CargoDto.class))
+                .collect(Collectors.toList());
 	}
 
     @Override

@@ -2,7 +2,9 @@ package br.com.alterdata.pack.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +13,7 @@ import br.com.alterdata.pack.exception.NotFoundException;
 import br.com.alterdata.pack.model.Equipe;
 import br.com.alterdata.pack.model.Usuario;
 import br.com.alterdata.pack.repository.EquipeRepository;
+import br.com.alterdata.pack.shared.EquipeDto;
 
 @Service
 public class EquipeServiceImpl implements EquipeService{
@@ -19,8 +22,11 @@ public class EquipeServiceImpl implements EquipeService{
     private EquipeRepository _repositorioEquipe;
 
     @Override
-    public List<Equipe> obterTodos() {
-        return this._repositorioEquipe.findAll();
+    public List<EquipeDto> obterTodos() {
+        List<Equipe> equipes = _repositorioEquipe.findAll();
+        
+        return equipes.stream().map(equipe -> new ModelMapper().map(equipe, EquipeDto.class))
+                .collect(Collectors.toList());
     }
 
     @Override

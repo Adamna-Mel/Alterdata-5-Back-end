@@ -30,7 +30,7 @@ public class CargoController {
 
     @ApiOperation(value = "Retorna todos os cargos cadastradas")
     @GetMapping
-    public ResponseEntity<List<Cargo>> obterTodos() {
+    public ResponseEntity<List<CargoDto>> obterTodos() {
         return new ResponseEntity<>(_cargoUsuario.obterTodos(), HttpStatus.OK);
     }
 
