@@ -82,6 +82,8 @@ public class EquipeServiceImpl implements EquipeService{
         this._repositorioEquipe.deleteById(id);
     }
 
+    
+
     private void verificarSeEquipeExiste(Equipe equipe) {
         Optional<Equipe> equipeExiste = _repositorioEquipe.findByNome(equipe.getNome());
 

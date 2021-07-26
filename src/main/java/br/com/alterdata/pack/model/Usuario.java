@@ -120,20 +120,21 @@ public class Usuario implements UserDetails{
     }
 
     public Cargo getCargo() {
-        return cargo;
-    }
+         return cargo;
+     }
 
     public void setCargo(Cargo cargo) {
         this.cargo = cargo;
     }
 
     public Equipe getEquipe() {
-        return equipe;
+         return equipe;
     }
 
     public void setEquipe(Equipe equipe) {
         this.equipe = equipe;
     }
+  
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

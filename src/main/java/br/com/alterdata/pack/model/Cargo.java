@@ -11,6 +11,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "cargo")
 @SequenceGenerator(name = "generator_cargo", sequenceName = "sequence_cargo", initialValue = 1, allocationSize = 1)
@@ -25,6 +27,11 @@ public class Cargo {
 
     private String icone;
 
+    private String cor1;
+
+    private String cor2;
+
+    @JsonIgnore
     @OneToMany(mappedBy="cargo")
     private List<Usuario> usuarios;
 
@@ -40,6 +47,39 @@ public class Cargo {
         this.idCargo = idCargo;
         this.nome = nome;
         this.icone = icone;
+    }
+
+    public Cargo(Long idCargo, String nome, String icone, String cor1, String cor2, List<Usuario> usuarios) {
+        this.idCargo = idCargo;
+        this.nome = nome;
+        this.icone = icone;
+        this.cor1 = cor1;
+        this.cor2 = cor2;
+        this.usuarios = usuarios;
+    }
+
+    public String getCor1() {
+        return cor1;
+    }
+
+    public void setCor1(String cor1) {
+        this.cor1 = cor1;
+    }
+
+    public String getCor2() {
+        return cor2;
+    }
+
+    public void setCor2(String cor2) {
+        this.cor2 = cor2;
+    }
+
+    public List<Usuario> getUsuarios() {
+        return usuarios;
+    }
+
+    public void setUsuarios(List<Usuario> usuarios) {
+        this.usuarios = usuarios;
     }
 
     public Long getIdCargo() {

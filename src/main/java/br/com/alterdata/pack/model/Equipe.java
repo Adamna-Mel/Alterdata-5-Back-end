@@ -11,6 +11,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "equipe")
 @SequenceGenerator(name = "generator_equipe", sequenceName = "sequence_equipe", initialValue = 1, allocationSize = 1)
@@ -25,8 +27,53 @@ public class Equipe {
 
     private String icone;
 
+    @JsonIgnore
     @OneToMany(mappedBy="equipe")
     private List<Usuario> membros;
+
+    private String cor1;
+
+    private String cor2;
+
+    public Equipe() {}
+
+    public Equipe(Long idEquipe, String nome, String icone) {
+        this.idEquipe = idEquipe;
+        this.nome = nome;
+        this.icone = icone;
+    }
+
+    public Equipe(Long idEquipe, String nome, String icone, List<Usuario> membros) {
+        this.idEquipe = idEquipe;
+        this.nome = nome;
+        this.icone = icone;
+        this.membros = membros;
+    }
+
+    public Equipe(Long idEquipe, String nome, String icone, List<Usuario> membros, String cor1, String cor2) {
+        this.idEquipe = idEquipe;
+        this.nome = nome;
+        this.icone = icone;
+        this.membros = membros;
+        this.cor1 = cor1;
+        this.cor2 = cor2;
+    }
+
+    public String getCor1() {
+        return cor1;
+    }
+
+    public void setCor1(String cor1) {
+        this.cor1 = cor1;
+    }
+
+    public String getCor2() {
+        return cor2;
+    }
+
+    public void setCor2(String cor2) {
+        this.cor2 = cor2;
+    }
 
     public Long getIdEquipe() {
         return idEquipe;
@@ -52,12 +99,13 @@ public class Equipe {
         this.icone = icone;
     }
 
-    public Equipe() {}
-
-    public Equipe(Long idEquipe, String nome, String icone) {
-        this.idEquipe = idEquipe;
-        this.nome = nome;
-        this.icone = icone;
+    public List<Usuario> getMembros() {
+        return membros;
     }
+
+    public void setMembros(List<Usuario> membros) {
+        this.membros = membros;
+    }
+
 
 }
