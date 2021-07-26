@@ -39,8 +39,8 @@ public class EquipeController {
     
     @ApiOperation(value = "Filtra as equipes cadastradas de acordo com o Id")
     @GetMapping("/{id}")
-    public ResponseEntity<Optional<Equipe>> obterPorId(@PathVariable(value = "id") Long id) {
-        Optional<Equipe> equipe = _equipeUsuario.obterPorId(id);
+    public ResponseEntity<Optional<EquipeDto>> obterPorId(@PathVariable(value = "id") Long id) {
+        Optional<EquipeDto> equipe = _equipeUsuario.obterPorId(id);
         return  new ResponseEntity<>(equipe, HttpStatus.OK);
     }
 

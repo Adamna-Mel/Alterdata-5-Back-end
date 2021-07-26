@@ -9,7 +9,7 @@ import br.com.alterdata.pack.shared.EquipeDto;
 public interface EquipeService {
 
     List<EquipeDto> obterTodos();
-    Optional<Equipe> obterPorId(Long id);
+    Optional<EquipeDto> obterPorId(Long id);
     List<Equipe> obterPorNome(String nome);
     Equipe criarEquipe(Equipe equipe);
     Equipe atualizar(Long id, Equipe equipe);
