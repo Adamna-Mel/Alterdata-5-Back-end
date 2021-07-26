@@ -29,10 +29,10 @@ public class APIExceptionHandler{
 	}
 	
 	@ExceptionHandler(UnauthorizedException.class)
-	public ResponseEntity<?> handlerUnauthorizedException(BadRequestException exception){
+	public ResponseEntity<?> handlerUnauthorizedException(UnauthorizedException exception){
 		ErrorMessage errorMessage = new ErrorMessage(
 				"Unauthorized",
-				403,
+				401,
 				exception.getMessage());
 		
 		return new ResponseEntity<>(errorMessage, HttpStatus.UNAUTHORIZED);
