@@ -49,6 +49,8 @@ public class EquipeController {
 		return new ResponseEntity<>(_equipeUsuario.obterPorNome(nome), HttpStatus.OK);
 	}
 
+    // @ApiOperation(value = "Obtem usuarios")
+
     @ApiOperation(value = "Cadastra uma nova Equipe")
     @PostMapping
     public ResponseEntity<Equipe> adicionar(@RequestBody Equipe equipe) {
@@ -70,4 +72,5 @@ public class EquipeController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
    
+
 }
