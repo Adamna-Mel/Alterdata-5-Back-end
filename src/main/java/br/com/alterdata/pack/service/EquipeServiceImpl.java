@@ -29,13 +29,13 @@ public class EquipeServiceImpl implements EquipeService{
     }
 
     @Override
-    public Optional<Equipe> obterPorId(Long id) {
+    public Optional<EquipeDto> obterPorId(Long id) {
         Optional<Equipe> encontrado = _repositorioEquipe.findByIdEquipe(id);
 
         if(!encontrado.isPresent()) {
             throw new NotFoundException("Não foi encontrado equipe com o ID: " + id);
         }
-        return encontrado;
+        return Optional.of(new ModelMapper().map(encontrado.get(),EquipeDto.class));
     }
 
     @Override
@@ -57,12 +57,24 @@ public class EquipeServiceImpl implements EquipeService{
         if (equipe.getNome() == "" || equipe.getNome() == null) {
             throw new BadRequestException("Nome não pode ser nulo!");
         }
+        if (equipe.getCor1() == null){
+            equipe.setCor1("#000");
+        }
+        if (equipe.getCor2() == null){
+            equipe.setCor2("#fff");
+        }
         Equipe novoEquipe = _repositorioEquipe.save(equipe);
         return novoEquipe;
     }
     
     @Override
     public Equipe atualizar(Long id, Equipe equipe) {
+        Optional<Equipe> encontrado = _repositorioEquipe.findByIdEquipe(id);
+
+        if(!encontrado.isPresent()) {
+            throw new NotFoundException("Não foi encontrado equipe com o ID: " + id);
+        }
+
         equipe.setIdEquipe(id);
 
         if(equipe.getNome() == "" || equipe.getNome() == null){
@@ -75,14 +87,14 @@ public class EquipeServiceImpl implements EquipeService{
     @Override
     public void deletar(Long id) {
 
-        Optional<Equipe> equipe = obterPorId(id);
+        Optional<Equipe> encontrado = _repositorioEquipe.findByIdEquipe(id);
 
-        if(equipe.isPresent()){
-            if(equipe.get().getIdEquipe() == 1L){
+        if(encontrado.isPresent()){
+            if(encontrado.get().getIdEquipe() == 1L){
                 throw new BadRequestException("Essa equipe é default e não pode ser apagada :(");
             }
         }
-        if (!equipe.isPresent()) {
+        if (!encontrado.isPresent()) {
             throw new NotFoundException("Não existe equipe com o id informado: " + id);
         }
         this._repositorioEquipe.deleteById(id);

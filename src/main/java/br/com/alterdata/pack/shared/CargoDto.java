@@ -5,6 +5,7 @@ import java.util.List;
 import br.com.alterdata.pack.model.Usuario;
 
 public class CargoDto {
+    private Long idCargo;
     private String nome;
     private String icone;
     private String cor1;
@@ -25,6 +26,14 @@ public class CargoDto {
         this.cor1 = cor1;
         this.cor2 = cor2;
         this.usuarios = usuarios;
+    }
+
+    public Long getIdCargo(){
+        return idCargo;
+    }
+
+    public void setIdCargo(Long id){
+        this.idCargo = id;
     }
 
     public String getCor1() {
