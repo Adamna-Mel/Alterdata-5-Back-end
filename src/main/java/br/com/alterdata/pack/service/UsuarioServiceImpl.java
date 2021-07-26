@@ -14,6 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import br.com.alterdata.pack.exception.BadRequestException;
+import br.com.alterdata.pack.exception.UnauthorizedException;
 import br.com.alterdata.pack.exception.NotFoundException;
 import br.com.alterdata.pack.model.Cargo;
 import br.com.alterdata.pack.model.Equipe;
@@ -198,20 +199,24 @@ public class UsuarioServiceImpl implements UsuarioService{
 
     @Override
 	public LoginResponse logar(String login, String senha){
-		Authentication autenticacao = authenticationManager.authenticate(
-            new UsernamePasswordAuthenticationToken(login, senha, Collections.emptyList()));
+				try{
+						Authentication autenticacao = authenticationManager.authenticate(
+						
+						new UsernamePasswordAuthenticationToken(login, senha, Collections.emptyList()));
+						
+						SecurityContextHolder.getContext().setAuthentication(autenticacao);
 
-        SecurityContextHolder.getContext().setAuthentication(autenticacao);
+						String token = headerPrefix + jwtService.gerarToken(autenticacao);
 
-        String token = headerPrefix + jwtService.gerarToken(autenticacao);
+						Optional<Usuario> usuario = _repositorioUsuario.findByLogin(login);
 
-		Optional<Usuario> usuario = _repositorioUsuario.findByLogin(login);
+						return new LoginResponse(usuario.get(), token);
 
-		if(!usuario.isPresent()){
-			
-			throw new BadRequestException("Credenciais invalidas :(");
-		}
-			return new LoginResponse(usuario.get(), token);
+				} catch(Exception e){
+
+						throw new UnauthorizedException("Credenciais inválidas :(");
+
+				}
 		}
 
 	private void validarCampos(Usuario usuario){
