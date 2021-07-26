@@ -3,200 +3,22 @@ package br.com.alterdata.pack.service;
 import java.util.List;
 import java.util.Optional;
 
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import br.com.alterdata.pack.exception.BadRequestException;
-import br.com.alterdata.pack.exception.NotFoundException;
-import br.com.alterdata.pack.model.Cargo;
-import br.com.alterdata.pack.model.Equipe;
 import br.com.alterdata.pack.model.Usuario;
-import br.com.alterdata.pack.repository.CargoRepository;
-import br.com.alterdata.pack.repository.EquipeRepository;
-import br.com.alterdata.pack.repository.UsuarioRepository;
 import br.com.alterdata.pack.shared.UsuarioDto;
 import br.com.alterdata.pack.shared.login.LoginResponse;
 
-@Service
-public class UsuarioService {
+public interface UsuarioService {
+
+	List<Usuario> obterTodos(); 
+	Optional<Usuario> obterPorId(Long id);
+	List<Usuario> obterPorLogin(String login);
+	Usuario adicionar(UsuarioDto usuario);
+	Usuario atualizar(Long id, UsuarioDto usuario);
+	void deletar(Long id);
+	Usuario editar(Long id, UsuarioDto usuario);
+	Usuario adicionarCargo(Long idCargo, Long idUsuario);
+	Usuario adicionarEquipe(Long idUsuario, Long idEquipe);
+	LoginResponse logar(String login, String senha);
 
-	@Autowired
-	private UsuarioRepository _repositorioUsuario;
-
-	@Autowired
-	private CargoRepository _cargoRepository;
-
-	@Autowired
-	private EquipeRepository _repositorioEquipe;
-
-	public List<Usuario> obterTodos() {
-		return this._repositorioUsuario.findAll();
-	}
-
-	public Optional<Usuario> obterPorId(Long id) {
-		Optional<Usuario> encontrado = _repositorioUsuario.findById(id);
-
-		if (!encontrado.isPresent()) {
-			throw new NotFoundException("Usuário não pode ser encontrado pelo ID:" + id);
-		}
-		return encontrado;
-	}
-
-	public List<Usuario> obterPorLogin(String login) {
-
-		List<Usuario> usuarios = _repositorioUsuario.findByLoginContaining(login.toLowerCase());
-
-			if(usuarios.size() == 0){
-				throw new NotFoundException("Nenhum usuário encontrado pelo Login: " + login);
-			}
-
-		return usuarios;
-
-	}
-
-	public Usuario adicionar(UsuarioDto usuario) {
-
-		ModelMapper mapper = new ModelMapper();
-
-		Usuario novoUsuario = mapper.map(usuario, Usuario.class);
-
-		novoUsuario.setId(null);
-
-		validarCampos(novoUsuario);
-
-		Optional<Usuario> usuarioProcurado = this._repositorioUsuario.findByLogin(novoUsuario.getLogin());
-
-		if (usuarioProcurado.isPresent()) {
-			throw new BadRequestException("Usuário já existe com o Login: " + usuario.getLogin());
-		}
-
-		Usuario adicionado = this._repositorioUsuario.save(novoUsuario);
-
-		adicionarCargo(1L, adicionado.getId());
-
-		adicionarEquipe(adicionado.getId(), 1L);
-
-		return adicionado;
-	}
-
-	public Usuario atualizar(Long id, UsuarioDto usuario) {
-
-		Optional<Usuario> usuarioAntigo = obterPorId(id);
-
-		if(usuario.getLogin().equals(usuarioAntigo.get().getLogin()) || usuario.getLogin().equals("")){
-
-		}
-
-		ModelMapper mapper = new ModelMapper();
-
-		Usuario usuarioAtualizado = mapper.map(usuario, Usuario.class);
-
-		usuarioAtualizado.setEquipe(usuarioAntigo.get().getEquipe());
-
-		usuarioAtualizado.setCargo(usuarioAntigo.get().getCargo());
-
-		validarCampos(usuarioAtualizado);
-
-		usuarioAtualizado.setId(id);
-	
-		Optional<Usuario> usuarioProcurado = this._repositorioUsuario.findByLogin(usuarioAtualizado.getLogin());
-
-		if(usuarioProcurado.isPresent()){
-
-			if (!usuarioProcurado.get().getId().equals(id)){
-				throw new BadRequestException("Usuário já existe com o Login: " + usuarioAtualizado.getLogin());
-			}
-
-		}
-
-		Usuario usuarioSalvo = this._repositorioUsuario.save(usuarioAtualizado);
-
-		return usuarioSalvo;
-	}
-
-	public void deletar(Long id) {
-
-		Optional<Usuario> usuario = obterPorId(id);
-
-		if (!usuario.isPresent()) {
-            throw new NotFoundException("Não existe equipe com o id informado: " + id);
-        }
-
-		this._repositorioUsuario.deleteById(id);
-	}
-
-	public Usuario editar(Long id, UsuarioDto usuario) {
-
-		Optional<Usuario> usuarioExistente = obterPorId(id);
-
-		if (usuario.getStatus() != null)
-			usuarioExistente.get().setStatus(usuario.getStatus());
-
-		if (usuario.getAvatar() != null)
-			usuarioExistente.get().setAvatar(usuario.getAvatar());
-
-		Usuario usuarioSalvo = this._repositorioUsuario.save(usuarioExistente.get());
-
-		return usuarioSalvo;
-	}
-
-	public Usuario adicionarCargo(Long idCargo, Long idUsuario){
-
-		Optional<Cargo> cargo = _cargoRepository.findById(idCargo);
-
-		Optional<Usuario> usuario = obterPorId(idUsuario);
-
-		if (cargo.isPresent()) {
-			usuario.get().setCargo(cargo.get());
-
-			return _repositorioUsuario.save(usuario.get());
-		}
-		
-		throw new NotFoundException("Cargo não encontrado pelo ID: " + idCargo + " :(");
-	}
-
-	public Usuario adicionarEquipe(Long idUsuario, Long idEquipe){
-		Optional<Equipe> equipe = _repositorioEquipe.findById(idEquipe);
-
-		Optional<Usuario> usuario = obterPorId(idUsuario);
-
-		if(equipe.isPresent()) {
-			usuario.get().setEquipe(equipe.get());
-
-			return _repositorioUsuario.save(usuario.get());
-		}
-		throw new NotFoundException("Equipe não encontrado pelo ID: " + idEquipe + " :(");
-	}
-
-	public LoginResponse logar(String login, String senha){
-
-		Optional<Usuario> usuario = _repositorioUsuario.findByLogin(login);
-
-		if(!usuario.isPresent()){
-			
-			throw new BadRequestException("Credenciais invalidas :(");
-
-		}
-		if(usuario.get().getSenha().equals(senha)){
-
-			return new LoginResponse(usuario.get());
-
-		}
-			throw new BadRequestException("Credenciais invalidas :(");
-
-		}
-
-	private void validarCampos(Usuario usuario){
-		if (usuario.getLogin() == null || usuario.getLogin().equals(""))
-			throw new BadRequestException("Login não pode ser nulo!");
-
-		if (usuario.getSenha() == null || usuario.getSenha().equals(""))
-			throw new BadRequestException("Senha não pode ser nulo!");
-
-		if (usuario.getNome() == null || usuario.getNome().equals(""))
-			throw new BadRequestException("Nome não pode ser nulo ou vazio :(");
-
-	}
 
 }
