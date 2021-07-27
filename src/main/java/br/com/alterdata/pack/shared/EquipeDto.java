@@ -5,6 +5,7 @@ import java.util.List;
 import br.com.alterdata.pack.model.Usuario;
 
 public class EquipeDto {
+    private Long idEquipe;
     private String nome;
     private String icone;
     private String cor1;
@@ -27,6 +28,14 @@ public class EquipeDto {
         this.membros = membros;
     }
 
+    public Long getIdEquipe() {
+        return idEquipe;
+    }
+
+    public void setIdEquipe(Long id) {
+        this.idEquipe = id;
+    }
+
     public String getCor1() {
         return cor1;
     }
@@ -34,7 +43,7 @@ public class EquipeDto {
     public void setCor1(String cor1) {
         this.cor1 = cor1;
     }
-
+ 
     public String getCor2() {
         return cor2;
     }

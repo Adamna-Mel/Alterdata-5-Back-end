@@ -36,9 +36,9 @@ public class CargoController {
 
     @ApiOperation(value = "Filtra os cargos cadastrados de acordo com o Id")
     @GetMapping("/{id}")
-    public ResponseEntity<Optional<Cargo>> obterPorId(@PathVariable(value = "id") Long id) {
+    public ResponseEntity<Optional<CargoDto>> obterPorId(@PathVariable(value = "id") Long id) {
 
-        Optional<Cargo> cargo = _cargoUsuario.obterPorId(id);
+        Optional<CargoDto> cargo = _cargoUsuario.obterPorId(id);
 
         return new ResponseEntity<>(cargo, HttpStatus.OK);
     }

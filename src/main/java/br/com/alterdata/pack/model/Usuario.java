@@ -12,6 +12,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -27,6 +29,7 @@ public class Usuario implements UserDetails{
     @Column(unique = true, nullable = false)
     private String login;
 
+    @JsonIgnore
     @Column(nullable = false)
     private String senha;
 
@@ -135,37 +138,43 @@ public class Usuario implements UserDetails{
         this.equipe = equipe;
     }
   
-
+    @JsonIgnore
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return null;
     }
 
+    //@JsonIgnore
     @Override
     public String getPassword() {
         return senha;
     }
 
+    //@JsonIgnore
     @Override
     public String getUsername() {
         return login;
     }
 
+    //@JsonIgnore
     @Override
     public boolean isAccountNonExpired() {
         return true;
     }
 
+    //@JsonIgnore
     @Override
     public boolean isAccountNonLocked() {
         return true;
     }
 
+    //@JsonIgnore
     @Override
     public boolean isCredentialsNonExpired() {
         return true;
     }
 
+    //@JsonIgnore
     @Override
     public boolean isEnabled() {
         return true;

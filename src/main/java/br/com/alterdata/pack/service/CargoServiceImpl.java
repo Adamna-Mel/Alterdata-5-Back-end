@@ -31,14 +31,14 @@ public class CargoServiceImpl implements CargoService{
 	}
 
     @Override
-	public Optional<Cargo> obterPorId(Long id){
+	public Optional<CargoDto> obterPorId(Long id){
 
         Optional<Cargo> encontrado = _repositorioCargo.findByIdCargo(id);
 
-        if(!encontrado.isPresent()){
+        if (!encontrado.isPresent()){
             throw new NotFoundException("Cargo não encontrado pelo ID:" + id);
-            }
-            return encontrado;
+        }
+        return Optional.of(new ModelMapper().map(encontrado.get(), CargoDto.class));
   
     }
 
@@ -62,6 +62,13 @@ public class CargoServiceImpl implements CargoService{
 
         cargo.setIdCargo(null);
 
+        if (cargo.getCor1() == null){
+            cargo.setCor1("#000");
+        }
+        if (cargo.getCor2() == null){
+            cargo.setCor2("#fff");
+        }
+
         Cargo novoCargo = _repositorioCargo.save(cargo);
 
         return novoCargo;
@@ -71,29 +78,37 @@ public class CargoServiceImpl implements CargoService{
     @Override
     public Cargo atualizar(Long id, CargoDto cargo) {
 
+
+        Optional<Cargo> cargoAtual = _repositorioCargo.findByIdCargo(id);
+
+        if(!cargoAtual.isPresent()){
+            throw new NotFoundException("Cargo não encontrado pelo ID:" + id);
+        }
+
         ModelMapper mapper = new ModelMapper();
 
         Cargo cargoMapeado = mapper.map(cargo, Cargo.class);
 
         verificarSeCargoExiste(cargoMapeado);
 
-        Optional<Cargo> cargoAtualizado = obterPorId(id);
-
         if(cargo.getNome() != null){
-            cargoAtualizado.get().setNome(cargo.getNome());
+            cargoAtual.get().setNome(cargo.getNome());
         }
         if(cargo.getIcone() != null){
-            cargoAtualizado.get().setIcone(cargo.getIcone());
+            cargoAtual.get().setIcone(cargo.getIcone());
         }
 
-        return _repositorioCargo.save(cargoAtualizado.get());
+        return _repositorioCargo.save(cargoAtual.get());
     }
 
     @Override
     public void deletar(Long id) {
 
-        Optional<Cargo> cargo = obterPorId(id);
+        Optional<Cargo> cargo = _repositorioCargo.findByIdCargo(id);
 
+        if(!cargo.isPresent()){
+            throw new NotFoundException("Cargo não encontrado pelo ID:" + id);
+        }
         if(cargo.isPresent()){
             if(cargo.get().getIdCargo() == 1L){
                 throw new BadRequestException("Esse cargo é default e não pode ser apagado :(");
@@ -102,13 +117,13 @@ public class CargoServiceImpl implements CargoService{
 		this._repositorioCargo.deleteById(id);
 	}
 
-    @Override
-    public void verificarSeCargoExiste(Cargo cargo){
+     
+    private void verificarSeCargoExiste(Cargo cargo){
 
         Optional<Cargo> cargoExiste =_repositorioCargo.findByNome(cargo.getNome());
 
         if(cargoExiste.isPresent()){
-           throw new BadRequestException("Cargo já existe amigo :("); 
+           throw new BadRequestException("O nome do Cargo já existe amigo :("); 
         }
     }
     
