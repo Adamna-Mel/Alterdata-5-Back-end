@@ -144,37 +144,37 @@ public class Usuario implements UserDetails{
         return null;
     }
 
-    @JsonIgnore
+    //@JsonIgnore
     @Override
     public String getPassword() {
         return senha;
     }
 
-    @JsonIgnore
+    //@JsonIgnore
     @Override
     public String getUsername() {
         return login;
     }
 
-    @JsonIgnore
+    //@JsonIgnore
     @Override
     public boolean isAccountNonExpired() {
         return true;
     }
 
-    @JsonIgnore
+    //@JsonIgnore
     @Override
     public boolean isAccountNonLocked() {
         return true;
     }
 
-    @JsonIgnore
+    //@JsonIgnore
     @Override
     public boolean isCredentialsNonExpired() {
         return true;
     }
 
-    @JsonIgnore
+    //@JsonIgnore
     @Override
     public boolean isEnabled() {
         return true;

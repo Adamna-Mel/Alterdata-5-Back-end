@@ -15,6 +15,5 @@ public interface CargoService {
     Cargo adicionarCargo(Cargo cargo);
     Cargo atualizar(Long id, CargoDto cargo);
     void deletar(Long id);
-    void verificarSeCargoExiste(Cargo cargo);
     
 }

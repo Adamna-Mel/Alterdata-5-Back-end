@@ -117,8 +117,8 @@ public class CargoServiceImpl implements CargoService{
 		this._repositorioCargo.deleteById(id);
 	}
 
-    @Override
-    public void verificarSeCargoExiste(Cargo cargo){
+     
+    private void verificarSeCargoExiste(Cargo cargo){
 
         Optional<Cargo> cargoExiste =_repositorioCargo.findByNome(cargo.getNome());
 

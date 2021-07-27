@@ -1,6 +1,7 @@
 package br.com.alterdata.pack.security;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.Optional;
 
 import javax.servlet.FilterChain;
@@ -29,16 +30,17 @@ public class JWTAutheticationFilter extends OncePerRequestFilter{
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
+
                 String token = pegarToken(request);
 		
-		Optional<Long> id = jwtService.obterIdDoUsuario(token);
+				Optional<Long> id = jwtService.obterIdDoUsuario(token);
 		
 		if(id.isPresent()) {
 
 			UserDetails user = customUserDetailsService.loadUserById(id.get());
             
 			UsernamePasswordAuthenticationToken autenticacao = 
-					new UsernamePasswordAuthenticationToken(user, null);
+					new UsernamePasswordAuthenticationToken(user, null, Collections.emptyList());
 			
 			autenticacao.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 			

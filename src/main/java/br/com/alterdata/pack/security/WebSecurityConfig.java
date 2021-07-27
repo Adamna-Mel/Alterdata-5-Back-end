@@ -54,17 +54,22 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			.and()
 			.authorizeRequests()
 
-            .antMatchers("/api/**")
-			.permitAll()
+            //.antMatchers("/api/**")
+			//.permitAll()
             
-			/*
+			
 			.antMatchers(HttpMethod.POST, "/api/login")
 			.permitAll()
 
+            .antMatchers(HttpMethod.GET, "/api/usuarios")
+			.permitAll()
+
             .antMatchers(HttpMethod.POST, "/api/usuarios")
-			.permitAll()*/
-            
-			.anyRequest().authenticated();	
+			.permitAll()
+                        
+			//.anyRequest().authenticated();  //aqui vc não pode mais fz tudo
+            .anyRequest()
+            .permitAll();	
 			
 			http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 	}
