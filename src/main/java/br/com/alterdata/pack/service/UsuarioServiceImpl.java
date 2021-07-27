@@ -27,10 +27,9 @@ import br.com.alterdata.pack.shared.UsuarioDto;
 import br.com.alterdata.pack.shared.login.LoginResponse;
 
 @Service
-public class UsuarioServiceImpl implements UsuarioService{
+public class UsuarioServiceImpl implements UsuarioService {
 	private static final String headerPrefix = "Bearer ";
-    
-    
+
 	@Autowired
 	private UsuarioRepository _repositorioUsuario;
 
@@ -41,20 +40,20 @@ public class UsuarioServiceImpl implements UsuarioService{
 	private EquipeRepository _repositorioEquipe;
 
 	@Autowired
-    private JWTService jwtService;
+	private JWTService jwtService;
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
+	@Autowired
+	private AuthenticationManager authenticationManager;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 
-    @Override
+	@Override
 	public List<Usuario> obterTodos() {
 		return this._repositorioUsuario.findAll();
 	}
 
-    @Override
+	@Override
 	public Optional<Usuario> obterPorId(Long id) {
 		Optional<Usuario> encontrado = _repositorioUsuario.findById(id);
 
@@ -64,39 +63,33 @@ public class UsuarioServiceImpl implements UsuarioService{
 		return encontrado;
 	}
 
-    @Override
+	@Override
 	public List<Usuario> obterPorLogin(String login) {
-
 		List<Usuario> usuarios = _repositorioUsuario.findByLoginContaining(login.toLowerCase());
 
-			if(usuarios.size() == 0){
-				throw new NotFoundException("Nenhum usuário encontrado pelo Login: " + login);
-			}
-
+		if (usuarios.size() == 0) {
+			throw new NotFoundException("Nenhum usuário encontrado pelo Login: " + login);
+		}
 		return usuarios;
 	}
 
-    @Override
+	@Override
 	public Usuario adicionar(UsuarioDto usuario) {
-
 		ModelMapper mapper = new ModelMapper();
 
 		Usuario novoUsuario = mapper.map(usuario, Usuario.class);
 		novoUsuario.setId(null);
 
 		String senha = passwordEncoder.encode(novoUsuario.getSenha());
-        novoUsuario.setSenha(senha);
+		novoUsuario.setSenha(senha);
 
 		validarCampos(novoUsuario);
-
 		Optional<Usuario> usuarioProcurado = this._repositorioUsuario.findByLogin(novoUsuario.getLogin());
 
 		if (usuarioProcurado.isPresent()) {
 			throw new BadRequestException("Usuário já existe com o Login: " + usuario.getLogin());
 		}
-
 		Usuario adicionado = this._repositorioUsuario.save(novoUsuario);
-
 		adicionarCargo(1L, adicionado.getId());
 
 		adicionarEquipe(adicionado.getId(), 1L);
@@ -104,56 +97,46 @@ public class UsuarioServiceImpl implements UsuarioService{
 		return adicionado;
 	}
 
-    @Override
+	@Override
 	public Usuario atualizar(Long id, UsuarioDto usuario) {
-
 		Optional<Usuario> usuarioAntigo = obterPorId(id);
 
-		if(usuario.getLogin().equals(usuarioAntigo.get().getLogin()) || usuario.getLogin().equals("")){
-
+		if (usuario.getLogin().equals(usuarioAntigo.get().getLogin()) || usuario.getLogin().equals("")) {
 		}
-
 		ModelMapper mapper = new ModelMapper();
 
 		Usuario usuarioAtualizado = mapper.map(usuario, Usuario.class);
-
 		usuarioAtualizado.setEquipe(usuarioAntigo.get().getEquipe());
 
 		usuarioAtualizado.setCargo(usuarioAntigo.get().getCargo());
-
 		validarCampos(usuarioAtualizado);
 
 		usuarioAtualizado.setId(id);
-	
 		Optional<Usuario> usuarioProcurado = this._repositorioUsuario.findByLogin(usuarioAtualizado.getLogin());
 
-		if(usuarioProcurado.isPresent()){
+		if (usuarioProcurado.isPresent()) {
 
-			if (!usuarioProcurado.get().getId().equals(id)){
+			if (!usuarioProcurado.get().getId().equals(id)) {
 				throw new BadRequestException("Usuário já existe com o Login: " + usuarioAtualizado.getLogin());
 			}
 		}
-
 		Usuario usuarioSalvo = this._repositorioUsuario.save(usuarioAtualizado);
 
 		return usuarioSalvo;
 	}
 
-    @Override
+	@Override
 	public void deletar(Long id) {
-
 		Optional<Usuario> usuario = obterPorId(id);
 
 		if (!usuario.isPresent()) {
-            throw new NotFoundException("Não existe equipe com o id informado: " + id);
-        }
-
+			throw new NotFoundException("Não existe equipe com o id informado: " + id);
+		}
 		this._repositorioUsuario.deleteById(id);
 	}
 
-    @Override
+	@Override
 	public Usuario editar(Long id, UsuarioDto usuario) {
-
 		Optional<Usuario> usuarioExistente = obterPorId(id);
 
 		if (usuario.getStatus() != null)
@@ -167,9 +150,8 @@ public class UsuarioServiceImpl implements UsuarioService{
 		return usuarioSalvo;
 	}
 
-    @Override
-	public Usuario adicionarCargo(Long idCargo, Long idUsuario){
-
+	@Override
+	public Usuario adicionarCargo(Long idCargo, Long idUsuario) {
 		Optional<Cargo> cargo = _cargoRepository.findById(idCargo);
 
 		Optional<Usuario> usuario = obterPorId(idUsuario);
@@ -179,17 +161,16 @@ public class UsuarioServiceImpl implements UsuarioService{
 
 			return _repositorioUsuario.save(usuario.get());
 		}
-		
 		throw new NotFoundException("Cargo não encontrado pelo ID: " + idCargo + " :(");
 	}
 
-    @Override
-	public Usuario adicionarEquipe(Long idUsuario, Long idEquipe){
+	@Override
+	public Usuario adicionarEquipe(Long idUsuario, Long idEquipe) {
 		Optional<Equipe> equipe = _repositorioEquipe.findById(idEquipe);
 
 		Optional<Usuario> usuario = obterPorId(idUsuario);
 
-		if(equipe.isPresent()) {
+		if (equipe.isPresent()) {
 			usuario.get().setEquipe(equipe.get());
 
 			return _repositorioUsuario.save(usuario.get());
@@ -197,29 +178,25 @@ public class UsuarioServiceImpl implements UsuarioService{
 		throw new NotFoundException("Equipe não encontrado pelo ID: " + idEquipe + " :(");
 	}
 
-    @Override
-	public LoginResponse logar(String login, String senha){
-				try{
-						Authentication autenticacao = authenticationManager.authenticate(
-						
-						new UsernamePasswordAuthenticationToken(login, senha, Collections.emptyList()));
-						
-						SecurityContextHolder.getContext().setAuthentication(autenticacao);
+	@Override
+	public LoginResponse logar(String login, String senha) {
 
-						String token = headerPrefix + jwtService.gerarToken(autenticacao);
+		try {
+			Authentication autenticacao = authenticationManager.authenticate(
+				new UsernamePasswordAuthenticationToken(login, senha, Collections.emptyList()));
 
-						Optional<Usuario> usuario = _repositorioUsuario.findByLogin(login);
+			SecurityContextHolder.getContext().setAuthentication(autenticacao);
+			String token = headerPrefix + jwtService.gerarToken(autenticacao);
 
-						return new LoginResponse(usuario.get(), token);
+			Optional<Usuario> usuario = _repositorioUsuario.findByLogin(login);
+			return new LoginResponse(usuario.get(), token);
 
-				} catch(Exception e){
-
-						throw new UnauthorizedException("Credenciais inválidas :(");
-
-				}
+		} catch (Exception e) {
+			throw new UnauthorizedException("Credenciais inválidas :(");
 		}
+	}
 
-	private void validarCampos(Usuario usuario){
+	private void validarCampos(Usuario usuario) {
 		if (usuario.getLogin() == null || usuario.getLogin().equals(""))
 			throw new BadRequestException("Login não pode ser nulo!");
 

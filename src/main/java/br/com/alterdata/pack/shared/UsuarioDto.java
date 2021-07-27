@@ -11,7 +11,13 @@ public class UsuarioDto {
    
     public UsuarioDto() {}
 
-    public UsuarioDto(String login, String senha, String avatar, String nome, String status) {
+    public UsuarioDto(
+        String login, 
+        String senha, 
+        String avatar, 
+        String nome, 
+        String status) {
+            
         this.login = login;
         this.senha = senha;
         this.avatar = avatar;

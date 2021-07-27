@@ -74,7 +74,6 @@ public class EquipeServiceImpl implements EquipeService{
         if(!encontrado.isPresent()) {
             throw new NotFoundException("Não foi encontrado equipe com o ID: " + id);
         }
-
         equipe.setIdEquipe(id);
 
         if(equipe.getNome() == "" || equipe.getNome() == null){
@@ -86,7 +85,6 @@ public class EquipeServiceImpl implements EquipeService{
 
     @Override
     public void deletar(Long id) {
-
         Optional<Equipe> encontrado = _repositorioEquipe.findByIdEquipe(id);
 
         if(encontrado.isPresent()){
@@ -99,8 +97,6 @@ public class EquipeServiceImpl implements EquipeService{
         }
         this._repositorioEquipe.deleteById(id);
     }
-
-    
 
     private void verificarSeEquipeExiste(Equipe equipe) {
         Optional<Equipe> equipeExiste = _repositorioEquipe.findByNome(equipe.getNome());
