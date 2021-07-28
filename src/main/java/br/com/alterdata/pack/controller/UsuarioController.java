@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -27,6 +28,7 @@ import br.com.alterdata.pack.service.UsuarioService;
 import br.com.alterdata.pack.shared.UsuarioDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.SecurityDefinition;
 
 @CrossOrigin("*")
 @Api("API PACK - Sistema de Status e Cargos")
@@ -36,8 +38,8 @@ public class UsuarioController {
 
     @Autowired
     UsuarioService _servicoUsuario;
-
-    @ApiOperation(value = "Retorna todos os usuários cadastradas")
+    
+    //@ApiOperation(value = "Retorna todos os usuários cadastrados")
     @GetMapping
     public ResponseEntity<Page<Usuario>> obterTodos(@PageableDefault(page=0, size=4) Pageable pageable) {
         if(_servicoUsuario.obterTodos(pageable).isEmpty()){
@@ -61,8 +63,9 @@ public class UsuarioController {
 
     @ApiOperation(value = "Cadastra um novo usuário")
     @PostMapping
-    public ResponseEntity<Usuario> adicionar(@RequestBody UsuarioDto usuario) {
-        Usuario novoUsuario = _servicoUsuario.adicionar(usuario);
+    //@ResponseBody
+    public ResponseEntity<Usuario> adicionar(@RequestPart UsuarioDto usuario, @RequestParam("img") MultipartFile arquivo) {
+        Usuario novoUsuario = _servicoUsuario.adicionar(usuario, arquivo);
         return new ResponseEntity<>(novoUsuario, HttpStatus.CREATED);
     }
 
@@ -80,11 +83,19 @@ public class UsuarioController {
     }
 
     @ApiOperation(value = "Atualiza status de usuário de acordo com o id")
-    @PatchMapping("{id}")
-    public ResponseEntity<Usuario> editar(@PathVariable(value = "id") Long id, @RequestBody UsuarioDto usuario) {
-        Usuario usuarioNovoStatus = _servicoUsuario.editar(id, usuario);
+    @PatchMapping("status/{id}")
+    public ResponseEntity<Usuario> editarStatus(@PathVariable(value = "id") Long id, @RequestBody UsuarioDto usuario) {
+        Usuario usuarioNovoStatus = _servicoUsuario.editarStatus(id, usuario);
         return new ResponseEntity<>(usuarioNovoStatus, HttpStatus.OK);
     }
+
+    @ApiOperation(value = "Alterar avatar")
+    @PatchMapping("alterar-avatar/{id}")
+    public ResponseEntity<Usuario> editarAvatar(@PathVariable(value = "id") Long id, @RequestParam("img") MultipartFile arquivo) {
+        Usuario usuarioNovoStatus = _servicoUsuario.editarAvatar(id, arquivo);
+        return new ResponseEntity<>(usuarioNovoStatus, HttpStatus.OK);
+    }
+
 
     @ApiOperation(value = "Adiciona um cargo no usuario")
     @PatchMapping("{idUsuario}/cargo/{idCargo}")

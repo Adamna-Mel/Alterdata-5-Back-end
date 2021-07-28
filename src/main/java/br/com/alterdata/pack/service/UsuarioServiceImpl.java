@@ -37,6 +37,7 @@ import br.com.alterdata.pack.shared.login.LoginResponse;
 public class UsuarioServiceImpl implements UsuarioService {
 	private static final String headerPrefix = "Bearer ";
     
+	public static String uploadDirectory=System.getProperty("user.dir") + "/src/main/java/br/com/alterdata/pack/images";
     
 	@Autowired
 	private UsuarioRepository _repositorioUsuario;
@@ -82,14 +83,27 @@ public class UsuarioServiceImpl implements UsuarioService {
 	}
 
     @Override
-	public Usuario adicionar(UsuarioDto usuario) {
+	public Usuario adicionar(UsuarioDto usuario, MultipartFile arquivo) {
+
+		StringBuilder filenames = new StringBuilder();
+
+		String fileName = arquivo.getOriginalFilename().substring(arquivo.getOriginalFilename().length() - 10);
+		Path fileNamePath = Paths.get(uploadDirectory, fileName);
+
+		try {
+			Files.write(fileNamePath, arquivo.getBytes());
+		} catch (IOException e) {
+			e.printStackTrace();;
+		}
+
+		usuario.setAvatarName(fileName);
 
 		ModelMapper mapper = new ModelMapper();
 
 		Usuario novoUsuario = mapper.map(usuario, Usuario.class);
 		novoUsuario.setId(null);
 
-		String senha = passwordEncoder.encode(novoUsuario.getSenha());
+		String senha = passwordEncoder.encode(usuario.getSenha());
 		novoUsuario.setSenha(senha);
 
 		validarCampos(novoUsuario);
@@ -99,6 +113,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 			throw new BadRequestException("Usuário já existe com o Login: " + usuario.getLogin());
 		}
 
+		
 		Usuario adicionado = this._repositorioUsuario.save(novoUsuario);
 		adicionarCargo(1L, adicionado.getId());
 
@@ -146,18 +161,38 @@ public class UsuarioServiceImpl implements UsuarioService {
 	}
 
 	@Override
-	public Usuario editar(Long id, UsuarioDto usuario) {
+	public Usuario editarStatus(Long id, UsuarioDto usuario) {
 		Optional<Usuario> usuarioExistente = obterPorId(id);
 
 		if (usuario.getStatus() != null)
 			usuarioExistente.get().setStatus(usuario.getStatus());
 
-		if (usuario.getAvatar() != null)
-			usuarioExistente.get().setAvatar(usuario.getAvatar());
+		if (usuario.getAvatarName() != null)
+			usuarioExistente.get().setAvatarName(usuario.getAvatarName());
 
 		Usuario usuarioSalvo = this._repositorioUsuario.save(usuarioExistente.get());
 
 		return usuarioSalvo;
+	}
+
+	public Usuario editarAvatar(Long id, MultipartFile arquivo){
+
+		StringBuilder filenames = new StringBuilder();
+
+		Optional<Usuario> usuario = obterPorId(id);  
+
+		String fileName = arquivo.getOriginalFilename().substring(arquivo.getOriginalFilename().length() - 10);
+		Path fileNamePath = Paths.get(uploadDirectory, fileName);
+
+		try {
+			Files.write(fileNamePath, arquivo.getBytes());
+		} catch (IOException e) {
+			e.printStackTrace();;
+		}
+
+		usuario.get().setAvatarName(fileName);
+
+		return usuario.get();
 	}
 
 	@Override

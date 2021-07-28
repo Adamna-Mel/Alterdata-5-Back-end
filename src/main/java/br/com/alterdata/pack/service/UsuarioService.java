@@ -17,10 +17,11 @@ public interface UsuarioService {
 	Page<Usuario> obterTodos(Pageable pageable); 
 	Optional<Usuario> obterPorId(Long id);
 	List<Usuario> obterPorLogin(String login);
-	Usuario adicionar(UsuarioDto usuario);
+	Usuario adicionar(UsuarioDto usuario, MultipartFile arquivo);
 	Usuario atualizar(Long id, UsuarioDto usuario);
 	void deletar(Long id);
-	Usuario editar(Long id, UsuarioDto usuario);
+	Usuario editarStatus(Long id, UsuarioDto usuario);
+	Usuario editarAvatar(Long id, MultipartFile arquivo);
 	Usuario adicionarCargo(Long idCargo, Long idUsuario);
 	Usuario adicionarEquipe(Long idUsuario, Long idEquipe);
 	LoginResponse logar(String login, String senha);

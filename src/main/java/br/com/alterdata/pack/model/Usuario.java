@@ -37,7 +37,7 @@ public class Usuario implements UserDetails{
     private String senha;
 
     @Column(nullable = true)
-    private String avatar;
+    private String avatarName;
 
     @Column(nullable = false)
     private String nome;
@@ -53,42 +53,31 @@ public class Usuario implements UserDetails{
     @JoinColumn(name = "equipe_id")
     private Equipe equipe;
 
-    private String nomeImagem;
-
-
     public Usuario() {}
     
-    public Usuario(String email, String login, String senha, String avatar, String nome, String status, Cargo cargo, Equipe equipe){  
+    public Usuario(String email, String login, String senha, String avatarName, String nome, String status, Cargo cargo, Equipe equipe){  
 
         this.email = email;
         this.login = login;
         this.senha = senha;
-        this.avatar = avatar;
+        this.avatarName = avatarName;
         this.nome = nome;
         this.status = status;
         this.cargo = cargo;
         this.equipe = equipe;
     }
 
-    public Usuario(Long id, String email, String login, String senha, String avatar, String nome, String status, Cargo cargo, Equipe equipe) {
+    public Usuario(Long id, String email, String login, String senha, String avatarName, String nome, String status, Cargo cargo, Equipe equipe) {
             
         this.id = id;
         this.email = email;
         this.login = login;
         this.senha = senha;
-        this.avatar = avatar;
+        this.avatarName = avatarName;
         this.nome = nome;
         this.status = status;
         this.cargo = cargo;
         this.equipe = equipe;
-    }
-
-    public String getNomeImagem() {
-        return nomeImagem;
-    }
-
-    public void setNomeImagem(String nomeImagem) {
-        this.nomeImagem = nomeImagem;
     }
 
     public Long getId() {
@@ -123,12 +112,12 @@ public class Usuario implements UserDetails{
         this.senha = senha;
     }
 
-    public String getAvatar() {
-        return avatar;
+    public String getAvatarName() {
+        return avatarName;
     }
 
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
+    public void setAvatarName(String avatarName) {
+        this.avatarName = avatarName;
     }
 
     public String getNome() {

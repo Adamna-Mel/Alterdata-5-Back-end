@@ -6,29 +6,28 @@ public class UsuarioDto {
     private String email;
     private String login;
     private String senha;
-    private String avatar;
+    private String avatarName;
     private String nome;
     private String status;
-   private String nomaImagem;
 
-    public UsuarioDto() {}
+    // public UsuarioDto() {}
 
-    public UsuarioDto(String email,String login, String senha, String avatar, String nome, String status) {
+    // public UsuarioDto(String email,String login, String senha, String avatarName, String nome, String status) {
 
-        this.email = email;   
-        this.login = login;
-        this.senha = senha;
-        this.avatar = avatar;
-        this.nome = nome;
-        this.status = status;
+    //     this.email = email;   
+    //     this.login = login;
+    //     this.senha = senha;
+    //     this.avatarName = avatarName;
+    //     this.nome = nome;
+    //     this.status = status;
+    // }
+
+    public String getEmail() {
+        return email;
     }
 
-    public String getNomaImagem() {
-        return nomaImagem;
-    }
-
-    public void setNomaImagem(String nomaImagem) {
-        this.nomaImagem = nomaImagem;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getLogin() {
@@ -47,12 +46,12 @@ public class UsuarioDto {
         this.senha = senha;
     }
 
-    public String getAvatar() {
-        return avatar;
+    public String getAvatarName() {
+        return avatarName;
     }
 
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
+    public void setAvatarName(String avatarName) {
+        this.avatarName = avatarName;
     }
 
     public String getNome() {
