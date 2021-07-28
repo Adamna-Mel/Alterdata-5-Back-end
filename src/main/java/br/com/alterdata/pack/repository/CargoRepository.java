@@ -10,8 +10,6 @@ import br.com.alterdata.pack.model.Cargo;
 public interface CargoRepository extends JpaRepository<Cargo, Long>{
 
     Optional<Cargo> findByIdCargo(Long id);
-
     Optional<Cargo> findByNome(String nome);
-
     List<Cargo> findByNomeContainingIgnoreCase(String nome);
 }

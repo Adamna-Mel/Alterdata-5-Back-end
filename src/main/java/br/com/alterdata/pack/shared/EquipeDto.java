@@ -19,12 +19,7 @@ public class EquipeDto {
         this.nome = nome;
     }
 
-    public EquipeDto(
-        String nome, 
-        String icone, 
-        String cor1, 
-        String cor2, 
-        List<Usuario> membros) {
+    public EquipeDto(String nome, String icone, String cor1, String cor2, List<Usuario> membros) {
         
         this.nome = nome;
         this.icone = icone;

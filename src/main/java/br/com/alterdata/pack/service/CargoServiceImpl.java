@@ -50,6 +50,7 @@ public class CargoServiceImpl implements CargoService{
 
     @Override
     public Cargo adicionarCargo(Cargo cargo){
+        
         verificarSeCargoExiste(cargo);
 
         cargo.setIdCargo(null);

@@ -55,15 +55,7 @@ public class Usuario implements UserDetails{
 
     public Usuario() {}
     
-    public Usuario(
-        String email, 
-        String login, 
-        String senha, 
-        String avatar, 
-        String nome, 
-        String status, 
-        Cargo cargo, 
-        Equipe equipe){  
+    public Usuario(String email, String login, String senha, String avatar, String nome, String status, Cargo cargo, Equipe equipe){  
 
         this.email = email;
         this.login = login;
@@ -75,16 +67,7 @@ public class Usuario implements UserDetails{
         this.equipe = equipe;
     }
 
-    public Usuario(
-        Long id, 
-        String email, 
-        String login, 
-        String senha, 
-        String avatar, 
-        String nome, 
-        String status, 
-        Cargo cargo,
-        Equipe equipe) {
+    public Usuario(Long id, String email, String login, String senha, String avatar, String nome, String status, Cargo cargo, Equipe equipe) {
             
         this.id = id;
         this.email = email;
@@ -96,7 +79,7 @@ public class Usuario implements UserDetails{
         this.cargo = cargo;
         this.equipe = equipe;
     }
-
+    
     public Long getId() {
         return id;
     }

@@ -38,23 +38,19 @@ public class Cargo {
     public Cargo() {}
 
     public Cargo(String nome, String icone) {
+        
         this.nome = nome;
         this.icone = icone;
     }
 
     public Cargo(Long idCargo, String nome, String icone) {
+
         this.idCargo = idCargo;
         this.nome = nome;
         this.icone = icone;
     }
 
-    public Cargo(
-        Long idCargo, 
-        String nome, 
-        String icone, 
-        String cor1, 
-        String cor2, 
-        List<Usuario> usuarios) {
+    public Cargo(Long idCargo, String nome, String icone, String cor1, String cor2, List<Usuario> usuarios) {
 
         this.idCargo = idCargo;
         this.nome = nome;

@@ -6,6 +6,8 @@ import java.util.Collections;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -49,8 +51,8 @@ public class UsuarioServiceImpl implements UsuarioService {
 	private PasswordEncoder passwordEncoder;
 
 	@Override
-	public List<Usuario> obterTodos() {
-		return this._repositorioUsuario.findAll();
+	public Page<Usuario> obterTodos(Pageable pageable) {
+		return  this._repositorioUsuario.findAll(pageable);
 	}
 
 	@Override

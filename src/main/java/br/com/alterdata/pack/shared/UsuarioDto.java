@@ -12,13 +12,7 @@ public class UsuarioDto {
    
     public UsuarioDto() {}
 
-    public UsuarioDto(
-        String email,
-        String login, 
-        String senha, 
-        String avatar, 
-        String nome, 
-        String status) {
+    public UsuarioDto(String email,String login, String senha, String avatar, String nome, String status) {
 
         this.email = email;   
         this.login = login;

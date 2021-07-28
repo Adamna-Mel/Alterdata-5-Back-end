@@ -20,12 +20,7 @@ public class CargoDto {
         this.icone = icone;
     }
     
-    public CargoDto(
-        String nome, 
-        String icone, 
-        String cor1, 
-        String cor2, 
-        List<Usuario> usuarios) {
+    public CargoDto(String nome, String icone, String cor1, String cor2, List<Usuario> usuarios) {
             
         this.nome = nome;
         this.icone = icone;
