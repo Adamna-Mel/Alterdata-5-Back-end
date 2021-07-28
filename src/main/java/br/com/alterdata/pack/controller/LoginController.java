@@ -27,8 +27,6 @@ public class LoginController {
     @ApiOperation("Fazer Login")
     @PostMapping
     public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request) throws Exception {
-       
         return new ResponseEntity<>(_usuarioService.logar(request.getLogin(), request.getSenha()), HttpStatus.OK);
-
     }
 }
