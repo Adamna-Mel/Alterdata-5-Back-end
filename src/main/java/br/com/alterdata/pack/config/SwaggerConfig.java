@@ -20,8 +20,12 @@ public class SwaggerConfig {
 
 	@Bean
 	public Docket swagger() {
-		return new Docket(DocumentationType.SWAGGER_2).select().apis(RequestHandlerSelectors.any()).paths(regex("/api.*"))
-				.build().apiInfo(info());
+		return new Docket(DocumentationType.SWAGGER_2)
+			.select()
+			.apis(RequestHandlerSelectors
+			.any())
+			.paths(regex("/api.*"))
+			.build().apiInfo(info());
 
 	}
 

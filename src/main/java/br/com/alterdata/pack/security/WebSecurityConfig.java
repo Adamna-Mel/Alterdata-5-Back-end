@@ -56,8 +56,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
             //.antMatchers("/api/**")
 			//.permitAll()
-            
-			
+            		
 			.antMatchers(HttpMethod.POST, "/api/login")
 			.permitAll()
 
@@ -66,6 +65,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
             .antMatchers(HttpMethod.POST, "/api/usuarios")
 			.permitAll()
+
+            .antMatchers("/swagger-ui.html#/")
+			.permitAll()
+
+           
                         
 			//.anyRequest().authenticated();  //aqui vc não pode mais fz tudo
             .anyRequest()

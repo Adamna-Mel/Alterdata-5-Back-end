@@ -3,6 +3,8 @@ package br.com.alterdata.pack.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import br.com.alterdata.pack.model.Usuario;
 import br.com.alterdata.pack.shared.UsuarioDto;
 import br.com.alterdata.pack.shared.login.LoginResponse;
@@ -12,7 +14,7 @@ public interface UsuarioService {
 	List<Usuario> obterTodos(); 
 	Optional<Usuario> obterPorId(Long id);
 	List<Usuario> obterPorLogin(String login);
-	Usuario adicionar(UsuarioDto usuario);
+	Usuario adicionar(UsuarioDto usuario, MultipartFile arquivo);
 	Usuario atualizar(Long id, UsuarioDto usuario);
 	void deletar(Long id);
 	Usuario editar(Long id, UsuarioDto usuario);

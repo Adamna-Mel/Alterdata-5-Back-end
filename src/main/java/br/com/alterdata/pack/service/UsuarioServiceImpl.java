@@ -2,6 +2,10 @@ package br.com.alterdata.pack.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Collections;
 
 import org.modelmapper.ModelMapper;
@@ -12,6 +16,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import br.com.alterdata.pack.exception.BadRequestException;
 import br.com.alterdata.pack.exception.UnauthorizedException;
@@ -30,6 +35,7 @@ import br.com.alterdata.pack.shared.login.LoginResponse;
 public class UsuarioServiceImpl implements UsuarioService{
 	private static final String headerPrefix = "Bearer ";
     
+	private static String caminhoImagem = "F:/dev/SERRATEC/projetoFinal/back/Alterdata-5-Back-end/src/main/java/br/com/alterdata/pack/image/";
     
 	@Autowired
 	private UsuarioRepository _repositorioUsuario;
@@ -77,7 +83,7 @@ public class UsuarioServiceImpl implements UsuarioService{
 	}
 
     @Override
-	public Usuario adicionar(UsuarioDto usuario) {
+	public Usuario adicionar(UsuarioDto usuario, MultipartFile arquivo) {
 
 		ModelMapper mapper = new ModelMapper();
 
@@ -93,6 +99,19 @@ public class UsuarioServiceImpl implements UsuarioService{
 
 		if (usuarioProcurado.isPresent()) {
 			throw new BadRequestException("Usuário já existe com o Login: " + usuario.getLogin());
+		}
+
+		try {
+			if(!arquivo.equals(null)){
+
+				byte[] bytes = arquivo.getBytes();
+				Path caminho = Paths.get(caminhoImagem + String.valueOf(novoUsuario.getId())  + arquivo.getOriginalFilename());
+				Files.write(caminho, bytes);
+
+				novoUsuario.setNomeImagem(String.valueOf(novoUsuario.getId())  + arquivo.getOriginalFilename());
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 
 		Usuario adicionado = this._repositorioUsuario.save(novoUsuario);

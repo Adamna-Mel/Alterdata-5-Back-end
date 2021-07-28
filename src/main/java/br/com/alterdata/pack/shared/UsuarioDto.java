@@ -8,7 +8,8 @@ public class UsuarioDto {
     private String avatar;
     private String nome;
     private String status;
-   
+   private String nomaImagem;
+
     public UsuarioDto() {}
 
     public UsuarioDto(String login, String senha, String avatar, String nome, String status) {
@@ -17,6 +18,14 @@ public class UsuarioDto {
         this.avatar = avatar;
         this.nome = nome;
         this.status = status;
+    }
+
+    public String getNomaImagem() {
+        return nomaImagem;
+    }
+
+    public void setNomaImagem(String nomaImagem) {
+        this.nomaImagem = nomaImagem;
     }
 
     public String getLogin() {

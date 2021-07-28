@@ -50,6 +50,9 @@ public class Usuario implements UserDetails{
     @JoinColumn(name = "equipe_id")
     private Equipe equipe;
 
+    private String nomeImagem;
+
+
     public Usuario() {}
     
     public Usuario(String login, String senha, String avatar, String nome, String status, Cargo cargo, Equipe equipe) {
@@ -72,6 +75,14 @@ public class Usuario implements UserDetails{
         this.status = status;
         this.cargo = cargo;
         this.equipe = equipe;
+    }
+
+    public String getNomeImagem() {
+        return nomeImagem;
+    }
+
+    public void setNomeImagem(String nomeImagem) {
+        this.nomeImagem = nomeImagem;
     }
 
     public Long getId() {
