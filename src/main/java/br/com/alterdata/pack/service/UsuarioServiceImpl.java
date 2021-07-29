@@ -85,7 +85,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Override
 	public Usuario adicionar(UsuarioDto usuario, MultipartFile arquivo) {
 
-		StringBuilder filenames = new StringBuilder();
+		//StringBuilder filenames = new StringBuilder();
 
 		String fileName = arquivo.getOriginalFilename().substring(arquivo.getOriginalFilename().length() - 10);
 		Path fileNamePath = Paths.get(uploadDirectory, fileName);
@@ -177,7 +177,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 
 	public Usuario editarAvatar(Long id, MultipartFile arquivo){
 
-		StringBuilder filenames = new StringBuilder();
+		//StringBuilder filenames = new StringBuilder();
 
 		Optional<Usuario> usuario = obterPorId(id);  
 
