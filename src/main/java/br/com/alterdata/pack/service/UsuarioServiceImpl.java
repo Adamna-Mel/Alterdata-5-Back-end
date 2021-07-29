@@ -99,7 +99,7 @@ public class UsuarioServiceImpl implements UsuarioService{
 
 		adicionarCargo(1L, adicionado.getId());
 
-		adicionarEquipe(adicionado.getId(), 1L);
+		//adicionarEquipe(adicionado.getId(), 1L);
 
 		return adicionado;
 	}
