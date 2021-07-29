@@ -3,12 +3,14 @@ package br.com.alterdata.pack.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Pageable;
+
 import br.com.alterdata.pack.model.Equipe;
 import br.com.alterdata.pack.shared.EquipeDto;
 
 public interface EquipeService {
 
-    List<EquipeDto> obterTodos();
+    List<EquipeDto> obterTodos(Pageable pageable);
     Optional<EquipeDto> obterPorId(Long id);
     List<Equipe> obterPorNome(String nome);
     Equipe criarEquipe(Equipe equipe);
