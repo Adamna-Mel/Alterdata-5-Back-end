@@ -85,9 +85,13 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Override
 	public Usuario adicionar(UsuarioDto usuario, MultipartFile arquivo) {
 
-		//StringBuilder filenames = new StringBuilder();
+		ModelMapper mapper = new ModelMapper();
 
-		String fileName = arquivo.getOriginalFilename().substring(arquivo.getOriginalFilename().length() - 10);
+		Usuario novoUsuario = mapper.map(usuario, Usuario.class);
+
+		StringBuilder filenames = new StringBuilder();
+
+		String fileName = novoUsuario.getLogin() + arquivo.getOriginalFilename();
 		Path fileNamePath = Paths.get(uploadDirectory, fileName);
 
 		try {
@@ -96,12 +100,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 			e.printStackTrace();;
 		}
 
-		usuario.setAvatarName(fileName);
-
-		ModelMapper mapper = new ModelMapper();
-
-		Usuario novoUsuario = mapper.map(usuario, Usuario.class);
-		novoUsuario.setId(null);
+		novoUsuario.setAvatarName(fileName);
 
 		String senha = passwordEncoder.encode(usuario.getSenha());
 		novoUsuario.setSenha(senha);
@@ -181,7 +180,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 
 		Optional<Usuario> usuario = obterPorId(id);  
 
-		String fileName = arquivo.getOriginalFilename().substring(arquivo.getOriginalFilename().length() - 10);
+		String fileName = usuario.get().getLogin() + arquivo.getOriginalFilename().substring(arquivo.getOriginalFilename().length() - 10);
 		Path fileNamePath = Paths.get(uploadDirectory, fileName);
 
 		try {

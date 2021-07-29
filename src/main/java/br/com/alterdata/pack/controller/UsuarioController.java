@@ -64,7 +64,7 @@ public class UsuarioController {
     @ApiOperation(value = "Cadastra um novo usuário")
     @PostMapping
     //@ResponseBody
-    public ResponseEntity<Usuario> adicionar(@RequestPart UsuarioDto usuario, @RequestParam("img") MultipartFile arquivo) {
+    public ResponseEntity<Usuario> adicionar(UsuarioDto usuario, @RequestParam("img") MultipartFile arquivo) {
         Usuario novoUsuario = _servicoUsuario.adicionar(usuario, arquivo);
         return new ResponseEntity<>(novoUsuario, HttpStatus.CREATED);
     }
@@ -95,7 +95,6 @@ public class UsuarioController {
         Usuario usuarioNovoStatus = _servicoUsuario.editarAvatar(id, arquivo);
         return new ResponseEntity<>(usuarioNovoStatus, HttpStatus.OK);
     }
-
 
     @ApiOperation(value = "Adiciona um cargo no usuario")
     @PatchMapping("{idUsuario}/cargo/{idCargo}")
