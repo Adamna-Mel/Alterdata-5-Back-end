@@ -14,7 +14,5 @@ public interface CargoService {
     List<Cargo> obterPorNome(String nome);
     Cargo adicionarCargo(Cargo cargo);
     Cargo atualizar(Long id, CargoDto cargo);
-    void deletar(Long id);
-    void verificarSeCargoExiste(Cargo cargo);
-    
+    void deletar(Long id);   
 }

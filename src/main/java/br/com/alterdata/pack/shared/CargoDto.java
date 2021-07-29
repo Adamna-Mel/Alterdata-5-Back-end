@@ -21,6 +21,7 @@ public class CargoDto {
     }
     
     public CargoDto(String nome, String icone, String cor1, String cor2, List<Usuario> usuarios) {
+            
         this.nome = nome;
         this.icone = icone;
         this.cor1 = cor1;

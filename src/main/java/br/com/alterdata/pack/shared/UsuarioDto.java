@@ -3,6 +3,7 @@ package br.com.alterdata.pack.shared;
 
 public class UsuarioDto {
 
+    private String email;
     private String login;
     private String senha;
     private String avatar;
@@ -11,12 +12,22 @@ public class UsuarioDto {
    
     public UsuarioDto() {}
 
-    public UsuarioDto(String login, String senha, String avatar, String nome, String status) {
+    public UsuarioDto(String email,String login, String senha, String avatar, String nome, String status) {
+
+        this.email = email;   
         this.login = login;
         this.senha = senha;
         this.avatar = avatar;
         this.nome = nome;
         this.status = status;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getLogin() {

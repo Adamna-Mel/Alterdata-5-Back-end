@@ -26,6 +26,9 @@ public class Usuario implements UserDetails{
     @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "generator_usuario")
     private Long id;
 
+    @Column(nullable = false)
+    private String email;
+
     @Column(unique = true, nullable = false)
     private String login;
 
@@ -52,7 +55,9 @@ public class Usuario implements UserDetails{
 
     public Usuario() {}
     
-    public Usuario(String login, String senha, String avatar, String nome, String status, Cargo cargo, Equipe equipe) {
+    public Usuario(String email, String login, String senha, String avatar, String nome, String status, Cargo cargo, Equipe equipe){  
+
+        this.email = email;
         this.login = login;
         this.senha = senha;
         this.avatar = avatar;
@@ -62,9 +67,10 @@ public class Usuario implements UserDetails{
         this.equipe = equipe;
     }
 
-    public Usuario(Long id, String login, String senha, String avatar, String nome, String status, Cargo cargo,
-            Equipe equipe) {
+    public Usuario(Long id, String email, String login, String senha, String avatar, String nome, String status, Cargo cargo, Equipe equipe) {
+            
         this.id = id;
+        this.email = email;
         this.login = login;
         this.senha = senha;
         this.avatar = avatar;
@@ -73,13 +79,21 @@ public class Usuario implements UserDetails{
         this.cargo = cargo;
         this.equipe = equipe;
     }
-
+    
     public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getEmail(){
+        return email;
+    }
+
+    public void setEmail(String email){
+        this.email = email;
     }
 
     public String getLogin() {
@@ -144,37 +158,37 @@ public class Usuario implements UserDetails{
         return null;
     }
 
-    @JsonIgnore
+    //@JsonIgnore
     @Override
     public String getPassword() {
         return senha;
     }
 
-    @JsonIgnore
+    //@JsonIgnore
     @Override
     public String getUsername() {
         return login;
     }
 
-    @JsonIgnore
+    //@JsonIgnore
     @Override
     public boolean isAccountNonExpired() {
         return true;
     }
 
-    @JsonIgnore
+    //@JsonIgnore
     @Override
     public boolean isAccountNonLocked() {
         return true;
     }
 
-    @JsonIgnore
+    //@JsonIgnore
     @Override
     public boolean isCredentialsNonExpired() {
         return true;
     }
 
-    @JsonIgnore
+    //@JsonIgnore
     @Override
     public boolean isEnabled() {
         return true;

@@ -3,7 +3,6 @@ package br.com.alterdata.pack.shared.login;
 public class LoginRequest {
         
     private String login;
-	
 	private String senha;
 
 	public String getLogin() {

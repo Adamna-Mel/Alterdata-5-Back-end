@@ -37,9 +37,7 @@ public class CargoController {
     @ApiOperation(value = "Filtra os cargos cadastrados de acordo com o Id")
     @GetMapping("/{id}")
     public ResponseEntity<Optional<CargoDto>> obterPorId(@PathVariable(value = "id") Long id) {
-
         Optional<CargoDto> cargo = _cargoUsuario.obterPorId(id);
-
         return new ResponseEntity<>(cargo, HttpStatus.OK);
     }
 
@@ -59,9 +57,7 @@ public class CargoController {
     @ApiOperation(value = "Atualiza as informações de um cargo de acordo com o id")
     @PutMapping("/{id}")
     public ResponseEntity<Cargo> atualizar(@PathVariable(value = "id") Long id, @RequestBody CargoDto cargo) {
-
         Cargo cargoAtt = _cargoUsuario.atualizar(id, cargo);
-
         return new ResponseEntity<>(cargoAtt, HttpStatus.OK);
     }
 

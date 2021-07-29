@@ -4,6 +4,9 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -34,8 +37,11 @@ public class UsuarioController {
 
     @ApiOperation(value = "Retorna todos os usuários cadastradas")
     @GetMapping
-    public ResponseEntity<List<Usuario>> obterTodos() {
-        return new ResponseEntity<>(_servicoUsuario.obterTodos(), HttpStatus.OK);
+    public ResponseEntity<Page<Usuario>> obterTodos(@PageableDefault(page=0, size=4) Pageable pageable) {
+        if(_servicoUsuario.obterTodos(pageable).isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(_servicoUsuario.obterTodos(pageable), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Filtra os usuários cadastrados de acordo com o Id")
@@ -73,8 +79,7 @@ public class UsuarioController {
 
     @ApiOperation(value = "Atualiza status de usuário de acordo com o id")
     @PatchMapping("{id}")
-    public ResponseEntity<Usuario> editar(@PathVariable(value = "id") Long id,
-            @RequestBody UsuarioDto usuario) {
+    public ResponseEntity<Usuario> editar(@PathVariable(value = "id") Long id, @RequestBody UsuarioDto usuario) {
         Usuario usuarioNovoStatus = _servicoUsuario.editar(id, usuario);
         return new ResponseEntity<>(usuarioNovoStatus, HttpStatus.OK);
     }

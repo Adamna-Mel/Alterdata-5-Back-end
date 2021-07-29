@@ -11,14 +11,13 @@ import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
-
 @Component
 public class JWTService {
     private static final String chavePrivadaJWT = "alterdata-5"; 
 	
 	public String gerarToken(Authentication authentication) {
 				
-		int tempoExpiracao = 900000;
+		int tempoExpiracao = 86400000; //15 minutos 900000  1 dia 86400000
 		Date dataExpiracao = new Date(new Date().getTime() + tempoExpiracao);
 		
 		Usuario user =  (Usuario) authentication.getPrincipal();

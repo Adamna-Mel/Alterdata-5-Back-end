@@ -17,13 +17,11 @@ import br.com.alterdata.pack.shared.CargoDto;
 @Service
 public class CargoServiceImpl implements CargoService{
     
-     
     @Autowired
 	private CargoRepository _repositorioCargo;
 
     @Override
     public List<CargoDto> obterTodos() {
-
         List<Cargo> cargos = _repositorioCargo.findAll();
 
 	    return cargos.stream().map(cargo -> new ModelMapper().map(cargo, CargoDto.class))
@@ -32,32 +30,27 @@ public class CargoServiceImpl implements CargoService{
 
     @Override
 	public Optional<CargoDto> obterPorId(Long id){
-
         Optional<Cargo> encontrado = _repositorioCargo.findByIdCargo(id);
 
         if (!encontrado.isPresent()){
             throw new NotFoundException("Cargo não encontrado pelo ID:" + id);
         }
         return Optional.of(new ModelMapper().map(encontrado.get(), CargoDto.class));
-  
     }
 
     @Override
 	public List<Cargo> obterPorNome(String nome){
-
 		List<Cargo> cargo = _repositorioCargo.findByNomeContainingIgnoreCase(nome);
 
 		if(cargo.size() == 0){
 		throw new NotFoundException("Não existe cargo com o nome: " + nome);
 		}
-
 		return cargo;
-
 	}
 
     @Override
     public Cargo adicionarCargo(Cargo cargo){
-
+        
         verificarSeCargoExiste(cargo);
 
         cargo.setIdCargo(null);
@@ -68,25 +61,19 @@ public class CargoServiceImpl implements CargoService{
         if (cargo.getCor2() == null){
             cargo.setCor2("#fff");
         }
-
         Cargo novoCargo = _repositorioCargo.save(cargo);
 
         return novoCargo;
-
     } 
 
     @Override
     public Cargo atualizar(Long id, CargoDto cargo) {
-
-
         Optional<Cargo> cargoAtual = _repositorioCargo.findByIdCargo(id);
 
         if(!cargoAtual.isPresent()){
             throw new NotFoundException("Cargo não encontrado pelo ID:" + id);
         }
-
         ModelMapper mapper = new ModelMapper();
-
         Cargo cargoMapeado = mapper.map(cargo, Cargo.class);
 
         verificarSeCargoExiste(cargoMapeado);
@@ -97,13 +84,11 @@ public class CargoServiceImpl implements CargoService{
         if(cargo.getIcone() != null){
             cargoAtual.get().setIcone(cargo.getIcone());
         }
-
         return _repositorioCargo.save(cargoAtual.get());
     }
 
     @Override
     public void deletar(Long id) {
-
         Optional<Cargo> cargo = _repositorioCargo.findByIdCargo(id);
 
         if(!cargo.isPresent()){
@@ -117,9 +102,7 @@ public class CargoServiceImpl implements CargoService{
 		this._repositorioCargo.deleteById(id);
 	}
 
-    @Override
-    public void verificarSeCargoExiste(Cargo cargo){
-
+    private void verificarSeCargoExiste(Cargo cargo){
         Optional<Cargo> cargoExiste =_repositorioCargo.findByNome(cargo.getNome());
 
         if(cargoExiste.isPresent()){

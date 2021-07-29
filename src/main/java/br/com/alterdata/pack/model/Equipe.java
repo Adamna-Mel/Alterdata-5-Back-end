@@ -44,6 +44,7 @@ public class Equipe {
     }
 
     public Equipe(Long idEquipe, String nome, String icone, List<Usuario> membros) {
+
         this.idEquipe = idEquipe;
         this.nome = nome;
         this.icone = icone;
@@ -51,6 +52,7 @@ public class Equipe {
     }
 
     public Equipe(Long idEquipe, String nome, String icone, List<Usuario> membros, String cor1, String cor2) {
+
         this.idEquipe = idEquipe;
         this.nome = nome;
         this.icone = icone;
@@ -106,6 +108,4 @@ public class Equipe {
     public void setMembros(List<Usuario> membros) {
         this.membros = membros;
     }
-
-
 }
