@@ -64,7 +64,7 @@ public class UsuarioController {
     @ApiOperation(value = "Cadastra um novo usuário")
     @PostMapping
     //@ResponseBody
-    public ResponseEntity<Usuario> adicionar(UsuarioDto usuario, @RequestParam("img") MultipartFile arquivo) {
+    public ResponseEntity<Usuario> adicionar(@RequestPart UsuarioDto usuario, @RequestParam("img") MultipartFile arquivo) {
         Usuario novoUsuario = _servicoUsuario.adicionar(usuario, arquivo);
         return new ResponseEntity<>(novoUsuario, HttpStatus.CREATED);
     }

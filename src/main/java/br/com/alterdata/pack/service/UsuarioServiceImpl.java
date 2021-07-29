@@ -163,11 +163,9 @@ public class UsuarioServiceImpl implements UsuarioService {
 	public Usuario editarStatus(Long id, UsuarioDto usuario) {
 		Optional<Usuario> usuarioExistente = obterPorId(id);
 
-		if (usuario.getStatus() != null)
+		if (usuario.getStatus() != null){
 			usuarioExistente.get().setStatus(usuario.getStatus());
-
-		if (usuario.getAvatarName() != null)
-			usuarioExistente.get().setAvatarName(usuario.getAvatarName());
+		}
 
 		Usuario usuarioSalvo = this._repositorioUsuario.save(usuarioExistente.get());
 
