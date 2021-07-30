@@ -108,7 +108,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 
 		StringBuilder filenames = new StringBuilder();
 
-		String fileName = novoUsuario.getLogin() + uuid;
+		String fileName = novoUsuario.getLogin() + uuid + arquivo.getContentType();
 		Path fileNamePath = Paths.get(uploadDirectory, fileName);
 
 		try {
@@ -210,7 +210,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 
 		Optional<Usuario> usuario = obterPorId(id);  
 
-		String fileName = uuid + arquivo.getContentType();
+		String fileName = arquivo.getOriginalFilename();
 		Path fileNamePath = Paths.get(uploadDirectory, fileName);
 
 		try {
