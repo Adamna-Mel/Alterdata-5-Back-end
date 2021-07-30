@@ -33,6 +33,7 @@ public class EmailConfig {
 		propriedades.put("mail.smtp.auth", true);
 		propriedades.put("mail.smtp.starttls.enable", true);
 		propriedades.put("mail.smtp.connectiontimeout", 10000);
+		propriedades.put("mail.smtp.ssl.trust", "smtp.gmail.com");
 		
 		mailSender.setJavaMailProperties(propriedades);
 		
