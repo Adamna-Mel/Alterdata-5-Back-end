@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import javax.swing.ImageIcon;
 import java.awt.image.BufferedImage;
+import java.awt.image.Raster;
 
 import org.springframework.web.multipart.MultipartFile;
 
@@ -29,5 +30,5 @@ public interface UsuarioService {
 	Usuario adicionarCargo(Long idCargo, Long idUsuario);
 	Usuario adicionarEquipe(Long idUsuario, Long idEquipe);
 	LoginResponse logar(String login, String senha);
-	BufferedImage retornarAvatar(Long id) throws IOException;
+	byte[] retornarAvatar(Long id) throws IOException;
 }

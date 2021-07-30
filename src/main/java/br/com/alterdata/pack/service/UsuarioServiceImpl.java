@@ -7,6 +7,7 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
 import java.awt.image.BufferedImage;
+import java.awt.image.Raster;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
@@ -176,16 +177,16 @@ public class UsuarioServiceImpl implements UsuarioService {
 	}
 
 	@Override
-	public BufferedImage retornarAvatar(Long id) throws IOException {
+	public byte[] retornarAvatar(Long id) throws IOException {
 		Optional<Usuario> usuario = obterPorId(id);
 		File imagemArquivo = new File(uploadDirectory + "/" + usuario.get().getAvatarName());
 		
 		if(!usuario.get().getAvatarName().equals(null) || !usuario.get().getAvatarName().equals("")){
-			byte[] file = Files.readAllBytes(imagemArquivo.toPath());
+			return Files.readAllBytes(imagemArquivo.toPath());
 			
-			ByteArrayInputStream bais = new ByteArrayInputStream(file);
-			BufferedImage image = ImageIO.read(bais);
-			return image;
+			//ByteArrayInputStream bais = new ByteArrayInputStream(file);
+			//BufferedImage image = ImageIO.read(bais);
+			//return image.getData();
 		}
 		throw new NotFoundException("Imagem não encontrada no usuario com ID: " + usuario.get().getId());
 	}
