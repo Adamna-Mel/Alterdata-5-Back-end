@@ -2,6 +2,7 @@ package br.com.alterdata.pack.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -99,13 +100,15 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Override
 	public Usuario adicionar(UsuarioDto usuario, MultipartFile arquivo) {
 
+		UUID uuid = UUID.randomUUID();
+
 		ModelMapper mapper = new ModelMapper();
 
 		Usuario novoUsuario = mapper.map(usuario, Usuario.class);
 
 		StringBuilder filenames = new StringBuilder();
 
-		String fileName = novoUsuario.getLogin() + arquivo.getOriginalFilename();
+		String fileName = novoUsuario.getLogin() + uuid;
 		Path fileNamePath = Paths.get(uploadDirectory, fileName);
 
 		try {
@@ -182,11 +185,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 		File imagemArquivo = new File(uploadDirectory + "/" + usuario.get().getAvatarName());
 		
 		if(!usuario.get().getAvatarName().equals(null) || !usuario.get().getAvatarName().equals("")){
-			return Files.readAllBytes(imagemArquivo.toPath());
-			
-			//ByteArrayInputStream bais = new ByteArrayInputStream(file);
-			//BufferedImage image = ImageIO.read(bais);
-			//return image.getData();
+			return Files.readAllBytes(imagemArquivo.toPath());			
 		}
 		throw new NotFoundException("Imagem não encontrada no usuario com ID: " + usuario.get().getId());
 	}
@@ -207,11 +206,11 @@ public class UsuarioServiceImpl implements UsuarioService {
 
 	public Usuario editarAvatar(Long id, MultipartFile arquivo){
 
-		//StringBuilder filenames = new StringBuilder();
+		UUID uuid = UUID.randomUUID();
 
 		Optional<Usuario> usuario = obterPorId(id);  
 
-		String fileName = usuario.get().getLogin() + arquivo.getOriginalFilename();
+		String fileName = uuid + arquivo.getContentType();
 		Path fileNamePath = Paths.get(uploadDirectory, fileName);
 
 		try {
@@ -305,9 +304,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 				"Amanda Mel <packaplicacao@gmail.com>",
 				destinatarios);
 		
-				mailler.enviar(email);
-			
+				mailler.enviar(email);			
 	}
-
 
 }
