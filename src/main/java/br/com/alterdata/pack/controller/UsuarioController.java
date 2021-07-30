@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
+import java.awt.image.BufferedImage;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -111,7 +113,7 @@ public class UsuarioController {
 
     @ApiOperation("Retorna o avatar do usuario")
     @GetMapping("/avatar/{id}")
-    public ResponseEntity<byte[]> retornarAvatar(@PathVariable(value = "id") Long id) throws IOException{
+    public ResponseEntity<BufferedImage> retornarAvatar(@PathVariable(value = "id") Long id) throws IOException{
         
         return new ResponseEntity<>(_servicoUsuario.retornarAvatar(id), HttpStatus.OK);
     }

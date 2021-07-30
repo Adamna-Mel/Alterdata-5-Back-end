@@ -2,6 +2,12 @@ package br.com.alterdata.pack.service;
 
 import java.util.List;
 import java.util.Optional;
+
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -170,12 +176,16 @@ public class UsuarioServiceImpl implements UsuarioService {
 	}
 
 	@Override
-	public byte[] retornarAvatar(Long id) throws IOException {
+	public BufferedImage retornarAvatar(Long id) throws IOException {
 		Optional<Usuario> usuario = obterPorId(id);
 		File imagemArquivo = new File(uploadDirectory + "/" + usuario.get().getAvatarName());
 		
 		if(!usuario.get().getAvatarName().equals(null) || !usuario.get().getAvatarName().equals("")){
-			return Files.readAllBytes(imagemArquivo.toPath());
+			byte[] file = Files.readAllBytes(imagemArquivo.toPath());
+			
+			ByteArrayInputStream bais = new ByteArrayInputStream(file);
+			BufferedImage image = ImageIO.read(bais);
+			return image;
 		}
 		throw new NotFoundException("Imagem não encontrada no usuario com ID: " + usuario.get().getId());
 	}
