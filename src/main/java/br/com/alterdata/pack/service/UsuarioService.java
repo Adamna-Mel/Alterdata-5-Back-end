@@ -25,5 +25,5 @@ public interface UsuarioService {
 	Usuario adicionarCargo(Long idCargo, Long idUsuario);
 	Usuario adicionarEquipe(Long idUsuario, Long idEquipe);
 	LoginResponse logar(String login, String senha);
-
+	
 }

@@ -6,6 +6,8 @@ import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import br.com.alterdata.pack.exception.BadRequestException;
@@ -21,11 +23,10 @@ public class CargoServiceImpl implements CargoService{
 	private CargoRepository _repositorioCargo;
 
     @Override
-    public List<CargoDto> obterTodos() {
-        List<Cargo> cargos = _repositorioCargo.findAll();
-
-	    return cargos.stream().map(cargo -> new ModelMapper().map(cargo, CargoDto.class))
-                .collect(Collectors.toList());
+    public List<CargoDto> obterTodos(Pageable pageable) {
+        Page<Cargo> cargos = _repositorioCargo.findAll(pageable);
+        return cargos.stream().map(cargo -> new ModelMapper().map(cargo, CargoDto.class))
+                    .collect(Collectors.toList());    
 	}
 
     @Override

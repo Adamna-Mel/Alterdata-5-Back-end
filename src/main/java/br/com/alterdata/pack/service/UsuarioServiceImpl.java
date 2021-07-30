@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Collections;
 
 import org.modelmapper.ModelMapper;
@@ -26,6 +27,8 @@ import br.com.alterdata.pack.exception.NotFoundException;
 import br.com.alterdata.pack.model.Cargo;
 import br.com.alterdata.pack.model.Equipe;
 import br.com.alterdata.pack.model.Usuario;
+import br.com.alterdata.pack.model.email.Mailler;
+import br.com.alterdata.pack.model.email.MensagemEmail;
 import br.com.alterdata.pack.repository.CargoRepository;
 import br.com.alterdata.pack.repository.EquipeRepository;
 import br.com.alterdata.pack.repository.UsuarioRepository;
@@ -56,6 +59,9 @@ public class UsuarioServiceImpl implements UsuarioService {
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
+
+	@Autowired
+	Mailler mailler;
 
 	@Override
 	public Page<Usuario> obterTodos(Pageable pageable) {
@@ -114,6 +120,9 @@ public class UsuarioServiceImpl implements UsuarioService {
 
 		
 		Usuario adicionado = this._repositorioUsuario.save(novoUsuario);
+
+		enviarEmailDeCadastro(novoUsuario);
+
 		adicionarCargo(1L, adicionado.getId());
 
 		adicionarEquipe(adicionado.getId(), 1L);
@@ -189,7 +198,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 
 		usuario.get().setAvatarName(fileName);
 
-		return usuario.get();
+		return _repositorioUsuario.save(usuario.get());
 	}
 
 	@Override
@@ -248,5 +257,31 @@ public class UsuarioServiceImpl implements UsuarioService {
 		if (usuario.getNome() == null || usuario.getNome().equals(""))
 			throw new BadRequestException("Nome não pode ser nulo ou vazio :(");
 
+	}
+
+	private void enviarEmailDeCadastro(Usuario usuario){
+		ArrayList<String> destinatarios = new ArrayList<String>();
+		destinatarios.add("packaplicacao@gmail.com");
+		destinatarios.add(usuario.getEmail());
+		String mensagem = "<html>"
+				+ "<head>"
+				+ "<title>Sistema PACK</title>"
+				+ "</head>"
+				+ "<header style=\"background-color: #fff; color: #030330\"> "
+				+ "<body style=\"text-align: center; font-family: Verdana, Geneva, Tahoma, sans-serif\" > "
+				+ "<h1>Prezado(a) "+ usuario.getNome()+"</h1>"
+				+ "<h2> Seu cadastro foi realizado com sucesso!!</h2><br>"
+				+ "<img src=\'https://4.bp.blogspot.com/-fbQaVbgFNYg/WUb8JNv5CzI/AAAAAAAAXq0/_aOoBIcke0g9g4pIugv4w561jWTMgAuIQCLcBGAs/s1600/mtech.jpg\' alt=\"\" />"
+				+ "</body>"
+				+ "</html>";
+			
+		MensagemEmail email = new MensagemEmail(
+				"Cadastro", 
+				mensagem,
+				"Amanda Mel <packaplicacao@gmail.com>",
+				destinatarios);
+		
+				mailler.enviar(email);
+			
 	}
 }
