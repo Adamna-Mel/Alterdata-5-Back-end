@@ -1,5 +1,6 @@
 package br.com.alterdata.pack.service;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,5 +26,5 @@ public interface UsuarioService {
 	Usuario adicionarCargo(Long idCargo, Long idUsuario);
 	Usuario adicionarEquipe(Long idUsuario, Long idEquipe);
 	LoginResponse logar(String login, String senha);
-	
+	byte[] retornarAvatar(Long id) throws IOException;
 }

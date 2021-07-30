@@ -2,6 +2,7 @@ package br.com.alterdata.pack.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -123,9 +124,9 @@ public class UsuarioServiceImpl implements UsuarioService {
 
 		//enviarEmailDeCadastro(novoUsuario);
 
-		adicionarCargo(1L, adicionado.getId());
+		//adicionarCargo(1L, adicionado.getId());
 
-		adicionarEquipe(adicionado.getId(), 1L);
+		//adicionarEquipe(adicionado.getId(), 1L);
 
 		return adicionado;
 	}
@@ -167,6 +168,18 @@ public class UsuarioServiceImpl implements UsuarioService {
 		}
 		this._repositorioUsuario.deleteById(id);
 	}
+
+	@Override
+	public byte[] retornarAvatar(Long id) throws IOException {
+		Optional<Usuario> usuario = obterPorId(id);
+		File imagemArquivo = new File(uploadDirectory + "/" + usuario.get().getAvatarName());
+		
+		if(!usuario.get().getAvatarName().equals(null) || !usuario.get().getAvatarName().equals("")){
+			return Files.readAllBytes(imagemArquivo.toPath());
+		}
+		throw new NotFoundException("Imagem não encontrada no usuario com ID: " + usuario.get().getId());
+	}
+
 
 	@Override
 	public Usuario editarStatus(Long id, UsuarioDto usuario) {
@@ -284,4 +297,6 @@ public class UsuarioServiceImpl implements UsuarioService {
 				mailler.enviar(email);
 			
 	}
+
+
 }

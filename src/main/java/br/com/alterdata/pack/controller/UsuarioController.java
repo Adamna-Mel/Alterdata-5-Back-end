@@ -1,5 +1,6 @@
 package br.com.alterdata.pack.controller;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -106,6 +107,13 @@ public class UsuarioController {
     public ResponseEntity<Usuario> adicionarEquipe(@PathVariable(value = "idEquipe") Long idEquipe, @PathVariable(value = "idUsuario") Long idUsuario){
         Usuario usuarioNovoStatus = _servicoUsuario.adicionarEquipe(idUsuario, idEquipe);
         return new ResponseEntity<>(usuarioNovoStatus, HttpStatus.OK);
+    }
+
+    @ApiOperation("Retorna o avatar do usuario")
+    @GetMapping("/avatar/{id}")
+    public ResponseEntity<byte[]> retornarAvatar(@PathVariable(value = "id") Long id) throws IOException{
+        
+        return new ResponseEntity<>(_servicoUsuario.retornarAvatar(id), HttpStatus.OK);
     }
 
 }
