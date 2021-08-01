@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import br.com.alterdata.pack.exception.BadRequestException;
 import br.com.alterdata.pack.exception.NotFoundException;
 import br.com.alterdata.pack.model.Equipe;
+import br.com.alterdata.pack.model.Usuario;
 import br.com.alterdata.pack.repository.EquipeRepository;
 import br.com.alterdata.pack.shared.EquipeDto;
 
@@ -89,14 +90,15 @@ public class EquipeServiceImpl implements EquipeService{
     public void deletar(Long id) {
         Optional<Equipe> encontrado = _repositorioEquipe.findByIdEquipe(id);
 
-        if(encontrado.isPresent()){
-            if(encontrado.get().getIdEquipe() == 1L){
-                throw new BadRequestException("Essa equipe é default e não pode ser apagada :(");
-            }
-        }
         if (!encontrado.isPresent()) {
             throw new NotFoundException("Não existe equipe com o id informado: " + id);
         }
+
+        for (Usuario membro : encontrado.get().getMembros()) {
+            membro.setEquipe(null);
+        }
+        encontrado.get().setMembros(null);
+        
         this._repositorioEquipe.deleteById(id);
     }
 

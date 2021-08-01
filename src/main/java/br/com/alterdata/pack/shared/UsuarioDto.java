@@ -6,21 +6,9 @@ public class UsuarioDto {
     private String email;
     private String login;
     private String senha;
-    private String avatar;
     private String nome;
     private String status;
-   
-    public UsuarioDto() {}
 
-    public UsuarioDto(String email,String login, String senha, String avatar, String nome, String status) {
-
-        this.email = email;   
-        this.login = login;
-        this.senha = senha;
-        this.avatar = avatar;
-        this.nome = nome;
-        this.status = status;
-    }
 
     public String getEmail() {
         return email;
@@ -44,14 +32,6 @@ public class UsuarioDto {
 
     public void setSenha(String senha) {
         this.senha = senha;
-    }
-
-    public String getAvatar() {
-        return avatar;
-    }
-
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
     }
 
     public String getNome() {

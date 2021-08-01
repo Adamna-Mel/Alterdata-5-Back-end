@@ -2,6 +2,13 @@ package br.com.alterdata.pack.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -15,6 +22,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import br.com.alterdata.pack.exception.BadRequestException;
 import br.com.alterdata.pack.exception.UnauthorizedException;
@@ -34,7 +42,9 @@ import br.com.alterdata.pack.shared.login.LoginResponse;
 @Service
 public class UsuarioServiceImpl implements UsuarioService {
 	private static final String headerPrefix = "Bearer ";
-
+    
+	public static String uploadDirectory=System.getProperty("user.dir") + "/src/main/java/br/com/alterdata/pack/images";
+    
 	@Autowired
 	private UsuarioRepository _repositorioUsuario;
 
@@ -81,14 +91,27 @@ public class UsuarioServiceImpl implements UsuarioService {
 		return usuarios;
 	}
 
-	@Override
-	public Usuario adicionar(UsuarioDto usuario) {
+    @Override
+	public Usuario adicionar(UsuarioDto usuario, MultipartFile arquivo) {
+
+		UUID uuid = UUID.randomUUID();
+
 		ModelMapper mapper = new ModelMapper();
 
 		Usuario novoUsuario = mapper.map(usuario, Usuario.class);
-		novoUsuario.setId(null);
 
-		String senha = passwordEncoder.encode(novoUsuario.getSenha());
+		String fileName = uuid + arquivo.getOriginalFilename();
+		Path fileNamePath = Paths.get(uploadDirectory, fileName);
+
+		try {
+			Files.write(fileNamePath, arquivo.getBytes());
+		} catch (IOException e) {
+			e.printStackTrace();;
+		}
+
+		novoUsuario.setAvatarName(fileName);
+
+		String senha = passwordEncoder.encode(usuario.getSenha());
 		novoUsuario.setSenha(senha);
 
 		validarCampos(novoUsuario);
@@ -97,13 +120,15 @@ public class UsuarioServiceImpl implements UsuarioService {
 		if (usuarioProcurado.isPresent()) {
 			throw new BadRequestException("Usuário já existe com o Login: " + usuario.getLogin());
 		}
+
+		
 		Usuario adicionado = this._repositorioUsuario.save(novoUsuario);
 
-		enviarEmailDeCadastro(novoUsuario);
+		//enviarEmailDeCadastro(novoUsuario);
 
-		adicionarCargo(1L, adicionado.getId());
+		//adicionarCargo(1L, adicionado.getId());
 
-		adicionarEquipe(adicionado.getId(), 1L);
+		//adicionarEquipe(adicionado.getId(), 1L);
 
 		return adicionado;
 	}
@@ -147,18 +172,48 @@ public class UsuarioServiceImpl implements UsuarioService {
 	}
 
 	@Override
-	public Usuario editar(Long id, UsuarioDto usuario) {
+	public byte[] retornarAvatar(Long id) throws IOException {
+		Optional<Usuario> usuario = obterPorId(id);
+		File imagemArquivo = new File(uploadDirectory + "/" + usuario.get().getAvatarName());
+		
+		if(!usuario.get().getAvatarName().equals(null) || !usuario.get().getAvatarName().equals("")){
+			return Files.readAllBytes(imagemArquivo.toPath());			
+		}
+		throw new NotFoundException("Imagem não encontrada no usuario com ID: " + usuario.get().getId());
+	}
+
+
+	@Override
+	public Usuario editarStatus(Long id, UsuarioDto usuario) {
 		Optional<Usuario> usuarioExistente = obterPorId(id);
 
-		if (usuario.getStatus() != null)
+		if (usuario.getStatus() != null){
 			usuarioExistente.get().setStatus(usuario.getStatus());
-
-		if (usuario.getAvatar() != null)
-			usuarioExistente.get().setAvatar(usuario.getAvatar());
+		}
 
 		Usuario usuarioSalvo = this._repositorioUsuario.save(usuarioExistente.get());
 
 		return usuarioSalvo;
+	}
+
+	public Usuario editarAvatar(Long id, MultipartFile arquivo){
+
+		UUID uuid = UUID.randomUUID();
+
+		Optional<Usuario> usuario = obterPorId(id);  
+
+		String fileName = uuid + arquivo.getOriginalFilename();
+		Path fileNamePath = Paths.get(uploadDirectory, fileName);
+
+		try {
+			Files.write(fileNamePath, arquivo.getBytes());
+		} catch (IOException e) {
+			e.printStackTrace();;
+		}
+
+		usuario.get().setAvatarName(fileName);
+
+		return _repositorioUsuario.save(usuario.get());
 	}
 
 	@Override
@@ -207,6 +262,19 @@ public class UsuarioServiceImpl implements UsuarioService {
 		}
 	}
 
+	@Override
+	public Usuario removerUsuarioDaEquipe(Long id){
+
+		Optional<Usuario> usuario = obterPorId(id);
+
+		if(usuario.isPresent()){
+			usuario.get().setEquipe(null);
+			return _repositorioUsuario.save(usuario.get());
+		}
+
+		throw new NotFoundException("Não existe usuario com o ID: " + id);
+	}
+
 	private void validarCampos(Usuario usuario) {
 		if (usuario.getLogin() == null || usuario.getLogin().equals(""))
 			throw new BadRequestException("Login não pode ser nulo!");
@@ -241,7 +309,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 				"Amanda Mel <packaplicacao@gmail.com>",
 				destinatarios);
 		
-				mailler.enviar(email);
-			
+				mailler.enviar(email);			
 	}
+
 }
