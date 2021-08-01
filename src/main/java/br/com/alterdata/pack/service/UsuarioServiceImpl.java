@@ -4,12 +4,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-
-import java.awt.image.BufferedImage;
-import java.awt.image.Raster;
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -106,9 +100,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 
 		Usuario novoUsuario = mapper.map(usuario, Usuario.class);
 
-		StringBuilder filenames = new StringBuilder();
-
-		String fileName = novoUsuario.getLogin() + uuid + arquivo.getContentType();
+		String fileName = uuid + arquivo.getOriginalFilename();
 		Path fileNamePath = Paths.get(uploadDirectory, fileName);
 
 		try {
@@ -210,7 +202,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 
 		Optional<Usuario> usuario = obterPorId(id);  
 
-		String fileName = arquivo.getOriginalFilename();
+		String fileName = uuid + arquivo.getOriginalFilename();
 		Path fileNamePath = Paths.get(uploadDirectory, fileName);
 
 		try {
@@ -268,6 +260,19 @@ public class UsuarioServiceImpl implements UsuarioService {
 		} catch (Exception e) {
 			throw new UnauthorizedException("Credenciais inválidas :(");
 		}
+	}
+
+	@Override
+	public Usuario removerUsuarioDaEquipe(Long id){
+
+		Optional<Usuario> usuario = obterPorId(id);
+
+		if(usuario.isPresent()){
+			usuario.get().setEquipe(null);
+			return _repositorioUsuario.save(usuario.get());
+		}
+
+		throw new NotFoundException("Não existe usuario com o ID: " + id);
 	}
 
 	private void validarCampos(Usuario usuario) {

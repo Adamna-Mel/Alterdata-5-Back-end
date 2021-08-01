@@ -4,9 +4,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
-import java.awt.image.BufferedImage;
-import java.awt.image.Raster;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -41,7 +38,7 @@ public class UsuarioController {
     @Autowired
     UsuarioService _servicoUsuario;
     
-    //@ApiOperation(value = "Retorna todos os usuários cadastrados")
+    @ApiOperation(value = "Retorna todos os usuários cadastrados")
     @GetMapping
     public ResponseEntity<Page<Usuario>> obterTodos(@PageableDefault(page=0, size=4) Pageable pageable) {
         if(_servicoUsuario.obterTodos(pageable).isEmpty()){
@@ -115,8 +112,17 @@ public class UsuarioController {
     @ApiOperation("Retorna o avatar do usuario")
     @GetMapping("/avatar/{id}")
     public ResponseEntity<byte[]> retornarAvatar(@PathVariable(value = "id") Long id) throws IOException{
-        
+
         return new ResponseEntity<>(_servicoUsuario.retornarAvatar(id), HttpStatus.OK);
     }
+
+    @ApiOperation(value = "Deleta um usuário de acordo com o id")
+    @DeleteMapping("sair-da-equipe/{id}")
+    public ResponseEntity<Void> removerUsuarioDaEquipe(@PathVariable(value = "id") Long id) {
+
+        _servicoUsuario.removerUsuarioDaEquipe(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 
 }

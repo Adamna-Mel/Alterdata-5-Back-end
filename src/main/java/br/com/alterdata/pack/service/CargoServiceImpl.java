@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import br.com.alterdata.pack.exception.BadRequestException;
 import br.com.alterdata.pack.exception.NotFoundException;
 import br.com.alterdata.pack.model.Cargo;
+import br.com.alterdata.pack.model.Usuario;
 import br.com.alterdata.pack.repository.CargoRepository;
 import br.com.alterdata.pack.shared.CargoDto;
 
@@ -95,12 +96,11 @@ public class CargoServiceImpl implements CargoService{
         if(!cargo.isPresent()){
             throw new NotFoundException("Cargo não encontrado pelo ID:" + id);
         }
-        if(cargo.isPresent()){
-            if(cargo.get().getIdCargo() == 1L){
-                throw new BadRequestException("Esse cargo é default e não pode ser apagado :(");
-            }
+       
+        for (Usuario usuario : cargo.get().getUsuarios()) {
+            usuario.setCargo(null);
         }
-		this._repositorioCargo.deleteById(id);
+        this._repositorioCargo.deleteById(id);
 	}
 
     private void verificarSeCargoExiste(Cargo cargo){
