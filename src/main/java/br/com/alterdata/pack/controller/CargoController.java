@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -30,8 +32,8 @@ public class CargoController {
 
     @ApiOperation(value = "Retorna todos os cargos cadastradas")
     @GetMapping
-    public ResponseEntity<List<CargoDto>> obterTodos() {
-        return new ResponseEntity<>(_cargoUsuario.obterTodos(), HttpStatus.OK);
+    public ResponseEntity<List<CargoDto>> obterTodos(@PageableDefault(page=0, size=4) Pageable pageable) {
+        return ResponseEntity.ok(_cargoUsuario.obterTodos(pageable));
     }
 
     @ApiOperation(value = "Filtra os cargos cadastrados de acordo com o Id")

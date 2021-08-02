@@ -6,11 +6,14 @@ import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import br.com.alterdata.pack.exception.BadRequestException;
 import br.com.alterdata.pack.exception.NotFoundException;
 import br.com.alterdata.pack.model.Equipe;
+import br.com.alterdata.pack.model.Usuario;
 import br.com.alterdata.pack.repository.EquipeRepository;
 import br.com.alterdata.pack.shared.EquipeDto;
 
@@ -21,8 +24,8 @@ public class EquipeServiceImpl implements EquipeService{
     private EquipeRepository _repositorioEquipe;
 
     @Override
-    public List<EquipeDto> obterTodos() {
-        List<Equipe> equipes = _repositorioEquipe.findAll();
+    public List<EquipeDto> obterTodos(Pageable pageable) {
+        Page<Equipe> equipes = _repositorioEquipe.findAll(pageable);
         
         return equipes.stream().map(equipe -> new ModelMapper().map(equipe, EquipeDto.class))
                 .collect(Collectors.toList());
@@ -87,14 +90,15 @@ public class EquipeServiceImpl implements EquipeService{
     public void deletar(Long id) {
         Optional<Equipe> encontrado = _repositorioEquipe.findByIdEquipe(id);
 
-        if(encontrado.isPresent()){
-            if(encontrado.get().getIdEquipe() == 1L){
-                throw new BadRequestException("Essa equipe é default e não pode ser apagada :(");
-            }
-        }
         if (!encontrado.isPresent()) {
             throw new NotFoundException("Não existe equipe com o id informado: " + id);
         }
+
+        for (Usuario membro : encontrado.get().getMembros()) {
+            membro.setEquipe(null);
+        }
+        encontrado.get().setMembros(null);
+        
         this._repositorioEquipe.deleteById(id);
     }
 

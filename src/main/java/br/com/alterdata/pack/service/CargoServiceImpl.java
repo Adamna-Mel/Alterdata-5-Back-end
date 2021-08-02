@@ -6,11 +6,14 @@ import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import br.com.alterdata.pack.exception.BadRequestException;
 import br.com.alterdata.pack.exception.NotFoundException;
 import br.com.alterdata.pack.model.Cargo;
+import br.com.alterdata.pack.model.Usuario;
 import br.com.alterdata.pack.repository.CargoRepository;
 import br.com.alterdata.pack.shared.CargoDto;
 
@@ -21,11 +24,10 @@ public class CargoServiceImpl implements CargoService{
 	private CargoRepository _repositorioCargo;
 
     @Override
-    public List<CargoDto> obterTodos() {
-        List<Cargo> cargos = _repositorioCargo.findAll();
-
-	    return cargos.stream().map(cargo -> new ModelMapper().map(cargo, CargoDto.class))
-                .collect(Collectors.toList());
+    public List<CargoDto> obterTodos(Pageable pageable) {
+        Page<Cargo> cargos = _repositorioCargo.findAll(pageable);
+        return cargos.stream().map(cargo -> new ModelMapper().map(cargo, CargoDto.class))
+                    .collect(Collectors.toList());    
 	}
 
     @Override
@@ -94,12 +96,11 @@ public class CargoServiceImpl implements CargoService{
         if(!cargo.isPresent()){
             throw new NotFoundException("Cargo não encontrado pelo ID:" + id);
         }
-        if(cargo.isPresent()){
-            if(cargo.get().getIdCargo() == 1L){
-                throw new BadRequestException("Esse cargo é default e não pode ser apagado :(");
-            }
+       
+        for (Usuario usuario : cargo.get().getUsuarios()) {
+            usuario.setCargo(null);
         }
-		this._repositorioCargo.deleteById(id);
+        this._repositorioCargo.deleteById(id);
 	}
 
     private void verificarSeCargoExiste(Cargo cargo){
