@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.data.domain.Pageable;
 
 import br.com.alterdata.pack.model.Equipe;
+import br.com.alterdata.pack.model.Usuario;
 import br.com.alterdata.pack.shared.EquipeDto;
 
 public interface EquipeService {
@@ -16,4 +17,5 @@ public interface EquipeService {
     Equipe criarEquipe(Equipe equipe);
     Equipe atualizar(Long id, Equipe equipe);
     void deletar(Long id);
+    List<Usuario> obterUsuariosPorLogin(Long idEquipe,String login);
 }
