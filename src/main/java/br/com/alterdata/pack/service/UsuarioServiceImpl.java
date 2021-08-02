@@ -92,7 +92,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 			throw new BadRequestException("Usuário já existe com o Login: " + usuario.getLogin());
 		}
 		Usuario adicionado = this._repositorioUsuario.save(novoUsuario);
-		adicionarCargo(1L, adicionado.getId());
+		//adicionarCargo(1L, adicionado.getId());
 
 		//adicionarEquipe(adicionado.getId(), 1L);
 
