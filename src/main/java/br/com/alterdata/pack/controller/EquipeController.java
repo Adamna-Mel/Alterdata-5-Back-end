@@ -3,6 +3,8 @@ package br.com.alterdata.pack.controller;
 import java.util.List;
 import java.util.Optional;
 
+import javax.security.auth.login.LoginException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.alterdata.pack.model.Equipe;
+import br.com.alterdata.pack.model.Usuario;
 import br.com.alterdata.pack.service.EquipeService;
 import br.com.alterdata.pack.shared.EquipeDto;
 import io.swagger.annotations.Api;
@@ -50,6 +53,12 @@ public class EquipeController {
     @GetMapping("/nome/{nome}")
 	public ResponseEntity<List<Equipe>> obterPorNome(@PathVariable ("nome") String nome) {
 		return new ResponseEntity<>(_equipeUsuario.obterPorNome(nome), HttpStatus.OK);
+	}
+
+    @ApiOperation(value = "Filtra os usuários da equipe por login")
+    @GetMapping("/{id}/login/{login}")
+	public ResponseEntity<List<Usuario>> obterUsuariosPorLogin(@PathVariable ("id") Long id, @PathVariable ("login") String login) {
+		return new ResponseEntity<>(_equipeUsuario.obterUsuariosPorLogin(id,login), HttpStatus.OK);
 	}
 
     // @ApiOperation(value = "Obtem usuarios")

@@ -52,6 +52,25 @@ public class EquipeServiceImpl implements EquipeService{
     }
 
     @Override
+    public List<Usuario> obterUsuariosPorLogin(Long idEquipe,String login) {
+        
+        Optional<Equipe> encontrado = _repositorioEquipe.findByIdEquipe(idEquipe);
+
+        if (!encontrado.isPresent()) {
+            throw new NotFoundException("Não foi encontrado nenhuma equipe com o Id: " + idEquipe);
+        }
+
+        List<Usuario> usuarios = encontrado.get().getMembros().stream()
+                                                              .filter( usuario -> usuario.getLogin().contains(login))
+                                                              .collect(Collectors.toList());
+
+        if (usuarios.size() == 0) {
+            throw new NotFoundException("Não foi encontrado nenhum usuario com o nome: " + login);
+        }
+        return usuarios;
+    }
+
+    @Override
     public Equipe criarEquipe(Equipe equipe) {
         equipe.setIdEquipe(null);
 
