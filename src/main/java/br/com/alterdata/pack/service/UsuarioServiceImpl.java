@@ -43,7 +43,7 @@ import br.com.alterdata.pack.shared.login.LoginResponse;
 public class UsuarioServiceImpl implements UsuarioService {
 	private static final String headerPrefix = "Bearer ";
     
-	public static String uploadDirectory=System.getProperty("user.dir") + "/src/main/java/br/com/alterdata/pack/images";
+	public static String uploadDirectory = System.getProperty("user.dir") + "/src/main/java/br/com/alterdata/pack/images";
     
 	@Autowired
 	private UsuarioRepository _repositorioUsuario;
@@ -168,6 +168,15 @@ public class UsuarioServiceImpl implements UsuarioService {
 		if (!usuario.isPresent()) {
 			throw new NotFoundException("Não existe equipe com o id informado: " + id);
 		}
+
+		File destino = new File(uploadDirectory, usuario.get().getAvatarName());
+
+		try {
+			destino.delete();
+	   } catch (Exception e) {
+		   throw new RuntimeException("Erro ao deletar imagem", e);
+	   }
+		
 		this._repositorioUsuario.deleteById(id);
 	}
 
@@ -210,6 +219,14 @@ public class UsuarioServiceImpl implements UsuarioService {
 		} catch (IOException e) {
 			e.printStackTrace();;
 		}
+		
+		File destino = new File(uploadDirectory, usuario.get().getAvatarName());
+
+		try {
+			destino.delete();
+	   } catch (Exception e) {
+		   throw new RuntimeException("Erro ao deletar imagem", e);
+	   }
 
 		usuario.get().setAvatarName(fileName);
 
