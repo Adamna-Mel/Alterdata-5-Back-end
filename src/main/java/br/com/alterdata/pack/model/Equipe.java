@@ -25,7 +25,8 @@ public class Equipe {
     @Column(unique = true, nullable = false)
     private String nome;
 
-    private String icone;
+    @Column(nullable = true)
+    private String avatarName;
 
     @JsonIgnore
     @OneToMany(mappedBy="equipe")
@@ -37,25 +38,25 @@ public class Equipe {
 
     public Equipe() {}
 
-    public Equipe(Long idEquipe, String nome, String icone) {
+    public Equipe(Long idEquipe, String nome, String avatarName) {
         this.idEquipe = idEquipe;
         this.nome = nome;
-        this.icone = icone;
+        this.avatarName = avatarName;
     }
 
-    public Equipe(Long idEquipe, String nome, String icone, List<Usuario> membros) {
+    public Equipe(Long idEquipe, String nome, String avatarName, List<Usuario> membros) {
 
         this.idEquipe = idEquipe;
         this.nome = nome;
-        this.icone = icone;
+        this.avatarName = avatarName;
         this.membros = membros;
     }
 
-    public Equipe(Long idEquipe, String nome, String icone, List<Usuario> membros, String cor1, String cor2) {
+    public Equipe(Long idEquipe, String nome, String avatarName, List<Usuario> membros, String cor1, String cor2) {
 
         this.idEquipe = idEquipe;
         this.nome = nome;
-        this.icone = icone;
+        this.avatarName = avatarName;
         this.membros = membros;
         this.cor1 = cor1;
         this.cor2 = cor2;
@@ -93,12 +94,12 @@ public class Equipe {
         this.nome = nome;
     }
 
-    public String getIcone() {
-        return icone;
+    public String getAvatarName() {
+        return avatarName;
     }
 
-    public void setIcone(String icone) {
-        this.icone = icone;
+    public void setAvatarName(String avatarName) {
+        this.avatarName = avatarName;
     }
 
     public List<Usuario> getMembros() {

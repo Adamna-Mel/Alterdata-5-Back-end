@@ -1,6 +1,7 @@
 package br.com.alterdata.pack.service;
 
 import java.util.List;
+import java.util.Arrays;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -9,7 +10,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.Collections;
 
 import org.modelmapper.ModelMapper;
@@ -124,7 +124,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 		
 		Usuario adicionado = this._repositorioUsuario.save(novoUsuario);
 
-		// enviarEmailDeCadastro(novoUsuario);
+		 enviarEmailDeCadastro(novoUsuario);
 
 		//adicionarCargo(1L, adicionado.getId());
 
@@ -305,9 +305,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 	}
 
 	private void enviarEmailDeCadastro(Usuario usuario){
-		ArrayList<String> destinatarios = new ArrayList<String>();
-		destinatarios.add("packaplicacao@gmail.com");
-		destinatarios.add(usuario.getEmail());
+		
 		String mensagem = "<html>"
 				+ "<head>"
 				+ "<title>Sistema PACK</title>"
@@ -315,7 +313,12 @@ public class UsuarioServiceImpl implements UsuarioService {
 				+ "<header style=\"background-color: #fff; color: #030330\"> "
 				+ "<body style=\"text-align: center; font-family: Verdana, Geneva, Tahoma, sans-serif\" > "
 				+ "<h1>Prezado(a) "+ usuario.getNome()+"</h1>"
-				+ "<h2> Seu cadastro foi realizado com sucesso!!</h2><br>"
+				+ "<h2 style= color:#2169FF> Seu cadastro foi realizado com sucesso!!</h2><br>"
+				+ "<div style= text-aling: left; color:#030330>"
+				+ "<h3style= text-aling: left; color:#2169FF>Suas credenciaiss de acesso</h3>"
+				+ "<h4>Login:</h4>"+"<p>"+ usuario.getLogin() +"</p>"
+				+ "<h4>Senha única:</h4>"+ "<p>"+ usuario.getSenha() +"</p>"
+				+ "</div>"
 				+ "<img src=\'https://4.bp.blogspot.com/-fbQaVbgFNYg/WUb8JNv5CzI/AAAAAAAAXq0/_aOoBIcke0g9g4pIugv4w561jWTMgAuIQCLcBGAs/s1600/mtech.jpg\' alt=\"\" />"
 				+ "</body>"
 				+ "</html>";
@@ -324,7 +327,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 				"Cadastro", 
 				mensagem,
 				"Amanda Mel <packaplicacao@gmail.com>",
-				destinatarios);
+				Arrays.asList(usuario.getEmail()));
 		
 				mailler.enviar(email);			
 	}

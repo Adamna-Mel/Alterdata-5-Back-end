@@ -7,7 +7,7 @@ import br.com.alterdata.pack.model.Usuario;
 public class EquipeDto {
     private Long idEquipe;
     private String nome;
-    private String icone;
+    private String avatarName;
     private String cor1;
     private String cor2;
 
@@ -19,10 +19,10 @@ public class EquipeDto {
         this.nome = nome;
     }
 
-    public EquipeDto(String nome, String icone, String cor1, String cor2, List<Usuario> membros) {
+    public EquipeDto(String nome, String avatarName, String cor1, String cor2, List<Usuario> membros) {
         
         this.nome = nome;
-        this.icone = icone;
+        this.avatarName = avatarName;
         this.cor1 = cor1;
         this.cor2 = cor2;
         this.membros = membros;
@@ -68,12 +68,12 @@ public class EquipeDto {
         this.nome = nome;
     }
 
-    public String getIcone() {
-        return icone;
+    public String getAvatarName() {
+        return avatarName;
     }
 
-    public void setIcone(String icone) {
-        this.icone = icone;
+    public void setAvatarName(String avatarName) {
+        this.avatarName = avatarName;
     }
 
 }
