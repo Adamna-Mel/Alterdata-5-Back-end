@@ -7,25 +7,20 @@ import br.com.alterdata.pack.model.Usuario;
 public class CargoDto {
     private Long idCargo;
     private String nome;
-    private String icone;
-    private String cor1;
-    private String cor2;
-
+    private String avatarName;
     private List<Usuario> usuarios;
 
     public CargoDto() {}
 
-    public CargoDto(String nome, String icone) {
+    public CargoDto(String nome, String avatarName) {
         this.nome = nome;
-        this.icone = icone;
+        this.avatarName = avatarName;
     }
     
-    public CargoDto(String nome, String icone, String cor1, String cor2, List<Usuario> usuarios) {
+    public CargoDto(String nome, String avatarName, String cor1, List<Usuario> usuarios) {
             
         this.nome = nome;
-        this.icone = icone;
-        this.cor1 = cor1;
-        this.cor2 = cor2;
+        this.avatarName = avatarName;
         this.usuarios = usuarios;
     }
 
@@ -35,22 +30,6 @@ public class CargoDto {
 
     public void setIdCargo(Long id){
         this.idCargo = id;
-    }
-
-    public String getCor1() {
-        return cor1;
-    }
-
-    public void setCor1(String cor1) {
-        this.cor1 = cor1;
-    }
-
-    public String getCor2() {
-        return cor2;
-    }
-
-    public void setCor2(String cor2) {
-        this.cor2 = cor2;
     }
 
     public List<Usuario> getUsuarios() {
@@ -69,12 +48,12 @@ public class CargoDto {
         this.nome = nome;
     }
 
-    public String getIcone() {
-        return icone;
+    public String getAvatarName() {
+        return avatarName;
     }
 
-    public void setIcone(String icone) {
-        this.icone = icone;
+    public void setAvatarName(String avatarName) {
+        this.avatarName = avatarName;
     }
     
 }

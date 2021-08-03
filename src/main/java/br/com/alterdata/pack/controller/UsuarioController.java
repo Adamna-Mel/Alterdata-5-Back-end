@@ -60,14 +60,23 @@ public class UsuarioController {
         return new ResponseEntity<>(_servicoUsuario.obterPorLogin(login), HttpStatus.OK);
     }
 
+    // @ApiOperation(value = "Envia um email")
+    // @PostMapping("/esqueci-senha")
+    // //@ResponseBody
+    // public ResponseEntity<Void> enviarEmailEsqueciSenha(@RequestBody UsuarioDto email) {
+    //     _servicoUsuario.enviarEmailEsqueciSenha(email);
+        
+    //     return new ResponseEntity<>( HttpStatus.OK);
+    // }
+
     @ApiOperation(value = "Cadastra um novo usuário")
     @PostMapping
-    //@ResponseBody
     public ResponseEntity<Usuario> adicionar(UsuarioDto usuario, @RequestParam("img") MultipartFile arquivo) {
         Usuario novoUsuario = _servicoUsuario.adicionar(usuario, arquivo);
+        
         return new ResponseEntity<>(novoUsuario, HttpStatus.CREATED);
     }
-
+    
     @ApiOperation(value = "Atualiza as informações de um usuário de acordo com o id")
     @PutMapping("/{id}")
     public ResponseEntity<Usuario> atualizar(@PathVariable(value = "id") Long id, @RequestBody UsuarioDto usuario) {
@@ -78,6 +87,7 @@ public class UsuarioController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletar(@PathVariable(value = "id") Long id) {
         _servicoUsuario.deletar(id);
+        
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -85,6 +95,7 @@ public class UsuarioController {
     @PatchMapping("status/{id}")
     public ResponseEntity<Usuario> editarStatus(@PathVariable(value = "id") Long id, @RequestBody UsuarioDto usuario) {
         Usuario usuarioNovoStatus = _servicoUsuario.editarStatus(id, usuario);
+        
         return new ResponseEntity<>(usuarioNovoStatus, HttpStatus.OK);
     }
 
@@ -92,6 +103,7 @@ public class UsuarioController {
     @PatchMapping("alterar-avatar/{id}")
     public ResponseEntity<Usuario> editarAvatar(@PathVariable(value = "id") Long id, @RequestParam("img") MultipartFile arquivo) {
         Usuario usuarioNovoStatus = _servicoUsuario.editarAvatar(id, arquivo);
+        
         return new ResponseEntity<>(usuarioNovoStatus, HttpStatus.OK);
     }
 
@@ -99,6 +111,7 @@ public class UsuarioController {
     @PatchMapping("{idUsuario}/cargo/{idCargo}")
     public ResponseEntity<Usuario> adicionarCargo(@PathVariable(value = "idCargo") Long idCargo, @PathVariable(value = "idUsuario") Long idUsuario){
         Usuario usuarioNovoStatus = _servicoUsuario.adicionarCargo(idCargo, idUsuario);
+        
         return new ResponseEntity<>(usuarioNovoStatus, HttpStatus.OK);
     }
 
@@ -106,6 +119,7 @@ public class UsuarioController {
     @PatchMapping("{idUsuario}/equipe/{idEquipe}")
     public ResponseEntity<Usuario> adicionarEquipe(@PathVariable(value = "idEquipe") Long idEquipe, @PathVariable(value = "idUsuario") Long idUsuario){
         Usuario usuarioNovoStatus = _servicoUsuario.adicionarEquipe(idUsuario, idEquipe);
+        
         return new ResponseEntity<>(usuarioNovoStatus, HttpStatus.OK);
     }
 

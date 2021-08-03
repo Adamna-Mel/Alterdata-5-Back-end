@@ -53,32 +53,9 @@ public class Usuario implements UserDetails{
     @JoinColumn(name = "equipe_id")
     private Equipe equipe;
 
-    public Usuario() {}
-    
-    public Usuario(String email, String login, String senha, String avatarName, String nome, String status, Cargo cargo, Equipe equipe){  
+    private String codigoVerificacao;
 
-        this.email = email;
-        this.login = login;
-        this.senha = senha;
-        this.avatarName = avatarName;
-        this.nome = nome;
-        this.status = status;
-        this.cargo = cargo;
-        this.equipe = equipe;
-    }
 
-    public Usuario(Long id, String email, String login, String senha, String avatarName, String nome, String status, Cargo cargo, Equipe equipe) {
-            
-        this.id = id;
-        this.email = email;
-        this.login = login;
-        this.senha = senha;
-        this.avatarName = avatarName;
-        this.nome = nome;
-        this.status = status;
-        this.cargo = cargo;
-        this.equipe = equipe;
-    }
 
     public Long getId() {
         return id;
@@ -151,6 +128,14 @@ public class Usuario implements UserDetails{
     public void setEquipe(Equipe equipe) {
         this.equipe = equipe;
     }
+
+    public String getCodigoVerificacao() {
+        return codigoVerificacao;
+   }
+
+   public void setCodigoVerificacao(String codigoVerificacao) {
+       this.codigoVerificacao = codigoVerificacao;
+   }
   
     @JsonIgnore
     @Override

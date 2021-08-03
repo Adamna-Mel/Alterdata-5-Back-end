@@ -8,8 +8,12 @@ public class EquipeDto {
     private Long idEquipe;
     private String nome;
     private String avatarName;
+<<<<<<< HEAD
     private String cor1;
     private String cor2;
+=======
+    
+>>>>>>> f7feb2cf845817fcc45a1b46b84bc6cc6c134fb1
 
     private List<Usuario> membros;
 
@@ -19,12 +23,19 @@ public class EquipeDto {
         this.nome = nome;
     }
 
+<<<<<<< HEAD
     public EquipeDto(String nome, String avatarName, String cor1, String cor2, List<Usuario> membros) {
         
         this.nome = nome;
         this.avatarName = avatarName;
         this.cor1 = cor1;
         this.cor2 = cor2;
+=======
+    public EquipeDto(String nome, String avatarName, List<Usuario> membros) {
+        
+        this.nome = nome;
+        this.avatarName = avatarName;
+>>>>>>> f7feb2cf845817fcc45a1b46b84bc6cc6c134fb1
         this.membros = membros;
     }
 
@@ -34,22 +45,6 @@ public class EquipeDto {
 
     public void setIdEquipe(Long id) {
         this.idEquipe = id;
-    }
-
-    public String getCor1() {
-        return cor1;
-    }
-
-    public void setCor1(String cor1) {
-        this.cor1 = cor1;
-    }
- 
-    public String getCor2() {
-        return cor2;
-    }
-
-    public void setCor2(String cor2) {
-        this.cor2 = cor2;
     }
 
     public List<Usuario> getMembros() {

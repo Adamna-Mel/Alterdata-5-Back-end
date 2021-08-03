@@ -59,8 +59,8 @@ public class EquipeController {
 
     @ApiOperation(value = "Cadastra uma nova Equipe")
     @PostMapping
-    public ResponseEntity<Equipe> adicionar(@RequestBody Equipe equipe) {
-        Equipe novaEquipe = _equipeUsuario.criarEquipe(equipe);
+    public ResponseEntity<Equipe> adicionar(Equipe equipe, @RequestParam("img") MultipartFile arquivo) {
+        Equipe novaEquipe = _equipeUsuario.criarEquipe(equipe, arquivo);
         return new ResponseEntity<>(novaEquipe, HttpStatus.CREATED );
     }
 

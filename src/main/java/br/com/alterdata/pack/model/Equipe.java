@@ -32,13 +32,11 @@ public class Equipe {
     @OneToMany(mappedBy="equipe")
     private List<Usuario> membros;
 
-    private String cor1;
-
-    private String cor2;
-
+    
     public Equipe() {}
 
     public Equipe(Long idEquipe, String nome, String avatarName) {
+<<<<<<< HEAD
         this.idEquipe = idEquipe;
         this.nome = nome;
         this.avatarName = avatarName;
@@ -53,30 +51,21 @@ public class Equipe {
     }
 
     public Equipe(Long idEquipe, String nome, String avatarName, List<Usuario> membros, String cor1, String cor2) {
+=======
+        this.idEquipe = idEquipe;
+        this.nome = nome;
+        this.avatarName = avatarName;
+    }
+
+    public Equipe(Long idEquipe, String nome, String avatarName, List<Usuario> membros) {
+>>>>>>> f7feb2cf845817fcc45a1b46b84bc6cc6c134fb1
 
         this.idEquipe = idEquipe;
         this.nome = nome;
         this.avatarName = avatarName;
         this.membros = membros;
-        this.cor1 = cor1;
-        this.cor2 = cor2;
     }
 
-    public String getCor1() {
-        return cor1;
-    }
-
-    public void setCor1(String cor1) {
-        this.cor1 = cor1;
-    }
-
-    public String getCor2() {
-        return cor2;
-    }
-
-    public void setCor2(String cor2) {
-        this.cor2 = cor2;
-    }
 
     public Long getIdEquipe() {
         return idEquipe;

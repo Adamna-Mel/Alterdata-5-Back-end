@@ -40,8 +40,16 @@ public class EmailService {
             return emailRepository.save(emailModel);
         }
     }
+<<<<<<< HEAD
+=======
+
+>>>>>>> f7feb2cf845817fcc45a1b46b84bc6cc6c134fb1
     public Page<EmailModel> findAll(Pageable pageable) {
         return  emailRepository.findAll(pageable);
     }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> f7feb2cf845817fcc45a1b46b84bc6cc6c134fb1
 }
