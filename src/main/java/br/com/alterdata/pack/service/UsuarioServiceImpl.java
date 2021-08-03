@@ -1,6 +1,7 @@
 package br.com.alterdata.pack.service;
 
 import java.util.List;
+import java.util.Arrays;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -9,7 +10,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.Collections;
 
 import org.modelmapper.ModelMapper;
@@ -81,6 +81,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 		return encontrado;
 	}
 
+	
 	@Override
 	public List<Usuario> obterPorLogin(String login) {
 		List<Usuario> usuarios = _repositorioUsuario.findByLoginContaining(login.toLowerCase());
@@ -90,6 +91,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 		}
 		return usuarios;
 	}
+
 
     @Override
 	public Usuario adicionar(UsuarioDto usuario, MultipartFile arquivo) {
@@ -121,10 +123,9 @@ public class UsuarioServiceImpl implements UsuarioService {
 			throw new BadRequestException("Usuário já existe com o Login: " + usuario.getLogin());
 		}
 
-		
 		Usuario adicionado = this._repositorioUsuario.save(novoUsuario);
 
-		//enviarEmailDeCadastro(novoUsuario);
+		enviarEmailDeCadastro(novoUsuario);
 
 		//adicionarCargo(1L, adicionado.getId());
 
@@ -132,6 +133,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 
 		return adicionado;
 	}
+
 
 	@Override
 	public Usuario atualizar(Long id, UsuarioDto usuario) {
@@ -161,6 +163,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 		return usuarioSalvo;
 	}
 
+
 	@Override
 	public void deletar(Long id) {
 		Optional<Usuario> usuario = obterPorId(id);
@@ -168,17 +171,16 @@ public class UsuarioServiceImpl implements UsuarioService {
 		if (!usuario.isPresent()) {
 			throw new NotFoundException("Não existe equipe com o id informado: " + id);
 		}
-
 		File destino = new File(uploadDirectory, usuario.get().getAvatarName());
 
 		try {
 			destino.delete();
 	   } catch (Exception e) {
 		   throw new RuntimeException("Erro ao deletar imagem", e);
-	   }
-		
+	   }	
 		this._repositorioUsuario.deleteById(id);
 	}
+
 
 	@Override
 	public byte[] retornarAvatar(Long id) throws IOException {
@@ -204,6 +206,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 
 		return usuarioSalvo;
 	}
+
 
 	public Usuario editarAvatar(Long id, MultipartFile arquivo){
 
@@ -233,6 +236,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 		return _repositorioUsuario.save(usuario.get());
 	}
 
+
 	@Override
 	public Usuario adicionarCargo(Long idCargo, Long idUsuario) {
 		Optional<Cargo> cargo = _cargoRepository.findById(idCargo);
@@ -247,6 +251,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 		throw new NotFoundException("Cargo não encontrado pelo ID: " + idCargo + " :(");
 	}
 
+
 	@Override
 	public Usuario adicionarEquipe(Long idUsuario, Long idEquipe) {
 		Optional<Equipe> equipe = _repositorioEquipe.findById(idEquipe);
@@ -260,6 +265,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 		}
 		throw new NotFoundException("Equipe não encontrado pelo ID: " + idEquipe + " :(");
 	}
+
 
 	@Override
 	public LoginResponse logar(String login, String senha) {
@@ -279,6 +285,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 		}
 	}
 
+
 	@Override
 	public Usuario removerUsuarioDaEquipe(Long id){
 
@@ -292,6 +299,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 		throw new NotFoundException("Não existe usuario com o ID: " + id);
 	}
 
+
 	private void validarCampos(Usuario usuario) {
 		if (usuario.getLogin() == null || usuario.getLogin().equals(""))
 			throw new BadRequestException("Login não pode ser nulo!");
@@ -303,11 +311,10 @@ public class UsuarioServiceImpl implements UsuarioService {
 			throw new BadRequestException("Nome não pode ser nulo ou vazio :(");
 
 	}
-
+	
+	
 	private void enviarEmailDeCadastro(Usuario usuario){
-		ArrayList<String> destinatarios = new ArrayList<String>();
-		destinatarios.add("packaplicacao@gmail.com");
-		destinatarios.add(usuario.getEmail());
+
 		String mensagem = "<html>"
 				+ "<head>"
 				+ "<title>Sistema PACK</title>"
@@ -315,7 +322,12 @@ public class UsuarioServiceImpl implements UsuarioService {
 				+ "<header style=\"background-color: #fff; color: #030330\"> "
 				+ "<body style=\"text-align: center; font-family: Verdana, Geneva, Tahoma, sans-serif\" > "
 				+ "<h1>Prezado(a) "+ usuario.getNome()+"</h1>"
-				+ "<h2> Seu cadastro foi realizado com sucesso!!</h2><br>"
+				+ "<h2 style= color:#2169FF> Seu cadastro foi realizado com sucesso!!</h2><br>"
+				+ "<h3 style= text-aling: left; color:#2169FF>Suas credenciais para acesso ao sistema:</h3>"
+				+ "<div style= text-aling:left; color:#030330>"
+				+ "<h4>Login:</h4>"+"<p>"+ usuario.getLogin() +"</p>"
+				+ "<h4>Senha única:</h4>"+ "<p>"+ usuario.getSenha() +"</p>"
+				+ "</div>"
 				+ "<img src=\'https://4.bp.blogspot.com/-fbQaVbgFNYg/WUb8JNv5CzI/AAAAAAAAXq0/_aOoBIcke0g9g4pIugv4w561jWTMgAuIQCLcBGAs/s1600/mtech.jpg\' alt=\"\" />"
 				+ "</body>"
 				+ "</html>";
@@ -323,8 +335,8 @@ public class UsuarioServiceImpl implements UsuarioService {
 		MensagemEmail email = new MensagemEmail(
 				"Cadastro", 
 				mensagem,
-				"Amanda Mel <packaplicacao@gmail.com>",
-				destinatarios);
+				"projetoapp05@gmail.com",
+				Arrays.asList(usuario.getEmail()));
 		
 				mailler.enviar(email);			
 	}

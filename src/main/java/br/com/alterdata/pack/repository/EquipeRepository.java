@@ -11,5 +11,6 @@ public interface EquipeRepository extends JpaRepository<Equipe, Long> {
     
     Optional<Equipe> findByIdEquipe(Long id);
     Optional<Equipe> findByNome(String nome);
+    Optional<Equipe> findById(Long id);
     List<Equipe> findByNomeContainingIgnoreCase(String nome);
 }

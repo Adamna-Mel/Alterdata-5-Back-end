@@ -25,11 +25,7 @@ public class Cargo {
     @Column(unique = true, nullable = false)
     private String nome;
 
-    private String icone;
-
-    private String cor1;
-
-    private String cor2;
+    private String avatarName;
 
     @JsonIgnore
     @OneToMany(mappedBy="cargo")
@@ -37,43 +33,25 @@ public class Cargo {
 
     public Cargo() {}
 
-    public Cargo(String nome, String icone) {
+    public Cargo(String nome, String avatarName) {
         
         this.nome = nome;
-        this.icone = icone;
+        this.avatarName = avatarName;
     }
 
-    public Cargo(Long idCargo, String nome, String icone) {
+    public Cargo(Long idCargo, String nome, String avatarName) {
 
         this.idCargo = idCargo;
         this.nome = nome;
-        this.icone = icone;
+        this.avatarName = avatarName;
     }
 
-    public Cargo(Long idCargo, String nome, String icone, String cor1, String cor2, List<Usuario> usuarios) {
+    public Cargo(Long idCargo, String nome, String avatarName, List<Usuario> usuarios) {
 
         this.idCargo = idCargo;
         this.nome = nome;
-        this.icone = icone;
-        this.cor1 = cor1;
-        this.cor2 = cor2;
+        this.avatarName = avatarName;
         this.usuarios = usuarios;
-    }
-
-    public String getCor1() {
-        return cor1;
-    }
-
-    public void setCor1(String cor1) {
-        this.cor1 = cor1;
-    }
-
-    public String getCor2() {
-        return cor2;
-    }
-
-    public void setCor2(String cor2) {
-        this.cor2 = cor2;
     }
 
     public List<Usuario> getUsuarios() {
@@ -100,12 +78,12 @@ public class Cargo {
         this.nome = nome;
     }
 
-    public String getIcone() {
-        return icone;
+    public String getAvatarName() {
+        return avatarName;
     }
 
-    public void setIcone(String icone) {
-        this.icone = icone;
+    public void setAvatarName(String avatarName) {
+        this.avatarName = avatarName;
     }
 
 }
