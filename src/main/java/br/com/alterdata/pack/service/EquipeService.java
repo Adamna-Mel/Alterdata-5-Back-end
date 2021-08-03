@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 
 import br.com.alterdata.pack.model.Equipe;
+import br.com.alterdata.pack.model.Usuario;
 import br.com.alterdata.pack.shared.EquipeDto;
 
 public interface EquipeService {
@@ -20,4 +21,5 @@ public interface EquipeService {
     void deletar(Long id);
     byte[] retornarAvatar(Long id) throws IOException;
     Equipe editarAvatar(Long id, MultipartFile arquivo);
+    List<Usuario> obterUsuariosPorLogin(Long idEquipe,String login);
 }
