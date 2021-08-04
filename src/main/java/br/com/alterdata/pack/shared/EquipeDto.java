@@ -8,18 +8,11 @@ public class EquipeDto {
 
     private Long id;
     private String nome;    
+    private String avatarName;
     private List<Usuario> membros;
-
-    public EquipeDto() {}
 
     public EquipeDto(String nome) {
         this.nome = nome;
-    }
-
-    public EquipeDto(String nome, List<Usuario> membros) {
-        
-        this.nome = nome;
-        this.membros = membros;
     }
 
     public Long getId() {
@@ -28,6 +21,15 @@ public class EquipeDto {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    
+    public String getAvatarName() {
+        return avatarName;
+    }
+
+    public void setAvatarName(String avatarName) {
+        this.avatarName = avatarName;
     }
 
     public List<Usuario> getMembros() {
