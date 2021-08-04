@@ -1,10 +1,5 @@
 package br.com.alterdata.pack.controller;
 
-<<<<<<< HEAD
-=======
-import javax.validation.Valid;
-
->>>>>>> f7feb2cf845817fcc45a1b46b84bc6cc6c134fb1
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -22,10 +17,7 @@ import br.com.alterdata.pack.model.EmailModel;
 import br.com.alterdata.pack.service.EmailService;
 import br.com.alterdata.pack.shared.EmailDto;
 
-<<<<<<< HEAD
 import javax.validation.Valid;
-=======
->>>>>>> f7feb2cf845817fcc45a1b46b84bc6cc6c134fb1
 
 @RestController
 public class EmailController {
@@ -50,8 +42,4 @@ public class EmailController {
             return new ResponseEntity<>(emailModelPage, HttpStatus.OK);
         }
     }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> f7feb2cf845817fcc45a1b46b84bc6cc6c134fb1
