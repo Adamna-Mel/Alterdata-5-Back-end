@@ -64,7 +64,7 @@ public class EquipeServiceImpl implements EquipeService{
         return encontrado;
     }
     
-
+    @Override
     public List<Usuario> obterUsuariosPorLogin(Long idEquipe,String login) {
         
         Optional<Equipe> encontrado = _repositorioEquipe.findByIdEquipe(idEquipe);

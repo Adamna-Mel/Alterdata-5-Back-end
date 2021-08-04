@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import br.com.alterdata.pack.model.Equipe;
+import br.com.alterdata.pack.model.Usuario;
 import br.com.alterdata.pack.service.EquipeService;
 import br.com.alterdata.pack.shared.EquipeDto;
 import io.swagger.annotations.Api;
@@ -55,8 +56,12 @@ public class EquipeController {
 		return new ResponseEntity<>(_equipeUsuario.obterPorNome(nome), HttpStatus.OK);
 	}
 
-    // @ApiOperation(value = "Obtem usuarios")
-
+    @ApiOperation(value = "Filtra os usuários da equipe por login")
+    @GetMapping("/{id}/login/{login}")
+    public ResponseEntity<List<Usuario>> obterUsuariosPorLogin(@PathVariable ("id") Long id, @PathVariable ("login") String login) {
+        return new ResponseEntity<>(_equipeUsuario.obterUsuariosPorLogin(id,login), HttpStatus.OK);
+    }
+    
     @ApiOperation(value = "Cadastra uma nova Equipe")
     @PostMapping
     public ResponseEntity<Equipe> adicionar(EquipeDto equipe, @RequestParam("img") MultipartFile arquivo) {
