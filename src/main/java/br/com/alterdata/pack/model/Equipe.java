@@ -36,29 +36,12 @@ public class Equipe {
     public Equipe() {}
 
     public Equipe(Long idEquipe, String nome, String avatarName) {
-<<<<<<< HEAD
         this.idEquipe = idEquipe;
         this.nome = nome;
         this.avatarName = avatarName;
     }
 
     public Equipe(Long idEquipe, String nome, String avatarName, List<Usuario> membros) {
-
-        this.idEquipe = idEquipe;
-        this.nome = nome;
-        this.avatarName = avatarName;
-        this.membros = membros;
-    }
-
-    public Equipe(Long idEquipe, String nome, String avatarName, List<Usuario> membros, String cor1, String cor2) {
-=======
-        this.idEquipe = idEquipe;
-        this.nome = nome;
-        this.avatarName = avatarName;
-    }
-
-    public Equipe(Long idEquipe, String nome, String avatarName, List<Usuario> membros) {
->>>>>>> f7feb2cf845817fcc45a1b46b84bc6cc6c134fb1
 
         this.idEquipe = idEquipe;
         this.nome = nome;

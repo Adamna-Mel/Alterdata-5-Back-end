@@ -125,11 +125,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 
 		Usuario adicionado = this._repositorioUsuario.save(novoUsuario);
 
-<<<<<<< HEAD
-		 enviarEmailDeCadastro(novoUsuario);
-=======
 		enviarEmailDeCadastro(novoUsuario);
->>>>>>> f7feb2cf845817fcc45a1b46b84bc6cc6c134fb1
 
 		//adicionarCargo(1L, adicionado.getId());
 
@@ -318,11 +314,6 @@ public class UsuarioServiceImpl implements UsuarioService {
 	
 	
 	private void enviarEmailDeCadastro(Usuario usuario){
-<<<<<<< HEAD
-		
-=======
-
->>>>>>> f7feb2cf845817fcc45a1b46b84bc6cc6c134fb1
 		String mensagem = "<html>"
 				+ "<head>"
 				+ "<title>Sistema PACK</title>"
@@ -331,13 +322,8 @@ public class UsuarioServiceImpl implements UsuarioService {
 				+ "<body style=\"text-align: center; font-family: Verdana, Geneva, Tahoma, sans-serif\" > "
 				+ "<h1>Prezado(a) "+ usuario.getNome()+"</h1>"
 				+ "<h2 style= color:#2169FF> Seu cadastro foi realizado com sucesso!!</h2><br>"
-<<<<<<< HEAD
-				+ "<div style= text-aling: left; color:#030330>"
-				+ "<h3style= text-aling: left; color:#2169FF>Suas credenciaiss de acesso</h3>"
-=======
 				+ "<h3 style= text-aling: left; color:#2169FF>Suas credenciais para acesso ao sistema:</h3>"
 				+ "<div style= text-aling:left; color:#030330>"
->>>>>>> f7feb2cf845817fcc45a1b46b84bc6cc6c134fb1
 				+ "<h4>Login:</h4>"+"<p>"+ usuario.getLogin() +"</p>"
 				+ "<h4>Senha única:</h4>"+ "<p>"+ usuario.getSenha() +"</p>"
 				+ "</div>"
@@ -348,11 +334,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 		MensagemEmail email = new MensagemEmail(
 				"Cadastro", 
 				mensagem,
-<<<<<<< HEAD
-				"Amanda Mel <packaplicacao@gmail.com>",
-=======
 				"projetoapp05@gmail.com",
->>>>>>> f7feb2cf845817fcc45a1b46b84bc6cc6c134fb1
 				Arrays.asList(usuario.getEmail()));
 		
 				mailler.enviar(email);			
