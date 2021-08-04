@@ -1,5 +1,6 @@
 package br.com.alterdata.pack.controller;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import br.com.alterdata.pack.model.Equipe;
+import br.com.alterdata.pack.model.Usuario;
 import br.com.alterdata.pack.service.EquipeService;
 import br.com.alterdata.pack.shared.EquipeDto;
 import io.swagger.annotations.Api;
@@ -55,18 +57,28 @@ public class EquipeController {
 		return new ResponseEntity<>(_equipeUsuario.obterPorNome(nome), HttpStatus.OK);
 	}
 
-    // @ApiOperation(value = "Obtem usuarios")
+    @ApiOperation(value = "Filtra os usuários da equipe por login")
+    @GetMapping("/{id}/login/{login}")
+	public ResponseEntity<List<Usuario>> obterUsuariosPorLogin(@PathVariable ("id") Long id, @PathVariable ("login") String login) {
+		return new ResponseEntity<>(_equipeUsuario.obterUsuariosPorLogin(id,login), HttpStatus.OK);
+	}
+    
+    @ApiOperation("Retorna o avatar da equipe")
+    @GetMapping("/avatar/{id}")
+    public ResponseEntity<byte[]> retornarAvatar(@PathVariable(value = "id") Long id) throws IOException{
+        return new ResponseEntity<>(_equipeUsuario.retornarAvatar(id), HttpStatus.OK);
+    }
 
     @ApiOperation(value = "Cadastra uma nova Equipe")
     @PostMapping
-    public ResponseEntity<Equipe> adicionar(Equipe equipe, @RequestParam("img") MultipartFile arquivo) {
+    public ResponseEntity<Equipe> adicionar(EquipeDto equipe, @RequestParam("img") MultipartFile arquivo) {
         Equipe novaEquipe = _equipeUsuario.criarEquipe(equipe, arquivo);
         return new ResponseEntity<>(novaEquipe, HttpStatus.CREATED );
     }
 
     @ApiOperation(value = "Atualiza as informações de uma equipe de acordo com o id")
     @PutMapping("/{id}")
-    public ResponseEntity<Equipe> atualizar(@PathVariable(value = "id") Long id, @RequestBody Equipe equipe) {
+    public ResponseEntity<Equipe> atualizar(@PathVariable(value = "id") Long id, @RequestBody EquipeDto equipe) {
         Equipe equipeAtualizado = _equipeUsuario.atualizar(id, equipe);
         return new ResponseEntity<>(equipeAtualizado, HttpStatus.OK);
     }

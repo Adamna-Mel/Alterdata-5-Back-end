@@ -1,5 +1,6 @@
 package br.com.alterdata.pack.controller;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -51,10 +52,17 @@ public class CargoController {
         return new ResponseEntity<>(_cargoUsuario.obterPorNome(nome), HttpStatus.OK);
     }
 
+    @ApiOperation("Retorna o avatar do cargo")
+    @GetMapping("/avatar/{id}")
+    public ResponseEntity<byte[]> retornarAvatar(@PathVariable(value = "id") Long id) throws IOException{
+
+        return new ResponseEntity<>(_cargoUsuario.retornarAvatar(id), HttpStatus.OK);
+    }
+
     @ApiOperation(value = "Cadastra um novo cargo")
     @ApiParam
     @PostMapping
-    public ResponseEntity<Cargo> adicionar(Cargo cargo, @RequestParam("img") MultipartFile arquivo) {
+    public ResponseEntity<Cargo> adicionar(CargoDto cargo, @RequestParam("img") MultipartFile arquivo) {
         Cargo novoCargo = _cargoUsuario.adicionarCargo(cargo, arquivo);
         return new ResponseEntity<>(novoCargo, HttpStatus.CREATED);
     }

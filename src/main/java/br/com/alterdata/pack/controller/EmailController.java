@@ -1,7 +1,5 @@
 package br.com.alterdata.pack.controller;
 
-import javax.validation.Valid;
-
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -19,6 +17,7 @@ import br.com.alterdata.pack.model.EmailModel;
 import br.com.alterdata.pack.service.EmailService;
 import br.com.alterdata.pack.shared.EmailDto;
 
+import javax.validation.Valid;
 
 @RestController
 public class EmailController {

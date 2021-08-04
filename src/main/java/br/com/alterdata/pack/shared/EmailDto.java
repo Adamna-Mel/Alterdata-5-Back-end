@@ -54,4 +54,8 @@ public class EmailDto {
         return text;
     }
 
+    public void setText(String text) {
+        this.text = text;
+    }    
+    
 }
