@@ -6,7 +6,7 @@ import br.com.alterdata.pack.model.Usuario;
 
 public class EquipeDto {
 
-    private Long id;
+    private Long idEquipe;
     private String nome;    
     private String avatarName;
     private List<Usuario> membros;
@@ -16,18 +16,18 @@ public class EquipeDto {
     }
 
     public EquipeDto(Long id, String nome, String avatarName, List<Usuario> membros) {
-        this.id = id;
+        this.idEquipe = id;
         this.nome = nome;
         this.avatarName = avatarName;
         this.membros = membros;
     }
 
-    public Long getId() {
-        return id;
+    public Long getIdEquipe() {
+        return idEquipe;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setId(Long idEquipe) {
+        this.idEquipe = idEquipe;
     }
 
     public String getNome() {
