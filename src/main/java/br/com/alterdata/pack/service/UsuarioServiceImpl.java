@@ -145,6 +145,8 @@ public class UsuarioServiceImpl implements UsuarioService {
 		ModelMapper mapper = new ModelMapper();
 
 		Usuario usuarioAtualizado = mapper.map(usuario, Usuario.class);
+
+		usuarioAtualizado.setAvatarName(usuarioAntigo.get().getAvatarName());
 		usuarioAtualizado.setEquipe(usuarioAntigo.get().getEquipe());
 
 		usuarioAtualizado.setCargo(usuarioAntigo.get().getCargo());

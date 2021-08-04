@@ -128,14 +128,12 @@ public class UsuarioController {
     @ApiOperation("Retorna o avatar do usuario")
     @GetMapping("/avatar/{id}")
     public ResponseEntity<byte[]> retornarAvatar(@PathVariable(value = "id") Long id) throws IOException{
-
         return new ResponseEntity<>(_servicoUsuario.retornarAvatar(id), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Deleta um usuário de acordo com o id")
     @DeleteMapping("sair-da-equipe/{id}")
     public ResponseEntity<Void> removerUsuarioDaEquipe(@PathVariable(value = "id") Long id) {
-
         _servicoUsuario.removerUsuarioDaEquipe(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }

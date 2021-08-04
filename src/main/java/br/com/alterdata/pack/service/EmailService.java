@@ -40,10 +40,8 @@ public class EmailService {
             return emailRepository.save(emailModel);
         }
     }
-
     public Page<EmailModel> findAll(Pageable pageable) {
         return  emailRepository.findAll(pageable);
     }
-
 
 }

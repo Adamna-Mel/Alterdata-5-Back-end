@@ -71,14 +71,14 @@ public class EquipeController {
 
     @ApiOperation(value = "Cadastra uma nova Equipe")
     @PostMapping
-    public ResponseEntity<Equipe> adicionar(Equipe equipe, @RequestParam("img") MultipartFile arquivo) {
+    public ResponseEntity<Equipe> adicionar(EquipeDto equipe, @RequestParam("img") MultipartFile arquivo) {
         Equipe novaEquipe = _equipeUsuario.criarEquipe(equipe, arquivo);
         return new ResponseEntity<>(novaEquipe, HttpStatus.CREATED );
     }
 
     @ApiOperation(value = "Atualiza as informações de uma equipe de acordo com o id")
     @PutMapping("/{id}")
-    public ResponseEntity<Equipe> atualizar(@PathVariable(value = "id") Long id, @RequestBody Equipe equipe) {
+    public ResponseEntity<Equipe> atualizar(@PathVariable(value = "id") Long id, @RequestBody EquipeDto equipe) {
         Equipe equipeAtualizado = _equipeUsuario.atualizar(id, equipe);
         return new ResponseEntity<>(equipeAtualizado, HttpStatus.OK);
     }
