@@ -37,6 +37,7 @@ import br.com.alterdata.pack.repository.EquipeRepository;
 import br.com.alterdata.pack.repository.UsuarioRepository;
 import br.com.alterdata.pack.security.JWTService;
 import br.com.alterdata.pack.shared.UsuarioDto;
+import br.com.alterdata.pack.shared.UsuarioDtoCadastro;
 import br.com.alterdata.pack.shared.login.LoginResponse;
 
 @Service
@@ -94,7 +95,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 
 
     @Override
-	public Usuario adicionar(UsuarioDto usuario, MultipartFile arquivo) {
+	public Usuario adicionar(UsuarioDtoCadastro usuario, MultipartFile arquivo) {
 
 		UUID uuid = UUID.randomUUID();
 
@@ -116,7 +117,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 		String senha = passwordEncoder.encode(usuario.getSenha());
 		novoUsuario.setSenha(senha);
 
-		validarCampos(novoUsuario);
+		//validarCampos(novoUsuario);
 		Optional<Usuario> usuarioProcurado = this._repositorioUsuario.findByLogin(novoUsuario.getLogin());
 
 		if (usuarioProcurado.isPresent()) {
@@ -125,7 +126,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 
 		Usuario adicionado = this._repositorioUsuario.save(novoUsuario);
 
-		enviarEmailDeCadastro(novoUsuario);
+		enviarEmailDeCadastro(usuario);
 
 		//adicionarCargo(1L, adicionado.getId());
 
@@ -147,7 +148,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 		usuarioAtualizado.setEquipe(usuarioAntigo.get().getEquipe());
 
 		usuarioAtualizado.setCargo(usuarioAntigo.get().getCargo());
-		validarCampos(usuarioAtualizado);
+		//validarCampos(usuarioAtualizado);
 
 		usuarioAtualizado.setId(id);
 		Optional<Usuario> usuarioProcurado = this._repositorioUsuario.findByLogin(usuarioAtualizado.getLogin());
@@ -300,20 +301,20 @@ public class UsuarioServiceImpl implements UsuarioService {
 	}
 
 
-	private void validarCampos(Usuario usuario) {
-		if (usuario.getLogin() == null || usuario.getLogin().equals(""))
-			throw new BadRequestException("Login não pode ser nulo!");
+	// private void validarCampos(Usuario usuario) {
+	// 	if (usuario.getLogin() == null || usuario.getLogin().equals(""))
+	// 		throw new BadRequestException("Login não pode ser nulo!");
 
-		if (usuario.getSenha() == null || usuario.getSenha().equals(""))
-			throw new BadRequestException("Senha não pode ser nulo!");
+	// 	if (usuario.getSenha() == null || usuario.getSenha().equals(""))
+	// 		throw new BadRequestException("Senha não pode ser nulo!");
 
-		if (usuario.getNome() == null || usuario.getNome().equals(""))
-			throw new BadRequestException("Nome não pode ser nulo ou vazio :(");
+	// 	if (usuario.getNome() == null || usuario.getNome().equals(""))
+	// 		throw new BadRequestException("Nome não pode ser nulo ou vazio :(");
 
-	}
+	// }
 	
 	
-	private void enviarEmailDeCadastro(Usuario usuario){
+	private void enviarEmailDeCadastro(UsuarioDtoCadastro usuario){
 
 		String mensagem = "<html>"
 				+ "<head>"

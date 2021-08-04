@@ -25,7 +25,7 @@ public class Equipe {
     @Column(unique = true, nullable = false)
     private String nome;
 
-    @Column(nullable = true)
+    @Column(nullable = false)
     private String avatarName;
 
     @JsonIgnore

@@ -1,9 +1,8 @@
 package br.com.alterdata.pack.controller;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
-
-import javax.security.auth.login.LoginException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -63,8 +62,12 @@ public class EquipeController {
 	public ResponseEntity<List<Usuario>> obterUsuariosPorLogin(@PathVariable ("id") Long id, @PathVariable ("login") String login) {
 		return new ResponseEntity<>(_equipeUsuario.obterUsuariosPorLogin(id,login), HttpStatus.OK);
 	}
-
-    // @ApiOperation(value = "Obtem usuarios")
+    
+    @ApiOperation("Retorna o avatar da equipe")
+    @GetMapping("/avatar/{id}")
+    public ResponseEntity<byte[]> retornarAvatar(@PathVariable(value = "id") Long id) throws IOException{
+        return new ResponseEntity<>(_equipeUsuario.retornarAvatar(id), HttpStatus.OK);
+    }
 
     @ApiOperation(value = "Cadastra uma nova Equipe")
     @PostMapping

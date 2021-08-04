@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -26,6 +28,7 @@ import org.springframework.web.multipart.MultipartFile;
 import br.com.alterdata.pack.model.Usuario;
 import br.com.alterdata.pack.service.UsuarioService;
 import br.com.alterdata.pack.shared.UsuarioDto;
+import br.com.alterdata.pack.shared.UsuarioDtoCadastro;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
@@ -71,9 +74,8 @@ public class UsuarioController {
 
     @ApiOperation(value = "Cadastra um novo usuário")
     @PostMapping
-    public ResponseEntity<Usuario> adicionar(UsuarioDto usuario, @RequestParam("img") MultipartFile arquivo) {
-        Usuario novoUsuario = _servicoUsuario.adicionar(usuario, arquivo);
-        
+    public ResponseEntity<Usuario> adicionar(@Valid UsuarioDtoCadastro usuario, @RequestParam("img") MultipartFile arquivo) {
+        Usuario novoUsuario = _servicoUsuario.adicionar(usuario, arquivo);   
         return new ResponseEntity<>(novoUsuario, HttpStatus.CREATED);
     }
     
