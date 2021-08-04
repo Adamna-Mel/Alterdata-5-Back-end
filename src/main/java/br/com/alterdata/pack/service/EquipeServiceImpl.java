@@ -10,7 +10,6 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.BeanUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -33,13 +32,11 @@ public class EquipeServiceImpl implements EquipeService{
     @Autowired
     private EquipeRepository _repositorioEquipe;
 
-    ModelMapper mapper = new ModelMapper();
-
     @Override
     public List<EquipeDto> obterTodos(Pageable pageable) {
         Page<Equipe> equipes = _repositorioEquipe.findAll(pageable);
         
-        return equipes.stream().map(equipe -> mapper.map(equipe, EquipeDto.class))
+        return equipes.stream().map(equipe -> new ModelMapper().map(equipe, EquipeDto.class))
                       .collect(Collectors.toList());
     }
 
@@ -47,6 +44,8 @@ public class EquipeServiceImpl implements EquipeService{
     @Override
     public Optional<EquipeDto> obterPorId(Long id) {
         Optional<Equipe> encontrado = _repositorioEquipe.findByIdEquipe(id);
+
+        ModelMapper mapper = new ModelMapper();
 
         if(!encontrado.isPresent()) {
             throw new NotFoundException("Não foi encontrado equipe com o ID: " + id);
@@ -64,7 +63,7 @@ public class EquipeServiceImpl implements EquipeService{
         return encontrado;
     }
     
-
+    @Override
     public List<Usuario> obterUsuariosPorLogin(Long idEquipe,String login) {
         
         Optional<Equipe> encontrado = _repositorioEquipe.findByIdEquipe(idEquipe);
@@ -87,6 +86,8 @@ public class EquipeServiceImpl implements EquipeService{
     public Equipe criarEquipe(EquipeDto equipeDto, MultipartFile arquivo) {
     
         UUID uuid = UUID.randomUUID();
+
+        ModelMapper mapper = new ModelMapper();
 
         Equipe equipe = mapper.map(equipeDto, Equipe.class);
 
@@ -118,6 +119,8 @@ public class EquipeServiceImpl implements EquipeService{
     public Equipe atualizar(Long id, EquipeDto equipeDto) {
 
         Optional<Equipe> encontrado = _repositorioEquipe.findById(id);
+
+        ModelMapper mapper = new ModelMapper();
         
         if (!encontrado.isPresent()) {
             throw new NotFoundException("Não foi encontrado nenhuma equipe com o Id: " + id);
@@ -169,11 +172,9 @@ public class EquipeServiceImpl implements EquipeService{
             throw new NotFoundException("Não foi encontrado nenhuma equipe com o Id: " + id);
         }
         
-        Equipe equipe = mapper.map(encontrado, Equipe.class);
-
-		File imagemArquivo = new File(uploadDirectory + "/" + equipe.getAvatarName());
+		File imagemArquivo = new File(uploadDirectory + "/" + encontrado.get().getAvatarName());
 		
-		if(!equipe.getAvatarName().equals(null) || ! equipe.getAvatarName().equals("")){
+		if(!encontrado.get().getAvatarName().equals(null) || ! encontrado.get().getAvatarName().equals("")){
 			return Files.readAllBytes(imagemArquivo.toPath());			
 		}
 		throw new NotFoundException("Imagem não encontrada na equipe com ID: ");

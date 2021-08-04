@@ -5,39 +5,34 @@ import java.util.List;
 import br.com.alterdata.pack.model.Usuario;
 
 public class CargoDto {
+
     private Long idCargo;
     private String nome;
     private String avatarName;
     private List<Usuario> usuarios;
 
-    public CargoDto() {}
-
-    public CargoDto(String nome, String avatarName) {
-        this.nome = nome;
-        this.avatarName = avatarName;
+    public CargoDto() {      
     }
-    
-    public CargoDto(String nome, String avatarName, String cor1, List<Usuario> usuarios) {
-            
+
+    public CargoDto(Long idCargo, String nome, String avatarName, List<Usuario> usuarios) {
+        this.idCargo = idCargo;
         this.nome = nome;
         this.avatarName = avatarName;
         this.usuarios = usuarios;
     }
 
-    public Long getIdCargo(){
+    public CargoDto(String nome, String avatarName, List<Usuario> usuarios) {
+        this.nome = nome;
+        this.avatarName = avatarName;
+        this.usuarios = usuarios;
+    }
+
+    public Long getIdCargo() {
         return idCargo;
     }
 
-    public void setIdCargo(Long id){
-        this.idCargo = id;
-    }
-
-    public List<Usuario> getUsuarios() {
-        return usuarios;
-    }
-
-    public void setUsuarios(List<Usuario> usuarios) {
-        this.usuarios = usuarios;
+    public void setIdCargo(Long idCargo) {
+        this.idCargo = idCargo;
     }
 
     public String getNome() {
@@ -55,5 +50,15 @@ public class CargoDto {
     public void setAvatarName(String avatarName) {
         this.avatarName = avatarName;
     }
+
+    public List<Usuario> getUsuarios() {
+        return usuarios;
+    }
+
+    public void setUsuarios(List<Usuario> usuarios) {
+        this.usuarios = usuarios;
+    }
+
     
+
 }
