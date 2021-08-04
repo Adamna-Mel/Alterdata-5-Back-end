@@ -18,20 +18,8 @@ public class UsuarioDtoCadastro {
         @NotBlank(message = "Campo não informado!")
         private String nome;
         
-        @NotBlank(message = "Campo não informado!")
         private String status;
-    
-        
-       public UsuarioDtoCadastro() {}
-
-        // public UsuarioDtoCadastro(@NotBlank @Email String email, @NotBlank String login, @NotBlank String senha,
-        //         @NotBlank String nome, @NotBlank String status) {
-        //     this.email = email;
-        //     this.login = login;
-        //     this.senha = senha;
-        //     this.nome = nome;
-        //     this.status = status;
-        // }
+       
 
         public String getEmail() {
             return email;

@@ -41,7 +41,6 @@ public class CargoServiceImpl implements CargoService{
                      .collect(Collectors.toList());    
 	}
 
-
     @Override
 	public Optional<CargoDto> obterPorId(Long id){
         Optional<Cargo> encontrado = _repositorioCargo.findByIdCargo(id);

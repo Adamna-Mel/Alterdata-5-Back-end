@@ -3,11 +3,11 @@ package br.com.alterdata.pack.exception;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.google.common.net.HttpHeaders;
+import org.springframework.http.HttpHeaders;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
@@ -16,15 +16,17 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @ControllerAdvice
 public class APIExceptionHandler extends ResponseEntityExceptionHandler{
 
-	public ResponseEntity<?> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
-	HttpHeaders headers, HttpStatus status, WebRequest request) {
+	@Override
+	protected ResponseEntity<Object> handleBindException(
+			BindException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+
 		List<String> erros = ex.getBindingResult()
 		.getAllErrors()
 		.stream()
 		.map(err -> err.getDefaultMessage())
 		.collect(Collectors.toList());
 
-		return new ResponseEntity<>(erros, HttpStatus.NOT_ACCEPTABLE);	
+		return new ResponseEntity<>(erros, HttpStatus.BAD_REQUEST);	
 	}
 
 	@ExceptionHandler(NotFoundException.class)
