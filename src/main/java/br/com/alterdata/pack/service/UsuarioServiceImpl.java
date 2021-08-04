@@ -231,6 +231,22 @@ public class UsuarioServiceImpl implements UsuarioService {
 
 		Optional<Usuario> usuario = obterPorId(id);  
 
+		if (!usuario.isPresent()) {
+			throw new NotFoundException("Nenhum usuário encontrado pelo id: " + id);
+		}
+
+		String formato = arquivo.getContentType();
+		formato = formato.substring(6,formato.length());
+
+		if (
+			!formato.equals("png") & 
+			!formato.equals("jpg") &
+			!formato.equals("jpeg") &
+			!formato.equals("gif")
+		){
+			throw new UnsupportedMediaTypeException("O formato da imagem não é suportado!");
+		}
+
 		String fileName = uuid + arquivo.getOriginalFilename();
 		Path fileNamePath = Paths.get(uploadDirectory, fileName);
 
