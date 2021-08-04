@@ -31,6 +31,8 @@ import br.com.alterdata.pack.shared.UsuarioDto;
 import br.com.alterdata.pack.shared.UsuarioDtoCadastro;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
 @CrossOrigin("*")
 @Api("API PACK - Sistema de Status e Cargos")
@@ -42,6 +44,12 @@ public class UsuarioController {
     UsuarioService _servicoUsuario;
     
     @ApiOperation(value = "Retorna todos os usuários cadastrados")
+    @ApiResponses(value = {
+        @ApiResponse(code = 200, message = "Retorna a lista de usuarios"),
+        @ApiResponse(code = 204, message = "Não existe usuario cadastrado :("),
+        @ApiResponse(code = 403, message=  "")
+        
+    })
     @GetMapping
     public ResponseEntity<Page<Usuario>> obterTodos(@PageableDefault(page=0, size=4) Pageable pageable) {
         if(_servicoUsuario.obterTodos(pageable).isEmpty()){

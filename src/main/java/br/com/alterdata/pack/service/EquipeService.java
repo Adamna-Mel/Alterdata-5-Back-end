@@ -22,5 +22,4 @@ public interface EquipeService {
     byte[] retornarAvatar(Long id) throws IOException;
     Equipe editarAvatar(Long id, MultipartFile arquivo);
     List<Usuario> obterUsuariosPorLogin(Long idEquipe,String login);
-   
 }
