@@ -9,6 +9,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import br.com.alterdata.pack.enuns.StatusEmail;
+import br.com.alterdata.pack.exception.BadGatewayException;
 import br.com.alterdata.pack.model.EmailModel;
 import br.com.alterdata.pack.repository.EmailRepository;
 
@@ -34,7 +35,7 @@ public class EmailService {
             emailSender.send(message);
 
             emailModel.setStatusEmail(StatusEmail.SENT);
-        } catch (MailException e){
+        } catch (Exception e){
             emailModel.setStatusEmail(StatusEmail.ERROR);
         } finally {
             return emailRepository.save(emailModel);
