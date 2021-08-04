@@ -62,7 +62,7 @@ public class CargoController {
     @ApiOperation(value = "Cadastra um novo cargo")
     @ApiParam
     @PostMapping
-    public ResponseEntity<Cargo> adicionar(Cargo cargo, @RequestParam("img") MultipartFile arquivo) {
+    public ResponseEntity<Cargo> adicionar(CargoDto cargo, @RequestParam("img") MultipartFile arquivo) {
         Cargo novoCargo = _cargoUsuario.adicionarCargo(cargo, arquivo);
         return new ResponseEntity<>(novoCargo, HttpStatus.CREATED);
     }

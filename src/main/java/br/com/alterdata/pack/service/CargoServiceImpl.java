@@ -33,6 +33,7 @@ public class CargoServiceImpl implements CargoService{
     @Autowired
 	private CargoRepository _repositorioCargo;
 
+
     @Override
     public List<CargoDto> obterTodos(Pageable pageable) {
         Page<Cargo> cargos = _repositorioCargo.findAll(pageable);
@@ -64,10 +65,14 @@ public class CargoServiceImpl implements CargoService{
 
 
     @Override
-    public Cargo adicionarCargo(Cargo cargo, MultipartFile arquivo){
+    public Cargo adicionarCargo(CargoDto cargoDto, MultipartFile arquivo){
 
         UUID uuid = UUID.randomUUID();
+
+        ModelMapper mapper = new ModelMapper();
   
+        Cargo cargo = mapper.map(cargoDto, Cargo.class);
+
         verificarSeCargoExiste(cargo);
 
         String fileName = uuid + arquivo.getOriginalFilename();
@@ -90,24 +95,26 @@ public class CargoServiceImpl implements CargoService{
 
 
     @Override
-    public Cargo atualizar(Long id, CargoDto cargo) {
-        Optional<Cargo> cargoAtual = _repositorioCargo.findByIdCargo(id);
+    public Cargo atualizar(Long id, CargoDto cargoDto) {
 
-        if(!cargoAtual.isPresent()){
+        Optional<Cargo> encontrado = _repositorioCargo.findByIdCargo(id);
+
+        ModelMapper mapper = new ModelMapper();
+
+        if(!encontrado.isPresent()){
             throw new NotFoundException("Cargo não encontrado pelo ID:" + id);
         }
-        ModelMapper mapper = new ModelMapper();
-        Cargo cargoMapeado = mapper.map(cargo, Cargo.class);
 
-        verificarSeCargoExiste(cargoMapeado);
+        Cargo cargo = mapper.map(cargoDto, Cargo.class);
 
-        if(cargo.getNome() != null){
-            cargoAtual.get().setNome(cargo.getNome());
+        cargo.setIdCargo(id);
+        cargo.setAvatarName(encontrado.get().getAvatarName());
+
+        if(cargoDto.getNome() == "" || cargoDto.getNome() == null){
+            throw new BadRequestException("Nome não pode ser nulo!");
         }
-        if(cargo.getAvatarName() != null){
-            cargoAtual.get().setAvatarName(cargo.getAvatarName());
-        }
-        return _repositorioCargo.save(cargoAtual.get());
+        
+        return _repositorioCargo.save(cargo);
     }
 
 
@@ -134,6 +141,7 @@ public class CargoServiceImpl implements CargoService{
 
     @Override
 	public byte[] retornarAvatar(Long id) throws IOException {
+
 		Optional<CargoDto> cargo = obterPorId(id);
 
 		File imagemArquivo = new File(uploadDirectory + "/" + cargo.get().getAvatarName());
@@ -148,9 +156,11 @@ public class CargoServiceImpl implements CargoService{
     public Cargo editarAvatar(Long id, MultipartFile arquivo){
 		UUID uuid = UUID.randomUUID();
 
-        Cargo cargo = new Cargo();
-		Optional<CargoDto> cargoDto = obterPorId(id);
-        BeanUtils.copyProperties(cargoDto, cargo);  
+        Optional<Cargo> cargo = _repositorioCargo.findById(id);
+
+        if (!cargo.isPresent()) {
+            throw new NotFoundException("Não foi encontrado nenhuma equipe com o Id: " + id);
+        }
 
 		String fileName = uuid + arquivo.getOriginalFilename();
 		Path fileNamePath = Paths.get(uploadDirectory, fileName);
@@ -161,7 +171,7 @@ public class CargoServiceImpl implements CargoService{
 			e.printStackTrace();;
 		}
 		
-		File destino = new File(uploadDirectory, cargoDto.get().getAvatarName());
+		File destino = new File(uploadDirectory, cargo.get().getAvatarName());
 
 		try {
 			destino.delete();
@@ -169,9 +179,9 @@ public class CargoServiceImpl implements CargoService{
 		   throw new RuntimeException("Erro ao deletar imagem", e);
 	   }
 
-		cargoDto.get().setAvatarName(fileName);
+		cargo.get().setAvatarName(fileName);
 
-		return _repositorioCargo.save(cargo);
+		return _repositorioCargo.save(cargo.get());
 	}
     
     
