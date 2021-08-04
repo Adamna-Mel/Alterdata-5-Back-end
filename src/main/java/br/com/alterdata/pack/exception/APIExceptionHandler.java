@@ -15,8 +15,8 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 @ControllerAdvice
 public class APIExceptionHandler extends ResponseEntityExceptionHandler{
-
-	public ResponseEntity<?> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
+	
+	protected ResponseEntity<?> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
 	HttpHeaders headers, HttpStatus status, WebRequest request) {
 		List<String> erros = ex.getBindingResult()
 		.getAllErrors()
