@@ -13,6 +13,8 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -27,6 +29,8 @@ public class Usuario implements UserDetails{
     private Long id;
 
     @Column(nullable = false)
+    @Email
+    @NotBlank(message = "não é um email válido!")
     private String email;
 
     @Column(unique = true, nullable = false)

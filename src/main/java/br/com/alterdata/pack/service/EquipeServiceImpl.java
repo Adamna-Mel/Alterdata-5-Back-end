@@ -169,11 +169,9 @@ public class EquipeServiceImpl implements EquipeService{
             throw new NotFoundException("Não foi encontrado nenhuma equipe com o Id: " + id);
         }
         
-        Equipe equipe = mapper.map(encontrado, Equipe.class);
-
-		File imagemArquivo = new File(uploadDirectory + "/" + equipe.getAvatarName());
+		File imagemArquivo = new File(uploadDirectory + "/" + encontrado.get().getAvatarName());
 		
-		if(!equipe.getAvatarName().equals(null) || ! equipe.getAvatarName().equals("")){
+		if(!encontrado.get().getAvatarName().equals(null) || ! encontrado.get().getAvatarName().equals("")){
 			return Files.readAllBytes(imagemArquivo.toPath());			
 		}
 		throw new NotFoundException("Imagem não encontrada na equipe com ID: ");

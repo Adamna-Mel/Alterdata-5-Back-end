@@ -1,5 +1,6 @@
 package br.com.alterdata.pack.controller;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -58,10 +59,16 @@ public class EquipeController {
 
     @ApiOperation(value = "Filtra os usuários da equipe por login")
     @GetMapping("/{id}/login/{login}")
-    public ResponseEntity<List<Usuario>> obterUsuariosPorLogin(@PathVariable ("id") Long id, @PathVariable ("login") String login) {
-        return new ResponseEntity<>(_equipeUsuario.obterUsuariosPorLogin(id,login), HttpStatus.OK);
-    }
+	public ResponseEntity<List<Usuario>> obterUsuariosPorLogin(@PathVariable ("id") Long id, @PathVariable ("login") String login) {
+		return new ResponseEntity<>(_equipeUsuario.obterUsuariosPorLogin(id,login), HttpStatus.OK);
+	}
     
+    @ApiOperation("Retorna o avatar da equipe")
+    @GetMapping("/avatar/{id}")
+    public ResponseEntity<byte[]> retornarAvatar(@PathVariable(value = "id") Long id) throws IOException{
+        return new ResponseEntity<>(_equipeUsuario.retornarAvatar(id), HttpStatus.OK);
+    }
+
     @ApiOperation(value = "Cadastra uma nova Equipe")
     @PostMapping
     public ResponseEntity<Equipe> adicionar(EquipeDto equipe, @RequestParam("img") MultipartFile arquivo) {

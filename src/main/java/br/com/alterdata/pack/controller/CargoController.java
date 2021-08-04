@@ -1,5 +1,6 @@
 package br.com.alterdata.pack.controller;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -49,6 +50,13 @@ public class CargoController {
     @GetMapping("/nome/{nome}")
     public ResponseEntity<List<Cargo>> obterPorNome(@PathVariable(value = "nome") String nome) {
         return new ResponseEntity<>(_cargoUsuario.obterPorNome(nome), HttpStatus.OK);
+    }
+
+    @ApiOperation("Retorna o avatar do cargo")
+    @GetMapping("/avatar/{id}")
+    public ResponseEntity<byte[]> retornarAvatar(@PathVariable(value = "id") Long id) throws IOException{
+
+        return new ResponseEntity<>(_cargoUsuario.retornarAvatar(id), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Cadastra um novo cargo")

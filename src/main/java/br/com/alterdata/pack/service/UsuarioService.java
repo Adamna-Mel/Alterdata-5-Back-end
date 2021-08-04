@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 
 import br.com.alterdata.pack.model.Usuario;
 import br.com.alterdata.pack.shared.UsuarioDto;
+import br.com.alterdata.pack.shared.UsuarioDtoCadastro;
 import br.com.alterdata.pack.shared.login.LoginResponse;
 
 public interface UsuarioService {
@@ -18,7 +19,7 @@ public interface UsuarioService {
 	Page<Usuario> obterTodos(Pageable pageable); 
 	Optional<Usuario> obterPorId(Long id);
 	List<Usuario> obterPorLogin(String login);
-	Usuario adicionar(UsuarioDto usuario, MultipartFile arquivo);
+	Usuario adicionar(UsuarioDtoCadastro usuario, MultipartFile arquivo);
 	Usuario atualizar(Long id, UsuarioDto usuario);
 	void deletar(Long id);
 	Usuario editarStatus(Long id, UsuarioDto usuario);
