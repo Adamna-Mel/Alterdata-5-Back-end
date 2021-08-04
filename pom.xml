@@ -92,11 +92,7 @@
 			<version>1.4.7</version>
 		</dependency>
 
-<<<<<<< HEAD
-		<dependency>
-=======
-		 <dependency>
->>>>>>> f7feb2cf845817fcc45a1b46b84bc6cc6c134fb1
+	<dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-mail</artifactId>
         </dependency>
