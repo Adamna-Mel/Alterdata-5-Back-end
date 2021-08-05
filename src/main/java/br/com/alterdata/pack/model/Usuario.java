@@ -19,11 +19,14 @@ import javax.validation.constraints.NotBlank;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import io.swagger.annotations.ApiModelProperty;
+
 @Entity
 @Table(name = "usuario")
 @SequenceGenerator(name = "generator_usuario", sequenceName = "sequence_usuario", initialValue = 1, allocationSize = 1)
 public class Usuario implements UserDetails{
 
+    @ApiModelProperty(value = "Id usuario (fk)")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "generator_usuario")
     private Long id;

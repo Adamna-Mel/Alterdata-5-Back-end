@@ -44,7 +44,7 @@ import br.com.alterdata.pack.shared.login.LoginResponse;
 public class UsuarioServiceImpl implements UsuarioService {
 	private static final String headerPrefix = "Bearer ";
     
-	public static String uploadDirectory = System.getProperty("user.dir") + "/src/main/java/br/com/alterdata/pack/images";
+	public static String uploadDirectory = System.getProperty("user.dir") + "/src/main/java/br/com/alterdata/pack/images/usuario";
     
 	@Autowired
 	private UsuarioRepository _repositorioUsuario;
