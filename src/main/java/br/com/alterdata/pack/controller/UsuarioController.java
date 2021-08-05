@@ -228,7 +228,6 @@ public class UsuarioController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-
     @ApiOperation(value = "Deleta um usuário de acordo com o id")
     @ApiResponses(value = {
         @ApiResponse(code = 204, message = "Usuario removido da equipe com sucesso :)"),
