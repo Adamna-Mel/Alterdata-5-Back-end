@@ -101,6 +101,7 @@ public class UsuarioController {
         @ApiResponse(code = 201, message = "Usuario criado com sucesso :)"),
         @ApiResponse(code = 400, message = "Informação invalida :o"),
         @ApiResponse(code = 404, message = "Não existe usuario com esse login :("),
+        @ApiResponse(code = 415, message = "Mídia não suportada vá com calma jovem ;)"),
         @ApiResponse(code = 403, message=  "Você não tem permissão para isso meu consagrado :("),
         @ApiResponse(code = 500, message = "Vish quinhetão, da uma olhadinha no código ;-;") 
     })
@@ -156,6 +157,7 @@ public class UsuarioController {
         @ApiResponse(code = 200, message = "Avatar do usuario atualizado com sucesso :)"),
         @ApiResponse(code = 400, message = "Informação invalida :o"),
         @ApiResponse(code = 404, message = "Não existe usuario com esse Id :("),
+        @ApiResponse(code = 415, message = "Mídia não suportada vá com calma jovem ;)"),
         @ApiResponse(code = 403, message=  "Você não tem permissão para isso meu consagrado :("),
         @ApiResponse(code = 500, message = "Vish quinhetão, da uma olhadinha no código ;-;") 
     })
