@@ -68,7 +68,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			.antMatchers(HttpMethod.POST, "/api/login")
 			.permitAll()
 
-            .antMatchers(HttpMethod.POST, "/api/usuarios/esqueci-senha")
+            .antMatchers(HttpMethod.POST, "/api/login/esqueci-senha")
+			.permitAll()
+            
+            
+            .antMatchers(HttpMethod.POST, "/api/usuarios")
 			.permitAll()
 
 			.anyRequest().authenticated();  //aqui vc não pode mais fz tudo
