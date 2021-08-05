@@ -114,8 +114,8 @@ public class UsuarioController {
     })
 
     @PostMapping
-    public ResponseEntity<Usuario> adicionar(@Valid UsuarioDtoCadastro usuario, @RequestParam("img") MultipartFile arquivo) {
-        Usuario novoUsuario = _servicoUsuario.adicionar(usuario, arquivo);   
+    public ResponseEntity<Usuario> adicionar(@Valid UsuarioDtoCadastro usuario) {
+        Usuario novoUsuario = _servicoUsuario.adicionar(usuario);   
         return new ResponseEntity<>(novoUsuario, HttpStatus.CREATED);
     }
     
