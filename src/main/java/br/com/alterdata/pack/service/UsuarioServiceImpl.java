@@ -141,13 +141,8 @@ public class UsuarioServiceImpl implements UsuarioService {
 
 		enviarEmailDeCadastro(usuario);
 
-		//adicionarCargo(1L, adicionado.getId());
-
-		//adicionarEquipe(adicionado.getId(), 1L);
-
 		return adicionado;
 	}
-
 
 	@Override
 	public Usuario atualizar(Long id, UsuarioDto usuario) {
@@ -178,7 +173,6 @@ public class UsuarioServiceImpl implements UsuarioService {
 		return usuarioSalvo;
 	}
 
-
 	@Override
 	public void deletar(Long id) {
 		Optional<Usuario> usuario = obterPorId(id);
@@ -196,7 +190,6 @@ public class UsuarioServiceImpl implements UsuarioService {
 		this._repositorioUsuario.deleteById(id);
 	}
 
-
 	@Override
 	public byte[] retornarAvatar(Long id) throws IOException {
 		Optional<Usuario> usuario = obterPorId(id);
@@ -207,7 +200,6 @@ public class UsuarioServiceImpl implements UsuarioService {
 		}
 		throw new NotFoundException("Imagem não encontrada no usuario com ID: " + usuario.get().getId());
 	}
-
 
 	@Override
 	public Usuario editarStatus(Long id, UsuarioDto usuario) {
@@ -222,7 +214,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 		return usuarioSalvo;
 	}
 
-
+	@Override
 	public Usuario editarAvatar(Long id, MultipartFile arquivo){
 
 		UUID uuid = UUID.randomUUID();
@@ -267,7 +259,6 @@ public class UsuarioServiceImpl implements UsuarioService {
 		return _repositorioUsuario.save(usuario.get());
 	}
 
-
 	@Override
 	public Usuario adicionarCargo(Long idCargo, Long idUsuario) {
 		Optional<Cargo> cargo = _cargoRepository.findById(idCargo);
@@ -282,7 +273,6 @@ public class UsuarioServiceImpl implements UsuarioService {
 		throw new NotFoundException("Cargo não encontrado pelo ID: " + idCargo + " :(");
 	}
 
-
 	@Override
 	public Usuario adicionarEquipe(Long idUsuario, Long idEquipe) {
 		Optional<Equipe> equipe = _repositorioEquipe.findById(idEquipe);
@@ -296,7 +286,6 @@ public class UsuarioServiceImpl implements UsuarioService {
 		}
 		throw new NotFoundException("Equipe não encontrado pelo ID: " + idEquipe + " :(");
 	}
-
 
 	@Override
 	public LoginResponse logar(String login, String senha) {
@@ -316,7 +305,6 @@ public class UsuarioServiceImpl implements UsuarioService {
 		}
 	}
 
-
 	@Override
 	public Usuario removerUsuarioDaEquipe(Long id){
 
@@ -330,6 +318,72 @@ public class UsuarioServiceImpl implements UsuarioService {
 		throw new NotFoundException("Não existe usuario com o ID: " + id);
 	}
 	
+	@Override
+	public void enviarEmailEsqueciSenha(String email){
+
+		Optional<Usuario> usuario = _repositorioUsuario.findByEmail(email);
+
+		String[] carct ={"0","1","2","3","4","5","6","7","8","9",
+		"a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z",
+		"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
+
+		String senha="";
+
+		for (int x=0; x<6; x++){
+			int j = (int) (Math.random()*carct.length);
+			senha += carct[j];
+		}
+
+		String novaSenha = passwordEncoder.encode(senha);
+
+		usuario.get().setSenha(novaSenha);
+		_repositorioUsuario.save(usuario.get());
+
+		String mensagem = "<html>"
+				+ "<head>"
+				+ "<title>Sistema PACK</title>"
+				+ "</head>"
+				+ "<header style=\"background-color: #fff; color: #030330\"> "
+				+ "<body style=\"text-align: center; font-family: Verdana, Geneva, Tahoma, sans-serif\" > "
+				+ "<h1>Olá, "+ usuario.get().getLogin() +"</h1>"
+				+ "<h2 style= color:#2169FF> Sua nova senha foi gerada com sucesso!!</h2><br>"
+				+ "<div style=\"text-aling:left; color:#030330\">"
+				+ "<h4>Senha:</h4>"+"<p>"+ usuario.get().getSenha() +"</p>"
+				+ "</div>"
+				+ "<img src=\'https://4.bp.blogspot.com/-fbQaVbgFNYg/WUb8JNv5CzI/AAAAAAAAXq0/_aOoBIcke0g9g4pIugv4w561jWTMgAuIQCLcBGAs/s1600/mtech.jpg\' alt=\"\" />"
+				+ "</body>"
+				+ "</html>";
+			
+		MensagemEmail emailSenha = new MensagemEmail(
+				"Nova senha", 
+				mensagem,
+				"projetoapp05@gmail.com",
+				Arrays.asList(usuario.get().getEmail()));
+		
+				mailler.enviar(emailSenha);			
+	}	
+
+	@Override
+	public void alterarSenha(Long id, String antigaSenha, String novaSenha){
+
+		Optional<Usuario> usuario = obterPorId(id);
+
+		try {
+
+			Authentication autenticacao = authenticationManager.authenticate(
+			new UsernamePasswordAuthenticationToken(usuario.get().getLogin(), antigaSenha, Collections.emptyList()));
+
+				String novaSenhaCript = passwordEncoder.encode(novaSenha);
+
+				usuario.get().setSenha(novaSenhaCript);
+				_repositorioUsuario.save(usuario.get());
+
+		} catch (Exception e) {
+			throw new UnauthorizedException("Senha inválida :(");
+		}
+			
+	}
+
 	private void enviarEmailDeCadastro(UsuarioDtoCadastro usuario){
 		String mensagem = "<html>"
 				+ "<head>"
@@ -357,48 +411,5 @@ public class UsuarioServiceImpl implements UsuarioService {
 				mailler.enviar(email);			
 	}
 
-	
-	@Override
-	public void enviarEmailEsqueciSenha(String email){
-
-		Optional<Usuario> usuario = _repositorioUsuario.findByEmail(email);
-
-		String[] carct ={"0","1","2","3","4","5","6","7","8","9",
-		"a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z",
-		"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
-
-		String senha="";
-
-		for (int x=0; x<6; x++){
-			int j = (int) (Math.random()*carct.length);
-			senha += carct[j];
-		}
-
-		usuario.get().setSenha(senha);
-		_repositorioUsuario.save(usuario.get());
-
-		String mensagem = "<html>"
-				+ "<head>"
-				+ "<title>Sistema PACK</title>"
-				+ "</head>"
-				+ "<header style=\"background-color: #fff; color: #030330\"> "
-				+ "<body style=\"text-align: center; font-family: Verdana, Geneva, Tahoma, sans-serif\" > "
-				+ "<h1>Olá, "+ usuario.get().getLogin() +"</h1>"
-				+ "<h2 style= color:#2169FF> Sua nova senha foi gerada com sucesso!!</h2><br>"
-				+ "<div style=\"text-aling:left; color:#030330\">"
-				+ "<h4>Senha:</h4>"+"<p>"+ usuario.get().getSenha() +"</p>"
-				+ "</div>"
-				+ "<img src=\'https://4.bp.blogspot.com/-fbQaVbgFNYg/WUb8JNv5CzI/AAAAAAAAXq0/_aOoBIcke0g9g4pIugv4w561jWTMgAuIQCLcBGAs/s1600/mtech.jpg\' alt=\"\" />"
-				+ "</body>"
-				+ "</html>";
-			
-		MensagemEmail emailSenha = new MensagemEmail(
-				"Nova senha", 
-				mensagem,
-				"projetoapp05@gmail.com",
-				Arrays.asList(usuario.get().getEmail()));
-		
-				mailler.enviar(emailSenha);			
-	}	
 
 }

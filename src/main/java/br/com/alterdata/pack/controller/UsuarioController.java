@@ -128,7 +128,6 @@ public class UsuarioController {
         @ApiResponse(code = 403, message=  "Você não tem permissão para isso meu consagrado :("),
         @ApiResponse(code = 500, message = "Vish quinhetão, da uma olhadinha no código ;-;") 
     })
-
     @PostMapping("/esqueci-senha")
     public ResponseEntity<Void> enviarEmailEsqueciSenha(String email) {
         _servicoUsuario.enviarEmailEsqueciSenha(email);
@@ -183,7 +182,6 @@ public class UsuarioController {
         return new ResponseEntity<>(usuarioNovoStatus, HttpStatus.OK);
     }
 
-
     @ApiOperation(value = "Adiciona um cargo no usuario")
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "Cargo do usuario atualizado com sucesso :)"),
@@ -213,6 +211,21 @@ public class UsuarioController {
     public ResponseEntity<Usuario> adicionarEquipe(@PathVariable(value = "idEquipe") Long idEquipe, @PathVariable(value = "idUsuario") Long idUsuario){
         Usuario usuarioNovoStatus = _servicoUsuario.adicionarEquipe(idUsuario, idEquipe);    
         return new ResponseEntity<>(usuarioNovoStatus, HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "Alterar senha do usuario")
+    @ApiResponses(value = {
+        @ApiResponse(code = 204, message = "Senha alterada com sucesso :)"),
+        @ApiResponse(code = 400, message = "Informação invalida :o"),
+        @ApiResponse(code = 404, message = "Não existe usuario com esse Id :("),
+        @ApiResponse(code = 401, message = "Senha invalida"),
+        @ApiResponse(code = 403, message=  "Você não tem permissão para isso meu consagrado :("),
+        @ApiResponse(code = 500, message = "Vish quinhetão, da uma olhadinha no código ;-;") 
+    })
+    @PatchMapping("alterar-senha/{id}")
+    public ResponseEntity<Void> alterarSenha(@PathVariable(value = "id") Long id, String antigaSenha, String novaSenha) {
+        _servicoUsuario.alterarSenha(id, antigaSenha, novaSenha);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 
