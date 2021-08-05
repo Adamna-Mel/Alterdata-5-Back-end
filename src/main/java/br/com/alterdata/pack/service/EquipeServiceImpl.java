@@ -84,7 +84,7 @@ public class EquipeServiceImpl implements EquipeService{
         return usuarios;
     }
 
-
+    
     @Override
     public Equipe criarEquipe(EquipeDto equipeDto, MultipartFile arquivo) {
     
