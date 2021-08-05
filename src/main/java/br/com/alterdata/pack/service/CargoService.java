@@ -16,9 +16,9 @@ public interface CargoService {
     List<CargoDto> obterTodos(Pageable pageable);
     Optional<CargoDto> obterPorId(Long id);
     List<Cargo> obterPorNome(String nome);
+    byte[] retornarAvatar(Long id) throws IOException;
     Cargo adicionarCargo(CargoDto cargo);
     Cargo atualizar(Long id, CargoDto cargo);
-    void deletar(Long id); 
-    byte[] retornarAvatar(Long id) throws IOException;
     Cargo editarAvatar(Long id, MultipartFile arquivo); 
+    void deletar(Long id); 
 }

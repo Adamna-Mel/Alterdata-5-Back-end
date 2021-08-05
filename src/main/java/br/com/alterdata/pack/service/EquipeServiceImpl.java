@@ -199,7 +199,6 @@ public class EquipeServiceImpl implements EquipeService{
 		return _repositorioEquipe.save(equipe.get());
 	}
 
-
     //#endregion
     //#region DELETE
 

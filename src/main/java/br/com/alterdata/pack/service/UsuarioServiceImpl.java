@@ -69,6 +69,8 @@ public class UsuarioServiceImpl implements UsuarioService {
 	@Autowired
 	Mailler mailler;
 
+	//#region GET
+
 	@Override
 	public Page<Usuario> obterTodos(Pageable pageable) {
 		return  this._repositorioUsuario.findAll(pageable);
@@ -94,6 +96,9 @@ public class UsuarioServiceImpl implements UsuarioService {
 		return usuarios;
 	}
 
+	//#endregion
+	//#region POST
+
     @Override
 	public Usuario adicionar(UsuarioDtoCadastro usuario) {
 
@@ -118,6 +123,28 @@ public class UsuarioServiceImpl implements UsuarioService {
 
 		return adicionado;
 	}
+
+	
+	@Override
+	public LoginResponse logar(String login, String senha) {
+
+		try {
+			Authentication autenticacao = authenticationManager.authenticate(
+				new UsernamePasswordAuthenticationToken(login, senha, Collections.emptyList()));
+
+			SecurityContextHolder.getContext().setAuthentication(autenticacao);
+			String token = headerPrefix + jwtService.gerarToken(autenticacao);
+
+			Optional<Usuario> usuario = _repositorioUsuario.findByLogin(login);
+			return new LoginResponse(usuario.get(), token);
+
+		} catch (Exception e) {
+			throw new UnauthorizedException("Credenciais inválidas :(");
+		}
+	}
+
+	//#endregion
+	//#region PUT
 
 	@Override
 	public Usuario atualizar(Long id, UsuarioDto usuario) {
@@ -149,23 +176,8 @@ public class UsuarioServiceImpl implements UsuarioService {
 		return usuarioSalvo;
 	}
 
-	@Override
-	public void deletar(Long id) {
-		Optional<Usuario> usuario = obterPorId(id);
-
-		if (!usuario.isPresent()) {
-			throw new NotFoundException("Não existe equipe com o id informado: " + id);
-		}
-		File destino = new File(uploadDirectory, usuario.get().getAvatarName());
-
-		if(!usuario.get().getAvatarName().equals(null)){
-
-			destino.delete();
-	    } else {
-		   throw new BadGatewayException("Erro ao deletar imagem");
-	   }	
-		this._repositorioUsuario.deleteById(id);
-	}
+	//#endregion
+	//#region PATCH
 
 	@Override
 	public byte[] retornarAvatar(Long id) throws IOException {
@@ -178,6 +190,8 @@ public class UsuarioServiceImpl implements UsuarioService {
 		}
 		throw new NotFoundException("Imagem não encontrada no usuario com ID: " + usuario.get().getId());
 	}
+
+
 
 	@Override
 	public Usuario editarStatus(Long id, UsuarioDto usuario) {
@@ -264,24 +278,28 @@ public class UsuarioServiceImpl implements UsuarioService {
 		throw new NotFoundException("Equipe não encontrado pelo ID: " + idEquipe + " :(");
 	}
 
+	//#endregion
+	//#region DELETE
+
 	@Override
-	public LoginResponse logar(String login, String senha) {
+	public void deletar(Long id) {
+		Optional<Usuario> usuario = obterPorId(id);
 
-		try {
-			Authentication autenticacao = authenticationManager.authenticate(
-				new UsernamePasswordAuthenticationToken(login, senha, Collections.emptyList()));
-
-			SecurityContextHolder.getContext().setAuthentication(autenticacao);
-			String token = headerPrefix + jwtService.gerarToken(autenticacao);
-
-			Optional<Usuario> usuario = _repositorioUsuario.findByLogin(login);
-			return new LoginResponse(usuario.get(), token);
-
-		} catch (Exception e) {
-			throw new UnauthorizedException("Credenciais inválidas :(");
+		if (!usuario.isPresent()) {
+			throw new NotFoundException("Não existe equipe com o id informado: " + id);
 		}
+		File destino = new File(uploadDirectory, usuario.get().getAvatarName());
+
+		if(!usuario.get().getAvatarName().equals(null)){
+
+			destino.delete();
+	    } else {
+		   throw new BadGatewayException("Erro ao deletar imagem");
+	   }	
+		this._repositorioUsuario.deleteById(id);
 	}
 
+	
 	@Override
 	public Usuario removerUsuarioDaEquipe(Long id){
 
@@ -294,6 +312,10 @@ public class UsuarioServiceImpl implements UsuarioService {
 
 		throw new NotFoundException("Não existe usuario com o ID: " + id);
 	}
+	
+	//#endregion
+
+
 	
 	@Override
 	public void enviarEmailEsqueciSenha(String email){
