@@ -50,6 +50,7 @@ public class UsuarioController {
         @ApiResponse(code = 403, message=  "Você não tem permissão para isso meu consagrado :("),
         @ApiResponse(code = 500, message = "Vish quinhetão, da uma olhadinha no código ;-;") 
     })
+
     @GetMapping(produces="application/json")
     public ResponseEntity<Page<Usuario>> obterTodos(@PageableDefault(page=0, size=4) Pageable pageable) {
         if(_servicoUsuario.obterTodos(pageable).isEmpty()){
@@ -58,6 +59,7 @@ public class UsuarioController {
         return new ResponseEntity<>(_servicoUsuario.obterTodos(pageable), HttpStatus.OK);
     }
 
+
     @ApiOperation(value = "Filtra os usuários cadastrados de acordo com o Id")
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "Usuario encontrado com sucesso :)"),
@@ -65,11 +67,13 @@ public class UsuarioController {
         @ApiResponse(code = 403, message=  "Você não tem permissão para isso meu consagrado :("),
         @ApiResponse(code = 500, message = "Vish quinhetão, da uma olhadinha no código ;-;") 
     })
+
     @GetMapping("/{id}")
     public ResponseEntity<Optional<Usuario>> obterPorId(@PathVariable(value = "id") Long id) {
         Optional<Usuario> usuario = _servicoUsuario.obterPorId(id);
         return new ResponseEntity<>(usuario, HttpStatus.OK);
     }
+
 
     @ApiOperation(value = "Filtra os usuários cadastrados de acordo com o login")
     @ApiResponses(value = {
@@ -78,6 +82,7 @@ public class UsuarioController {
         @ApiResponse(code = 403, message=  "Você não tem permissão para isso meu consagrado :("),
         @ApiResponse(code = 500, message = "Vish quinhetão, da uma olhadinha no código ;-;") 
     })
+
     @GetMapping("/login/{login}")
     public ResponseEntity<List<Usuario>> obterPorLogin(@PathVariable(value = "login") String login) {
         return new ResponseEntity<>(_servicoUsuario.obterPorLogin(login), HttpStatus.OK);
@@ -91,26 +96,30 @@ public class UsuarioController {
         @ApiResponse(code = 403, message=  "Você não tem permissão para isso meu consagrado :("),
         @ApiResponse(code = 500, message = "Vish quinhetão, da uma olhadinha no código ;-;") 
     })
+
     @GetMapping("/avatar/{id}")
     public ResponseEntity<byte[]> retornarAvatar(@PathVariable(value = "id") Long id) throws IOException{
         return new ResponseEntity<>(_servicoUsuario.retornarAvatar(id), HttpStatus.OK);
     }
+
 
     @ApiOperation(value = "Cadastra um novo usuário")
     @ApiResponses(value = {
         @ApiResponse(code = 201, message = "Usuario criado com sucesso :)"),
         @ApiResponse(code = 400, message = "Informação invalida :o"),
         @ApiResponse(code = 404, message = "Não existe usuario com esse login :("),
-        @ApiResponse(code = 415, message = "Mídia não suportada vá com calma jovem ;)"),
+        @ApiResponse(code = 415, message = "Mídia não suportada, vá com calma jovem ;)"),
         @ApiResponse(code = 403, message=  "Você não tem permissão para isso meu consagrado :("),
         @ApiResponse(code = 500, message = "Vish quinhetão, da uma olhadinha no código ;-;") 
     })
+
     @PostMapping
     public ResponseEntity<Usuario> adicionar(@Valid UsuarioDtoCadastro usuario, @RequestParam("img") MultipartFile arquivo) {
         Usuario novoUsuario = _servicoUsuario.adicionar(usuario, arquivo);   
         return new ResponseEntity<>(novoUsuario, HttpStatus.CREATED);
     }
     
+
     @ApiOperation(value = "Envia um email com nova senha")
     @ApiResponses(value = {
         @ApiResponse(code = 201, message = "Email enviado com sucesso com sua nova senha :)"),
@@ -119,11 +128,13 @@ public class UsuarioController {
         @ApiResponse(code = 403, message=  "Você não tem permissão para isso meu consagrado :("),
         @ApiResponse(code = 500, message = "Vish quinhetão, da uma olhadinha no código ;-;") 
     })
+
     @PostMapping("/esqueci-senha")
     public ResponseEntity<Void> enviarEmailEsqueciSenha(String email) {
         _servicoUsuario.enviarEmailEsqueciSenha(email);
         return new ResponseEntity<>( HttpStatus.OK);
     }
+
 
     @ApiOperation(value = "Atualiza as informações de um usuário de acordo com o id")
     @ApiResponses(value = {
@@ -133,10 +144,12 @@ public class UsuarioController {
         @ApiResponse(code = 403, message=  "Você não tem permissão para isso meu consagrado :("),
         @ApiResponse(code = 500, message = "Vish quinhetão, da uma olhadinha no código ;-;") 
     })
+
     @PutMapping("/{id}")
     public ResponseEntity<Usuario> atualizar(@PathVariable(value = "id") Long id, @RequestBody UsuarioDto usuario) {
         return new ResponseEntity<>(_servicoUsuario.atualizar(id, usuario), HttpStatus.OK);
     }
+
 
     @ApiOperation(value = "Atualiza status de usuário de acordo com o id")
     @ApiResponses(value = {
@@ -146,26 +159,30 @@ public class UsuarioController {
         @ApiResponse(code = 403, message=  "Você não tem permissão para isso meu consagrado :("),
         @ApiResponse(code = 500, message = "Vish quinhetão, da uma olhadinha no código ;-;") 
     })
+
     @PatchMapping("status/{id}")
     public ResponseEntity<Usuario> editarStatus(@PathVariable(value = "id") Long id, @RequestBody UsuarioDto usuario) {
         Usuario usuarioNovoStatus = _servicoUsuario.editarStatus(id, usuario);    
         return new ResponseEntity<>(usuarioNovoStatus, HttpStatus.OK);
     }
 
+
     @ApiOperation(value = "Alterar avatar")
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "Avatar do usuario atualizado com sucesso :)"),
         @ApiResponse(code = 400, message = "Informação invalida :o"),
         @ApiResponse(code = 404, message = "Não existe usuario com esse Id :("),
-        @ApiResponse(code = 415, message = "Mídia não suportada vá com calma jovem ;)"),
+        @ApiResponse(code = 415, message = "Mídia não suportada, vá com calma jovem ;)"),
         @ApiResponse(code = 403, message=  "Você não tem permissão para isso meu consagrado :("),
         @ApiResponse(code = 500, message = "Vish quinhetão, da uma olhadinha no código ;-;") 
     })
+
     @PatchMapping("alterar-avatar/{id}")
     public ResponseEntity<Usuario> editarAvatar(@PathVariable(value = "id") Long id, @RequestParam("img") MultipartFile arquivo) {
         Usuario usuarioNovoStatus = _servicoUsuario.editarAvatar(id, arquivo);      
         return new ResponseEntity<>(usuarioNovoStatus, HttpStatus.OK);
     }
+
 
     @ApiOperation(value = "Adiciona um cargo no usuario")
     @ApiResponses(value = {
@@ -175,11 +192,13 @@ public class UsuarioController {
         @ApiResponse(code = 403, message=  "Você não tem permissão para isso meu consagrado :("),
         @ApiResponse(code = 500, message = "Vish quinhetão, da uma olhadinha no código ;-;") 
     })
+
     @PatchMapping("{idUsuario}/cargo/{idCargo}")
     public ResponseEntity<Usuario> adicionarCargo(@PathVariable(value = "idCargo") Long idCargo, @PathVariable(value = "idUsuario") Long idUsuario){
         Usuario usuarioNovoStatus = _servicoUsuario.adicionarCargo(idCargo, idUsuario);    
         return new ResponseEntity<>(usuarioNovoStatus, HttpStatus.OK);
     }
+
 
     @ApiOperation(value = "Adiciona uma equipe no usuario")
     @ApiResponses(value = {
@@ -189,11 +208,13 @@ public class UsuarioController {
         @ApiResponse(code = 403, message=  "Você não tem permissão para isso meu consagrado :("),
         @ApiResponse(code = 500, message = "Vish quinhetão, da uma olhadinha no código ;-;") 
     })
+
     @PatchMapping("{idUsuario}/equipe/{idEquipe}")
     public ResponseEntity<Usuario> adicionarEquipe(@PathVariable(value = "idEquipe") Long idEquipe, @PathVariable(value = "idUsuario") Long idUsuario){
         Usuario usuarioNovoStatus = _servicoUsuario.adicionarEquipe(idUsuario, idEquipe);    
         return new ResponseEntity<>(usuarioNovoStatus, HttpStatus.OK);
     }
+
 
     @ApiOperation(value = "Deleta um usuário de acordo com o id")
     @ApiResponses(value = {
@@ -203,11 +224,13 @@ public class UsuarioController {
         @ApiResponse(code = 403, message=  "Você não tem permissão para isso meu consagrado :("),
         @ApiResponse(code = 500, message = "Vish quinhetão, da uma olhadinha no código ;-;") 
     })
+
     @DeleteMapping("sair-da-equipe/{id}")
     public ResponseEntity<Void> removerUsuarioDaEquipe(@PathVariable(value = "id") Long id) {
         _servicoUsuario.removerUsuarioDaEquipe(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
 
     @ApiOperation(value = "Deleta um usuário de acordo com o id")
     @ApiResponses(value = {
@@ -217,6 +240,7 @@ public class UsuarioController {
         @ApiResponse(code = 403, message=  "Você não tem permissão para isso meu consagrado :("),
         @ApiResponse(code = 500, message = "Vish quinhetão, da uma olhadinha no código ;-;") 
     })
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletar(@PathVariable(value = "id") Long id) {
         _servicoUsuario.deletar(id);
