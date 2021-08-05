@@ -33,6 +33,8 @@ public class EquipeServiceImpl implements EquipeService{
     @Autowired
     private EquipeRepository _repositorioEquipe;
 
+    //#region GET
+
     @Override
     public List<EquipeDto> obterTodos(Pageable pageable) {
         Page<Equipe> equipes = _repositorioEquipe.findAll(pageable);
@@ -84,12 +86,29 @@ public class EquipeServiceImpl implements EquipeService{
         return usuarios;
     }
 
+    @Override
+	public byte[] retornarAvatar(Long id) throws IOException {
+
+		Optional<Equipe> encontrado = _repositorioEquipe.findById(id);
+        
+        if (!encontrado.isPresent()) {
+            throw new NotFoundException("Não foi encontrado nenhuma equipe com o Id: " + id);
+        }
+		if(!encontrado.get().getAvatarName().equals("")){
+        
+		    File imagemArquivo = new File(uploadDirectory + "/" + encontrado.get().getAvatarName());
+		
+			return Files.readAllBytes(imagemArquivo.toPath());			
+        }
+		throw new NotFoundException("Imagem não encontrada na equipe com ID: ");
+	}
+
+    //#endregion
+    //#region POST
     
     @Override
-    public Equipe criarEquipe(EquipeDto equipeDto, MultipartFile arquivo) {
+    public Equipe criarEquipe(EquipeDto equipeDto) {
     
-        UUID uuid = UUID.randomUUID();
-
         ModelMapper mapper = new ModelMapper();
 
         Equipe equipe = mapper.map(equipeDto, Equipe.class);
@@ -98,29 +117,7 @@ public class EquipeServiceImpl implements EquipeService{
 
         verificarSeEquipeExiste(equipe);
 
-        String formato = arquivo.getContentType();
-		formato = formato.substring(6,formato.length());
-
-		if (
-			!formato.equals("png") & 
-			!formato.equals("jpg") &
-			!formato.equals("jpeg") &
-			!formato.equals("gif")
-		){
-			throw new UnsupportedMediaTypeException("O formato da imagem não é suportado!");
-		}
-
-        String fileName = uuid + arquivo.getOriginalFilename();
-		Path fileNamePath = Paths.get(uploadDirectory, fileName);
-
-		try {
-			Files.write(fileNamePath, arquivo.getBytes());
-
-		} catch (IOException e) {
-			e.printStackTrace();;
-		}
-
-		equipe.setAvatarName(fileName);
+		equipe.setAvatarName("");
 
         if (equipe.getNome() == "" || equipe.getNome() == null) {
             throw new BadRequestException("Nome não pode ser nulo!");
@@ -129,6 +126,8 @@ public class EquipeServiceImpl implements EquipeService{
         return  _repositorioEquipe.save(equipe);
     }
     
+    //#endregion
+    //#region PUT
 
     @Override
     public Equipe atualizar(Long id, EquipeDto equipeDto) {
@@ -155,47 +154,9 @@ public class EquipeServiceImpl implements EquipeService{
         return equipeAtualizado;
     }
 
+    //#endregion
+    //#region PATCH
 
-    @Override
-    public void deletar(Long id) {
-        Optional<Equipe> encontrado = _repositorioEquipe.findByIdEquipe(id);
-
-        if (!encontrado.isPresent()) {
-            throw new NotFoundException("Não existe equipe com o id informado: " + id);
-        }
-        for (Usuario membro : encontrado.get().getMembros()) {
-            membro.setEquipe(null);
-        }
-        File destino = new File(uploadDirectory, encontrado.get().getAvatarName());
-
-        try {
-			destino.delete();
-	   } catch (Exception e) {
-		   throw new RuntimeException("Erro ao deletar imagem", e);
-	   }
-        encontrado.get().setMembros(null);
-        
-        this._repositorioEquipe.deleteById(id);
-    }
-
-
-    @Override
-	public byte[] retornarAvatar(Long id) throws IOException {
-
-		Optional<Equipe> encontrado = _repositorioEquipe.findById(id);
-        
-        if (!encontrado.isPresent()) {
-            throw new NotFoundException("Não foi encontrado nenhuma equipe com o Id: " + id);
-        }
-        
-		File imagemArquivo = new File(uploadDirectory + "/" + encontrado.get().getAvatarName());
-		
-		if(!encontrado.get().getAvatarName().equals(null) || ! encontrado.get().getAvatarName().equals("")){
-			return Files.readAllBytes(imagemArquivo.toPath());			
-		}
-		throw new NotFoundException("Imagem não encontrada na equipe com ID: ");
-	}
-    
     
     public Equipe editarAvatar(Long id, MultipartFile arquivo){
 		UUID uuid = UUID.randomUUID();
@@ -229,17 +190,42 @@ public class EquipeServiceImpl implements EquipeService{
 		
 		File destino = new File(uploadDirectory, equipe.get().getAvatarName());
 
-		try {
+		if(!equipe.get().getAvatarName().equals("")){
 			destino.delete();
-	   } catch (Exception e) {
-		   throw new RuntimeException("Erro ao deletar imagem", e);
-	   }
+	   } 
 
 		equipe.get().setAvatarName(fileName);
 
 		return _repositorioEquipe.save(equipe.get());
 	}
 
+
+    //#endregion
+    //#region DELETE
+
+    @Override
+    public void deletar(Long id) {
+        Optional<Equipe> encontrado = _repositorioEquipe.findByIdEquipe(id);
+
+        if (!encontrado.isPresent()) {
+            throw new NotFoundException("Não existe equipe com o id informado: " + id);
+        }
+        for (Usuario membro : encontrado.get().getMembros()) {
+            membro.setEquipe(null);
+        }
+        File destino = new File(uploadDirectory, encontrado.get().getAvatarName());
+
+        if(!encontrado.get().getAvatarName().equals("")){
+			destino.delete();
+	   }
+	   
+        encontrado.get().setMembros(null);
+        
+        this._repositorioEquipe.deleteById(id);
+    }
+
+    //#endregion
+ 
     private void verificarSeEquipeExiste(Equipe equipe) {
         Optional<Equipe> equipeExiste = _repositorioEquipe.findByNome(equipe.getNome());
 

@@ -63,9 +63,7 @@ public class CargoServiceImpl implements CargoService{
 
 
     @Override
-    public Cargo adicionarCargo(CargoDto cargoDto, MultipartFile arquivo){
-
-        UUID uuid = UUID.randomUUID();
+    public Cargo adicionarCargo(CargoDto cargoDto){
 
         ModelMapper mapper = new ModelMapper();
   
@@ -73,29 +71,7 @@ public class CargoServiceImpl implements CargoService{
 
         verificarSeCargoExiste(cargo);
 
-        String formato = arquivo.getContentType();
-		formato = formato.substring(6,formato.length());
-
-		if (
-			!formato.equals("png") & 
-			!formato.equals("jpg") &
-			!formato.equals("jpeg") &
-			!formato.equals("gif")
-		){
-			throw new UnsupportedMediaTypeException("O formato da imagem não é suportado!");
-		}
-
-
-        String fileName = uuid + arquivo.getOriginalFilename();
-		Path fileNamePath = Paths.get(uploadDirectory, fileName);
-
-		try {
-			Files.write(fileNamePath, arquivo.getBytes());
-		} catch (IOException e) {
-			e.printStackTrace();;
-		}
-
-		cargo.setAvatarName(fileName);
+		cargo.setAvatarName("");
 
         cargo.setIdCargo(null);
 
@@ -141,11 +117,10 @@ public class CargoServiceImpl implements CargoService{
         }
         File destino = new File(uploadDirectory, cargo.get().getAvatarName());
 
-		try {
+		if(!cargo.get().getAvatarName().equals("")){
 			destino.delete();
-	   } catch (Exception e) {
-		   throw new RuntimeException("Erro ao deletar imagem", e);
-	   }
+	   } 
+       
         this._repositorioCargo.deleteById(id);
 	}
 
@@ -157,7 +132,7 @@ public class CargoServiceImpl implements CargoService{
 
 		File imagemArquivo = new File(uploadDirectory + "/" + cargo.get().getAvatarName());
 		
-		if(!cargo.get().getAvatarName().equals(null) || ! cargo.get().getAvatarName().equals("")){
+		if(!cargo.get().getAvatarName().equals("")){
 			return Files.readAllBytes(imagemArquivo.toPath());			
 		}
 		throw new NotFoundException("Imagem não encontrada no cargo com ID: " + cargo.get().getIdCargo());
@@ -196,11 +171,10 @@ public class CargoServiceImpl implements CargoService{
 		
 		File destino = new File(uploadDirectory, cargo.get().getAvatarName());
 
-		try {
+        if(!cargo.get().getAvatarName().equals(null)){
 			destino.delete();
-	   } catch (Exception e) {
-		   throw new RuntimeException("Erro ao deletar imagem", e);
-	   }
+	   } 
+		 
 
 		cargo.get().setAvatarName(fileName);
 

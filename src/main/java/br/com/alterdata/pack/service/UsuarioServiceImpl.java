@@ -84,7 +84,6 @@ public class UsuarioServiceImpl implements UsuarioService {
 		return encontrado;
 	}
 
-	
 	@Override
 	public List<Usuario> obterPorLogin(String login) {
 		List<Usuario> usuarios = _repositorioUsuario.findByLoginContaining(login.toLowerCase());
@@ -95,38 +94,12 @@ public class UsuarioServiceImpl implements UsuarioService {
 		return usuarios;
 	}
 
-
     @Override
 	public Usuario adicionar(UsuarioDtoCadastro usuario) {
-
-		UUID uuid = UUID.randomUUID();
 
 		ModelMapper mapper = new ModelMapper();
 
 		Usuario novoUsuario = mapper.map(usuario, Usuario.class);
-
-		// String formato = arquivo.getContentType();
-		// formato = formato.substring(6,formato.length());
-
-		// if (
-		// 	!formato.equals("png") & 
-		// 	!formato.equals("jpg") &
-		// 	!formato.equals("jpeg") &
-		// 	!formato.equals("gif")
-		// ){
-		// 	throw new UnsupportedMediaTypeException("O formato da imagem não é suportado!");
-		// }
-
-		// String fileName = uuid + arquivo.getOriginalFilename();
-		// Path fileNamePath = Paths.get(uploadDirectory, fileName);
-
-		// try {
-		// 	Files.write(fileNamePath, arquivo.getBytes());
-		// } catch (IOException e) {
-		// 	e.printStackTrace();
-		// }
-
-		// novoUsuario.setAvatarName(fileName);
 
 		String senha = passwordEncoder.encode(usuario.getSenha());
 		novoUsuario.setSenha(senha);
@@ -170,6 +143,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 				throw new BadRequestException("Usuário já existe com o Login: " + usuarioAtualizado.getLogin());
 			}
 		}
+
 		Usuario usuarioSalvo = this._repositorioUsuario.save(usuarioAtualizado);
 
 		return usuarioSalvo;
@@ -184,9 +158,10 @@ public class UsuarioServiceImpl implements UsuarioService {
 		}
 		File destino = new File(uploadDirectory, usuario.get().getAvatarName());
 
-		try {
+		if(!usuario.get().getAvatarName().equals(null)){
+
 			destino.delete();
-	   } catch (Exception e) {
+	    } else {
 		   throw new BadGatewayException("Erro ao deletar imagem");
 	   }	
 		this._repositorioUsuario.deleteById(id);
@@ -284,7 +259,6 @@ public class UsuarioServiceImpl implements UsuarioService {
 
 		if (equipe.isPresent()) {
 			usuario.get().setEquipe(equipe.get());
-
 			return _repositorioUsuario.save(usuario.get());
 		}
 		throw new NotFoundException("Equipe não encontrado pelo ID: " + idEquipe + " :(");
@@ -358,12 +332,11 @@ public class UsuarioServiceImpl implements UsuarioService {
 				+ "</html>";
 			
 		MensagemEmail emailSenha = new MensagemEmail(
-				"Nova senha", 
-				mensagem,
-				"projetoapp05@gmail.com",
-				Arrays.asList(usuario.get().getEmail()));
-		
-				mailler.enviar(emailSenha);			
+			"Nova senha", 
+			mensagem,
+			"projetoapp05@gmail.com",
+			Arrays.asList(usuario.get().getEmail()));
+			mailler.enviar(emailSenha);			
 	}	
 
 	@Override
@@ -372,7 +345,6 @@ public class UsuarioServiceImpl implements UsuarioService {
 		Optional<Usuario> usuario = obterPorId(id);
 
 		try {
-
 			Authentication autenticacao = authenticationManager.authenticate(
 			new UsernamePasswordAuthenticationToken(usuario.get().getLogin(), antigaSenha, Collections.emptyList()));
 
@@ -384,7 +356,6 @@ public class UsuarioServiceImpl implements UsuarioService {
 		} catch (Exception e) {
 			throw new UnauthorizedException("Senha inválida :(");
 		}
-			
 	}
 
 	private void enviarEmailDeCadastro(UsuarioDtoCadastro usuario){
@@ -406,12 +377,10 @@ public class UsuarioServiceImpl implements UsuarioService {
 				+ "</html>";
 			
 		MensagemEmail email = new MensagemEmail(
-				"Cadastro", 
-				mensagem,
-				"projetoapp05@gmail.com",
-				Arrays.asList(usuario.getEmail()));
-		
-				mailler.enviar(email);			
+			"Cadastro", 
+			mensagem,
+			"projetoapp05@gmail.com",
+			Arrays.asList(usuario.getEmail()));
+			mailler.enviar(email);			
 	}
-
 }
