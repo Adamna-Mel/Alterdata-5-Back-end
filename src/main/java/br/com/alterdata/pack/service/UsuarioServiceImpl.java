@@ -97,7 +97,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 
 
     @Override
-	public Usuario adicionar(UsuarioDtoCadastro usuario, MultipartFile arquivo) {
+	public Usuario adicionar(UsuarioDtoCadastro usuario) {
 
 		UUID uuid = UUID.randomUUID();
 
@@ -105,28 +105,28 @@ public class UsuarioServiceImpl implements UsuarioService {
 
 		Usuario novoUsuario = mapper.map(usuario, Usuario.class);
 
-		String formato = arquivo.getContentType();
-		formato = formato.substring(6,formato.length());
+		// String formato = arquivo.getContentType();
+		// formato = formato.substring(6,formato.length());
 
-		if (
-			!formato.equals("png") & 
-			!formato.equals("jpg") &
-			!formato.equals("jpeg") &
-			!formato.equals("gif")
-		){
-			throw new UnsupportedMediaTypeException("O formato da imagem não é suportado!");
-		}
+		// if (
+		// 	!formato.equals("png") & 
+		// 	!formato.equals("jpg") &
+		// 	!formato.equals("jpeg") &
+		// 	!formato.equals("gif")
+		// ){
+		// 	throw new UnsupportedMediaTypeException("O formato da imagem não é suportado!");
+		// }
 
-		String fileName = uuid + arquivo.getOriginalFilename();
-		Path fileNamePath = Paths.get(uploadDirectory, fileName);
+		// String fileName = uuid + arquivo.getOriginalFilename();
+		// Path fileNamePath = Paths.get(uploadDirectory, fileName);
 
-		try {
-			Files.write(fileNamePath, arquivo.getBytes());
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		// try {
+		// 	Files.write(fileNamePath, arquivo.getBytes());
+		// } catch (IOException e) {
+		// 	e.printStackTrace();
+		// }
 
-		novoUsuario.setAvatarName(fileName);
+		// novoUsuario.setAvatarName(fileName);
 
 		String senha = passwordEncoder.encode(usuario.getSenha());
 		novoUsuario.setSenha(senha);
@@ -136,6 +136,8 @@ public class UsuarioServiceImpl implements UsuarioService {
 		if (usuarioProcurado.isPresent()) {
 			throw new BadRequestException("Usuário já existe com o Login: " + usuario.getLogin());
 		}
+
+		novoUsuario.setAvatarName("");
 
 		Usuario adicionado = this._repositorioUsuario.save(novoUsuario);
 
@@ -193,9 +195,10 @@ public class UsuarioServiceImpl implements UsuarioService {
 	@Override
 	public byte[] retornarAvatar(Long id) throws IOException {
 		Optional<Usuario> usuario = obterPorId(id);
-		File imagemArquivo = new File(uploadDirectory + "/" + usuario.get().getAvatarName());
-		
-		if(!usuario.get().getAvatarName().equals(null) || !usuario.get().getAvatarName().equals("")){
+
+		if(!usuario.get().getAvatarName().equals("")){
+
+			File imagemArquivo = new File(uploadDirectory + "/" + usuario.get().getAvatarName());	
 			return Files.readAllBytes(imagemArquivo.toPath());			
 		}
 		throw new NotFoundException("Imagem não encontrada no usuario com ID: " + usuario.get().getId());
@@ -248,11 +251,11 @@ public class UsuarioServiceImpl implements UsuarioService {
 		
 		File destino = new File(uploadDirectory, usuario.get().getAvatarName());
 
-		try {
+		if(!usuario.get().getAvatarName().equals(null)){
 			destino.delete();
-	   } catch (Exception e) {
-		   throw new RuntimeException("Erro ao deletar imagem", e);
-	   }
+		}else{
+	   		throw new RuntimeException("Erro ao deletar imagem");
+		}
 
 		usuario.get().setAvatarName(fileName);
 

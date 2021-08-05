@@ -19,7 +19,7 @@ public interface UsuarioService {
 	Page<Usuario> obterTodos(Pageable pageable); 
 	Optional<Usuario> obterPorId(Long id);
 	List<Usuario> obterPorLogin(String login);
-	Usuario adicionar(UsuarioDtoCadastro usuario, MultipartFile arquivo);
+	Usuario adicionar(UsuarioDtoCadastro usuario);
 	Usuario atualizar(Long id, UsuarioDto usuario);
 	void deletar(Long id);
 	Usuario editarStatus(Long id, UsuarioDto usuario);
