@@ -161,7 +161,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 
 		usuarioAtualizado.setAvatarName(usuarioAntigo.get().getAvatarName());
 		usuarioAtualizado.setEquipe(usuarioAntigo.get().getEquipe());
-
+		usuarioAtualizado.setSenha(usuarioAntigo.get().getSenha());
 		usuarioAtualizado.setCargo(usuarioAntigo.get().getCargo());
 		
 		usuarioAtualizado.setId(id);
