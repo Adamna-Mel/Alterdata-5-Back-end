@@ -195,6 +195,21 @@ public class UsuarioController {
         return new ResponseEntity<>(usuarioNovoStatus, HttpStatus.OK);
     }
 
+    @ApiOperation(value = "Alterar senha do usuario")
+    @ApiResponses(value = {
+        @ApiResponse(code = 204, message = "Usuario removido da equipe com sucesso :)"),
+        @ApiResponse(code = 400, message = "Informação invalida :o"),
+        @ApiResponse(code = 404, message = "Não existe usuario com esse Id :("),
+        @ApiResponse(code = 403, message=  "Você não tem permissão para isso meu consagrado :("),
+        @ApiResponse(code = 500, message = "Vish quinhetão, da uma olhadinha no código ;-;") 
+    })
+    @PatchMapping("alterar-senha/{id}")
+    public ResponseEntity<Void> alterarSenha(@PathVariable(value = "id") Long id, String antigaSenha, String novaSenha) {
+        _servicoUsuario.alterarSenha(id, antigaSenha, novaSenha);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+
     @ApiOperation(value = "Deleta um usuário de acordo com o id")
     @ApiResponses(value = {
         @ApiResponse(code = 204, message = "Usuario removido da equipe com sucesso :)"),
