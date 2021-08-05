@@ -37,6 +37,8 @@ public class CargoController {
     @Autowired
     CargoService _cargoUsuario;
 
+    //#region GET
+
     @ApiOperation(value = "Retorna todos os cargos cadastradas")
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "Lista de cargos encontrado com sucesso :)"),
@@ -44,7 +46,6 @@ public class CargoController {
         @ApiResponse(code = 403, message=  "Você não tem permissão para isso meu consagrado :("),
         @ApiResponse(code = 500, message = "Vish quinhetão, da uma olhadinha no código ;-;") 
     })
-
     @GetMapping
     public ResponseEntity<List<CargoDto>> obterTodos(@PageableDefault(page=0, size=4) Pageable pageable) {
         return ResponseEntity.ok(_cargoUsuario.obterTodos(pageable));
@@ -58,7 +59,6 @@ public class CargoController {
         @ApiResponse(code = 403, message=  "Você não tem permissão para isso meu consagrado :("),
         @ApiResponse(code = 500, message = "Vish quinhetão, da uma olhadinha no código ;-;") 
     })
-
     @GetMapping("/{id}")
     public ResponseEntity<Optional<CargoDto>> obterPorId(@PathVariable(value = "id") Long id) {
         Optional<CargoDto> cargo = _cargoUsuario.obterPorId(id);
@@ -73,7 +73,6 @@ public class CargoController {
         @ApiResponse(code = 403, message=  "Você não tem permissão para isso meu consagrado :("),
         @ApiResponse(code = 500, message = "Vish quinhetão, da uma olhadinha no código ;-;") 
     })
-
     @GetMapping("/nome/{nome}")
     public ResponseEntity<List<Cargo>> obterPorNome(@PathVariable(value = "nome") String nome) {
         return new ResponseEntity<>(_cargoUsuario.obterPorNome(nome), HttpStatus.OK);
@@ -87,12 +86,13 @@ public class CargoController {
         @ApiResponse(code = 403, message=  "Você não tem permissão para isso meu consagrado :("),
         @ApiResponse(code = 500, message = "Vish quinhetão, da uma olhadinha no código ;-;") 
     })
-
     @GetMapping("/avatar/{id}")
     public ResponseEntity<byte[]> retornarAvatar(@PathVariable(value = "id") Long id) throws IOException{
         return new ResponseEntity<>(_cargoUsuario.retornarAvatar(id), HttpStatus.OK);
     }
 
+    //#endregion
+    //#region POST
 
     @ApiOperation(value = "Cadastra um novo cargo")
     @ApiResponses(value = {
@@ -103,14 +103,14 @@ public class CargoController {
         @ApiResponse(code = 403, message=  "Você não tem permissão para isso meu consagrado :("),
         @ApiResponse(code = 500, message = "Vish quinhetão, da uma olhadinha no código ;-;") 
     })
-
-    @ApiParam
     @PostMapping
-    public ResponseEntity<Cargo> adicionar(CargoDto cargo, @RequestParam("img") MultipartFile arquivo) {
-        Cargo novoCargo = _cargoUsuario.adicionarCargo(cargo, arquivo);
+    public ResponseEntity<Cargo> adicionar(CargoDto cargo) {
+        Cargo novoCargo = _cargoUsuario.adicionarCargo(cargo);
         return new ResponseEntity<>(novoCargo, HttpStatus.CREATED);
     }
 
+    //#endregion
+    //#region PUT
 
     @ApiOperation(value = "Atualiza as informações de um cargo de acordo com o id")
     @ApiResponses(value = {
@@ -120,13 +120,14 @@ public class CargoController {
         @ApiResponse(code = 403, message=  "Você não tem permissão para isso meu consagrado :("),
         @ApiResponse(code = 500, message = "Vish quinhetão, da uma olhadinha no código ;-;") 
     })
-
     @PutMapping("/{id}")
     public ResponseEntity<Cargo> atualizar(@PathVariable(value = "id") Long id, @RequestBody CargoDto cargo) {
         Cargo cargoAtt = _cargoUsuario.atualizar(id, cargo);
         return new ResponseEntity<>(cargoAtt, HttpStatus.OK);
     }
 
+    //#endregion
+    //#region PATCH
     
     @ApiOperation(value = "Alterar avatar")
     @ApiResponses(value = {
@@ -143,6 +144,8 @@ public class CargoController {
         return new ResponseEntity<>(novoAvatarCargo, HttpStatus.OK);
     }
 
+    //#endregion
+    //#region DELETE
 
     @ApiOperation(value = "Deleta um cargo de acordo com o id")
     @ApiResponses(value = {
@@ -159,4 +162,5 @@ public class CargoController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    //#endregion
 }

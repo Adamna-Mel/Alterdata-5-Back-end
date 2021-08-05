@@ -43,6 +43,8 @@ public class UsuarioController {
     @Autowired
     UsuarioService _servicoUsuario;
     
+    //#region GET
+
     @ApiOperation(value = "Retorna todos os usuários cadastrados")
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "Lista de usuarios encontrada com sucesso :)"),
@@ -50,7 +52,6 @@ public class UsuarioController {
         @ApiResponse(code = 403, message=  "Você não tem permissão para isso meu consagrado :("),
         @ApiResponse(code = 500, message = "Vish quinhetão, da uma olhadinha no código ;-;") 
     })
-
     @GetMapping(produces="application/json")
     public ResponseEntity<Page<Usuario>> obterTodos(@PageableDefault(page=0, size=4) Pageable pageable) {
         if(_servicoUsuario.obterTodos(pageable).isEmpty()){
@@ -67,7 +68,6 @@ public class UsuarioController {
         @ApiResponse(code = 403, message=  "Você não tem permissão para isso meu consagrado :("),
         @ApiResponse(code = 500, message = "Vish quinhetão, da uma olhadinha no código ;-;") 
     })
-
     @GetMapping("/{id}")
     public ResponseEntity<Optional<Usuario>> obterPorId(@PathVariable(value = "id") Long id) {
         Optional<Usuario> usuario = _servicoUsuario.obterPorId(id);
@@ -82,7 +82,6 @@ public class UsuarioController {
         @ApiResponse(code = 403, message=  "Você não tem permissão para isso meu consagrado :("),
         @ApiResponse(code = 500, message = "Vish quinhetão, da uma olhadinha no código ;-;") 
     })
-
     @GetMapping("/login/{login}")
     public ResponseEntity<List<Usuario>> obterPorLogin(@PathVariable(value = "login") String login) {
         return new ResponseEntity<>(_servicoUsuario.obterPorLogin(login), HttpStatus.OK);
@@ -96,12 +95,13 @@ public class UsuarioController {
         @ApiResponse(code = 403, message=  "Você não tem permissão para isso meu consagrado :("),
         @ApiResponse(code = 500, message = "Vish quinhetão, da uma olhadinha no código ;-;") 
     })
-
     @GetMapping("/avatar/{id}")
     public ResponseEntity<byte[]> retornarAvatar(@PathVariable(value = "id") Long id) throws IOException{
         return new ResponseEntity<>(_servicoUsuario.retornarAvatar(id), HttpStatus.OK);
     }
 
+    //#endregion
+    //#region POST
 
     @ApiOperation(value = "Cadastra um novo usuário")
     @ApiResponses(value = {
@@ -112,29 +112,15 @@ public class UsuarioController {
         @ApiResponse(code = 403, message=  "Você não tem permissão para isso meu consagrado :("),
         @ApiResponse(code = 500, message = "Vish quinhetão, da uma olhadinha no código ;-;") 
     })
-
     @PostMapping
     public ResponseEntity<Usuario> adicionar(@Valid UsuarioDtoCadastro usuario) {
         Usuario novoUsuario = _servicoUsuario.adicionar(usuario);   
         return new ResponseEntity<>(novoUsuario, HttpStatus.CREATED);
     }
-    
 
-    @ApiOperation(value = "Envia um email com nova senha")
-    @ApiResponses(value = {
-        @ApiResponse(code = 201, message = "Email enviado com sucesso com sua nova senha :)"),
-        @ApiResponse(code = 400, message = "Informação invalida :o"),
-        @ApiResponse(code = 404, message = "Não existe usuario com esse email :("),
-        @ApiResponse(code = 403, message=  "Você não tem permissão para isso meu consagrado :("),
-        @ApiResponse(code = 500, message = "Vish quinhetão, da uma olhadinha no código ;-;") 
-    })
-    @PostMapping("/esqueci-senha")
-    public ResponseEntity<Void> enviarEmailEsqueciSenha(String email) {
-        _servicoUsuario.enviarEmailEsqueciSenha(email);
-        return new ResponseEntity<>( HttpStatus.OK);
-    }
-
-
+    //#endregion
+    //#region PUT
+  
     @ApiOperation(value = "Atualiza as informações de um usuário de acordo com o id")
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "Usuario atualizado com sucesso :)"),
@@ -149,6 +135,8 @@ public class UsuarioController {
         return new ResponseEntity<>(_servicoUsuario.atualizar(id, usuario), HttpStatus.OK);
     }
 
+    //#endregion
+    //#region PATCH
 
     @ApiOperation(value = "Atualiza status de usuário de acordo com o id")
     @ApiResponses(value = {
@@ -237,6 +225,9 @@ public class UsuarioController {
         @ApiResponse(code = 500, message = "Vish quinhetão, da uma olhadinha no código ;-;") 
     })
 
+    //#endregion
+    //#region DELETE
+
     @DeleteMapping("sair-da-equipe/{id}")
     public ResponseEntity<Void> removerUsuarioDaEquipe(@PathVariable(value = "id") Long id) {
         _servicoUsuario.removerUsuarioDaEquipe(id);
@@ -260,4 +251,5 @@ public class UsuarioController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    //#endregion
 }
