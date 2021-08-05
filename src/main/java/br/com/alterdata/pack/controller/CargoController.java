@@ -139,7 +139,7 @@ public class CargoController {
         @ApiResponse(code = 500, message = "Vish quinhetão, da uma olhadinha no código ;-;") 
     })
     @PatchMapping("alterar-avatar/{id}")
-    public ResponseEntity<Cargo> editarAvatar(@PathVariable(value = "id") Long id, @RequestParam("img") MultipartFile arquivo) {
+    public ResponseEntity<Cargo> editarAvatar(@PathVariable(value = "id") Long id, @RequestParam("img") MultipartFile arquivo) throws IOException {
         Cargo novoAvatarCargo = _cargoUsuario.editarAvatar(id, arquivo);     
         return new ResponseEntity<>(novoAvatarCargo, HttpStatus.OK);
     }

@@ -19,6 +19,6 @@ public interface CargoService {
     byte[] retornarAvatar(Long id) throws IOException;
     Cargo adicionarCargo(CargoDto cargo);
     Cargo atualizar(Long id, CargoDto cargo);
-    Cargo editarAvatar(Long id, MultipartFile arquivo); 
+    Cargo editarAvatar(Long id, MultipartFile arquivo) throws IOException; 
     void deletar(Long id); 
 }

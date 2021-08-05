@@ -25,7 +25,7 @@ public class Cargo {
     @Column(unique = true, nullable = false)
     private String nome;
 
-    private String avatarName;
+    private byte[] avatarName;
 
     @JsonIgnore
     @OneToMany(mappedBy="cargo")
@@ -33,20 +33,20 @@ public class Cargo {
 
     public Cargo() {}
 
-    public Cargo(String nome, String avatarName) { 
+    public Cargo(String nome, byte[] avatarName) { 
 
         this.nome = nome;
         this.avatarName = avatarName;
     }
 
-    public Cargo(Long idCargo, String nome, String avatarName) {
+    public Cargo(Long idCargo, String nome, byte[] avatarName) {
 
         this.idCargo = idCargo;
         this.nome = nome;
         this.avatarName = avatarName;
     }
 
-    public Cargo(Long idCargo, String nome, String avatarName, List<Usuario> usuarios) {
+    public Cargo(Long idCargo, String nome, byte[] avatarName, List<Usuario> usuarios) {
         
         this.idCargo = idCargo;
         this.nome = nome;
@@ -78,11 +78,11 @@ public class Cargo {
         this.nome = nome;
     }
 
-    public String getAvatarName() {
+    public byte[] getAvatarName() {
         return avatarName;
     }
 
-    public void setAvatarName(String avatarName) {
+    public void setAvatarName(byte[] avatarName) {
         this.avatarName = avatarName;
     }
 

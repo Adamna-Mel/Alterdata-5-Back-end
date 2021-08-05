@@ -8,12 +8,12 @@ public class CargoDto {
 
     private Long idCargo;
     private String nome;
-    private String avatarName;
+    private byte[] avatarName;
     private List<Usuario> usuarios;
 
     public CargoDto() {}
 
-    public CargoDto(Long idCargo, String nome, String avatarName, List<Usuario> usuarios) {
+    public CargoDto(Long idCargo, String nome, byte[] avatarName, List<Usuario> usuarios) {
 
         this.idCargo = idCargo;
         this.nome = nome;
@@ -21,7 +21,7 @@ public class CargoDto {
         this.usuarios = usuarios;
     }
 
-    public CargoDto(String nome, String avatarName, List<Usuario> usuarios) {
+    public CargoDto(String nome, byte[] avatarName, List<Usuario> usuarios) {
         
         this.nome = nome;
         this.avatarName = avatarName;
@@ -44,11 +44,11 @@ public class CargoDto {
         this.nome = nome;
     }
 
-    public String getAvatarName() {
+    public byte[] getAvatarName() {
         return avatarName;
     }
 
-    public void setAvatarName(String avatarName) {
+    public void setAvatarName(byte[] avatarName) {
         this.avatarName = avatarName;
     }
 

@@ -66,14 +66,15 @@ public class CargoServiceImpl implements CargoService{
     @Override
 	public byte[] retornarAvatar(Long id) throws IOException {
 
-		Optional<CargoDto> cargo = obterPorId(id);
+	    Optional<CargoDto> cargo = obterPorId(id);
 
-		File imagemArquivo = new File(uploadDirectory + "/" + cargo.get().getAvatarName());
+		// File imagemArquivo = new File(uploadDirectory + "/" + cargo.get().getAvatarName());
 		
-		if(!cargo.get().getAvatarName().equals("")){
-			return Files.readAllBytes(imagemArquivo.toPath());			
-		}
-		throw new NotFoundException("Imagem não encontrada no cargo com ID: " + cargo.get().getIdCargo());
+		// if(!cargo.get().getAvatarName().equals("")){
+		return cargo.get().getAvatarName();			
+		// }
+		// throw new NotFoundException("Imagem não encontrada no cargo com ID: " + cargo.get().getIdCargo());
+
 	}
 
     //#endregion
@@ -88,7 +89,7 @@ public class CargoServiceImpl implements CargoService{
 
         verificarSeCargoExiste(cargo);
 
-		cargo.setAvatarName("");
+		//cargo.setAvatarName();
 
         cargo.setIdCargo(null);
 
@@ -126,7 +127,7 @@ public class CargoServiceImpl implements CargoService{
     //#endregion
     //#region PATCH
 
-    public Cargo editarAvatar(Long id, MultipartFile arquivo){
+    public Cargo editarAvatar(Long id, MultipartFile arquivo) throws IOException{
 		UUID uuid = UUID.randomUUID();
 
         Optional<Cargo> cargo = _repositorioCargo.findById(id);
@@ -148,22 +149,21 @@ public class CargoServiceImpl implements CargoService{
 		}
 
 		String fileName = uuid + arquivo.getOriginalFilename();
-		Path fileNamePath = Paths.get(uploadDirectory, fileName);
+		//Path fileNamePath = Paths.get(uploadDirectory, fileName);
 
-		try {
-			Files.write(fileNamePath, arquivo.getBytes());
-		} catch (IOException e) {
-			e.printStackTrace();;
-		}
+		// try {
+		// 	Files.write(fileNamePath, arquivo.getBytes());
+		// } catch (IOException e) {
+		// 	e.printStackTrace();;
+		// }
 		
-		File destino = new File(uploadDirectory, cargo.get().getAvatarName());
+		//File destino = new File(uploadDirectory, cargo.get().getAvatarName());
 
-        if(!cargo.get().getAvatarName().equals(null)){
-			destino.delete();
-	   } 
+    //     if(!cargo.get().getAvatarName().equals(null)){
+	// 		destino.delete();
+	//    } 
 		 
-
-		cargo.get().setAvatarName(fileName);
+		cargo.get().setAvatarName(arquivo.getBytes());
 
 		return _repositorioCargo.save(cargo.get());
 	}
@@ -181,11 +181,11 @@ public class CargoServiceImpl implements CargoService{
         for (Usuario usuario : cargo.get().getUsuarios()) {
             usuario.setCargo(null);
         }
-        File destino = new File(uploadDirectory, cargo.get().getAvatarName());
+        //File destino = new File(uploadDirectory, cargo.get().getAvatarName());
 
-		if(!cargo.get().getAvatarName().equals("")){
-			destino.delete();
-	   } 
+		//if(!cargo.get().getAvatarName().equals("")){
+		//	destino.delete();
+	   //} 
 
         this._repositorioCargo.deleteById(id);
 	}
