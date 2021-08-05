@@ -351,7 +351,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 				+ "<h1>Olá, "+ usuario.get().getLogin() +"</h1>"
 				+ "<h2 style= color:#2169FF> Sua nova senha foi gerada com sucesso!!</h2><br>"
 				+ "<div style=\"text-aling:left; color:#030330\">"
-				+ "<h4>Senha:</h4>"+"<p>"+ novaSenha +"</p>"
+				+ "<h4>Senha:</h4>"+"<p>"+ senha +"</p>"
 				+ "</div>"
 				+ "<img src=\'https://4.bp.blogspot.com/-fbQaVbgFNYg/WUb8JNv5CzI/AAAAAAAAXq0/_aOoBIcke0g9g4pIugv4w561jWTMgAuIQCLcBGAs/s1600/mtech.jpg\' alt=\"\" />"
 				+ "</body>"
