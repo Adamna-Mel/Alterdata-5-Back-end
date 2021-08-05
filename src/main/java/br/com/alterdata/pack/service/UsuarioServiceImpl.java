@@ -334,7 +334,9 @@ public class UsuarioServiceImpl implements UsuarioService {
 			senha += carct[j];
 		}
 
-		usuario.get().setSenha(senha);
+		String novaSenha = passwordEncoder.encode(senha);
+
+		usuario.get().setSenha(novaSenha);
 		_repositorioUsuario.save(usuario.get());
 
 		String mensagem = "<html>"
