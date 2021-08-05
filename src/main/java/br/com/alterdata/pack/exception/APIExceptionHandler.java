@@ -58,6 +58,26 @@ public class APIExceptionHandler extends ResponseEntityExceptionHandler{
 		
 		return new ResponseEntity<>(errorMessage, HttpStatus.UNAUTHORIZED);
 	}
+
+	@ExceptionHandler(UnsupportedMediaTypeException.class)
+	public ResponseEntity<?> handlerUnsupportedMediaTypeException(UnsupportedMediaTypeException exception){
+		ErrorMessage errorMessage = new ErrorMessage(
+				"Unsupported Media Type",
+				HttpStatus.UNSUPPORTED_MEDIA_TYPE.value(),
+				exception.getMessage());
+		
+		return new ResponseEntity<>(errorMessage, HttpStatus.UNSUPPORTED_MEDIA_TYPE);
+	}
+
+	@ExceptionHandler(BadGatewayException.class)
+	public ResponseEntity<?> handlerBadGatewayException(BadGatewayException exception){
+		ErrorMessage errorMessage = new ErrorMessage(
+				"Bad Gateway",
+				HttpStatus.BAD_GATEWAY.value(),
+				exception.getMessage());
+		
+		return new ResponseEntity<>(errorMessage, HttpStatus.BAD_GATEWAY);
+	}
 	
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<?> handlerInternalServerError(Exception exception){

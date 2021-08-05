@@ -24,8 +24,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import br.com.alterdata.pack.exception.BadGatewayException;
 import br.com.alterdata.pack.exception.BadRequestException;
 import br.com.alterdata.pack.exception.UnauthorizedException;
+import br.com.alterdata.pack.exception.UnsupportedMediaTypeException;
 import br.com.alterdata.pack.exception.NotFoundException;
 import br.com.alterdata.pack.model.Cargo;
 import br.com.alterdata.pack.model.Equipe;
@@ -103,13 +105,25 @@ public class UsuarioServiceImpl implements UsuarioService {
 
 		Usuario novoUsuario = mapper.map(usuario, Usuario.class);
 
+		String formato = arquivo.getContentType();
+		formato = formato.substring(6,formato.length());
+
+		if (
+			!formato.equals("png") & 
+			!formato.equals("jpg") &
+			!formato.equals("jpeg") &
+			!formato.equals("gif")
+		){
+			throw new UnsupportedMediaTypeException("O formato da imagem não é suportado!");
+		}
+
 		String fileName = uuid + arquivo.getOriginalFilename();
 		Path fileNamePath = Paths.get(uploadDirectory, fileName);
 
 		try {
 			Files.write(fileNamePath, arquivo.getBytes());
 		} catch (IOException e) {
-			e.printStackTrace();;
+			e.printStackTrace();
 		}
 
 		novoUsuario.setAvatarName(fileName);
@@ -177,7 +191,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 		try {
 			destino.delete();
 	   } catch (Exception e) {
-		   throw new RuntimeException("Erro ao deletar imagem", e);
+		   throw new BadGatewayException("Erro ao deletar imagem");
 	   }	
 		this._repositorioUsuario.deleteById(id);
 	}
@@ -214,6 +228,22 @@ public class UsuarioServiceImpl implements UsuarioService {
 		UUID uuid = UUID.randomUUID();
 
 		Optional<Usuario> usuario = obterPorId(id);  
+
+		if (!usuario.isPresent()) {
+			throw new NotFoundException("Nenhum usuário encontrado pelo id: " + id);
+		}
+
+		String formato = arquivo.getContentType();
+		formato = formato.substring(6,formato.length());
+
+		if (
+			!formato.equals("png") & 
+			!formato.equals("jpg") &
+			!formato.equals("jpeg") &
+			!formato.equals("gif")
+		){
+			throw new UnsupportedMediaTypeException("O formato da imagem não é suportado!");
+		}
 
 		String fileName = uuid + arquivo.getOriginalFilename();
 		Path fileNamePath = Paths.get(uploadDirectory, fileName);
@@ -300,9 +330,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 		throw new NotFoundException("Não existe usuario com o ID: " + id);
 	}
 	
-	
 	private void enviarEmailDeCadastro(UsuarioDtoCadastro usuario){
-
 		String mensagem = "<html>"
 				+ "<head>"
 				+ "<title>Sistema PACK</title>"
