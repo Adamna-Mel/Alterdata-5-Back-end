@@ -41,7 +41,6 @@ public class EquipeServiceImpl implements EquipeService{
                       .collect(Collectors.toList());
     }
 
-
     @Override
     public Optional<EquipeDto> obterPorId(Long id) {
         Optional<Equipe> encontrado = _repositorioEquipe.findByIdEquipe(id);
@@ -240,7 +239,6 @@ public class EquipeServiceImpl implements EquipeService{
 
 		return _repositorioEquipe.save(equipe.get());
 	}
-
 
     private void verificarSeEquipeExiste(Equipe equipe) {
         Optional<Equipe> equipeExiste = _repositorioEquipe.findByNome(equipe.getNome());
