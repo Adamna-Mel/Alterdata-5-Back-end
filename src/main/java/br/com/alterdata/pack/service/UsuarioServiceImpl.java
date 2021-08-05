@@ -141,7 +141,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 
 		Usuario adicionado = this._repositorioUsuario.save(novoUsuario);
 
-		enviarEmailDeCadastro(usuario);
+		//enviarEmailDeCadastro(usuario);
 
 		return adicionado;
 	}
