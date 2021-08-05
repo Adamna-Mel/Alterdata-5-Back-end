@@ -30,4 +30,6 @@ public interface UsuarioService {
 	byte[] retornarAvatar(Long id) throws IOException;
 	Usuario removerUsuarioDaEquipe(Long id);
 	void enviarEmailEsqueciSenha(String email);
+	void alterarSenha(Long id, String antigaSenha, String novaSenha);
+
 }
