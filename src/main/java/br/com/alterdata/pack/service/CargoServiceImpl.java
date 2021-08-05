@@ -33,6 +33,8 @@ public class CargoServiceImpl implements CargoService{
     @Autowired
 	private CargoRepository _repositorioCargo;
 
+    //#region GET
+
     @Override
     public List<CargoDto> obterTodos(Pageable pageable) {
         Page<Cargo> cargos = _repositorioCargo.findAll(pageable);
@@ -61,6 +63,21 @@ public class CargoServiceImpl implements CargoService{
 		return cargo;
 	}
 
+    @Override
+	public byte[] retornarAvatar(Long id) throws IOException {
+
+		Optional<CargoDto> cargo = obterPorId(id);
+
+		File imagemArquivo = new File(uploadDirectory + "/" + cargo.get().getAvatarName());
+		
+		if(!cargo.get().getAvatarName().equals("")){
+			return Files.readAllBytes(imagemArquivo.toPath());			
+		}
+		throw new NotFoundException("Imagem não encontrada no cargo com ID: " + cargo.get().getIdCargo());
+	}
+
+    //#endregion
+    //#region POST
 
     @Override
     public Cargo adicionarCargo(CargoDto cargoDto){
@@ -80,6 +97,8 @@ public class CargoServiceImpl implements CargoService{
         return novoCargo;
     } 
 
+    //#endregion
+    //#region PUT
 
     @Override
     public Cargo atualizar(Long id, CargoDto cargoDto) {
@@ -104,40 +123,8 @@ public class CargoServiceImpl implements CargoService{
         return _repositorioCargo.save(cargo);
     }
 
-
-    @Override
-    public void deletar(Long id) {
-        Optional<Cargo> cargo = _repositorioCargo.findByIdCargo(id);
-
-        if(!cargo.isPresent()){
-            throw new NotFoundException("Cargo não encontrado pelo ID:" + id);
-        }
-        for (Usuario usuario : cargo.get().getUsuarios()) {
-            usuario.setCargo(null);
-        }
-        File destino = new File(uploadDirectory, cargo.get().getAvatarName());
-
-		if(!cargo.get().getAvatarName().equals("")){
-			destino.delete();
-	   } 
-       
-        this._repositorioCargo.deleteById(id);
-	}
-
-
-    @Override
-	public byte[] retornarAvatar(Long id) throws IOException {
-
-		Optional<CargoDto> cargo = obterPorId(id);
-
-		File imagemArquivo = new File(uploadDirectory + "/" + cargo.get().getAvatarName());
-		
-		if(!cargo.get().getAvatarName().equals("")){
-			return Files.readAllBytes(imagemArquivo.toPath());			
-		}
-		throw new NotFoundException("Imagem não encontrada no cargo com ID: " + cargo.get().getIdCargo());
-	}
-
+    //#endregion
+    //#region PATCH
 
     public Cargo editarAvatar(Long id, MultipartFile arquivo){
 		UUID uuid = UUID.randomUUID();
@@ -182,6 +169,29 @@ public class CargoServiceImpl implements CargoService{
 	}
     
     
+    //#endregion
+    //#region DELETE
+    @Override
+    public void deletar(Long id) {
+        Optional<Cargo> cargo = _repositorioCargo.findByIdCargo(id);
+
+        if(!cargo.isPresent()){
+            throw new NotFoundException("Cargo não encontrado pelo ID:" + id);
+        }
+        for (Usuario usuario : cargo.get().getUsuarios()) {
+            usuario.setCargo(null);
+        }
+        File destino = new File(uploadDirectory, cargo.get().getAvatarName());
+
+		if(!cargo.get().getAvatarName().equals("")){
+			destino.delete();
+	   } 
+
+        this._repositorioCargo.deleteById(id);
+	}
+
+    //#endregion
+
     private void verificarSeCargoExiste(Cargo cargo){
         Optional<Cargo> cargoExiste =_repositorioCargo.findByNome(cargo.getNome());
 
