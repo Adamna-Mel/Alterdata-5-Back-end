@@ -8,7 +8,7 @@ public class LoginResponse {
     private String token;
 
     public LoginResponse(Usuario usuario, String token) {
-
+        
         this.usuario = usuario;
         this.token = token;
     }

@@ -8,6 +8,8 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
 
+import br.com.alterdata.pack.exception.BadGatewayException;
+
 @Component
 public class Mailler {
 
@@ -30,7 +32,7 @@ public class Mailler {
 			javaMailSender.send(email);
 				
 		} catch (MessagingException e) {
-			e.printStackTrace();
+			throw new BadGatewayException("Email não pôde ser enviado!");
 		}
 	}
 }

@@ -10,7 +10,6 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.BeanUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -20,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import br.com.alterdata.pack.exception.BadRequestException;
 import br.com.alterdata.pack.exception.NotFoundException;
+import br.com.alterdata.pack.exception.UnsupportedMediaTypeException;
 import br.com.alterdata.pack.model.Cargo;
 import br.com.alterdata.pack.model.Usuario;
 import br.com.alterdata.pack.repository.CargoRepository;
@@ -32,7 +32,6 @@ public class CargoServiceImpl implements CargoService{
     
     @Autowired
 	private CargoRepository _repositorioCargo;
-
 
     @Override
     public List<CargoDto> obterTodos(Pageable pageable) {
@@ -73,6 +72,19 @@ public class CargoServiceImpl implements CargoService{
         Cargo cargo = mapper.map(cargoDto, Cargo.class);
 
         verificarSeCargoExiste(cargo);
+
+        String formato = arquivo.getContentType();
+		formato = formato.substring(6,formato.length());
+
+		if (
+			!formato.equals("png") & 
+			!formato.equals("jpg") &
+			!formato.equals("jpeg") &
+			!formato.equals("gif")
+		){
+			throw new UnsupportedMediaTypeException("O formato da imagem não é suportado!");
+		}
+
 
         String fileName = uuid + arquivo.getOriginalFilename();
 		Path fileNamePath = Paths.get(uploadDirectory, fileName);
@@ -160,6 +172,18 @@ public class CargoServiceImpl implements CargoService{
         if (!cargo.isPresent()) {
             throw new NotFoundException("Não foi encontrado nenhuma equipe com o Id: " + id);
         }
+
+        String formato = arquivo.getContentType();
+		formato = formato.substring(6,formato.length());
+
+		if (
+			!formato.equals("png") & 
+			!formato.equals("jpg") &
+			!formato.equals("jpeg") &
+			!formato.equals("gif")
+		){
+			throw new UnsupportedMediaTypeException("O formato da imagem não é suportado!");
+		}
 
 		String fileName = uuid + arquivo.getOriginalFilename();
 		Path fileNamePath = Paths.get(uploadDirectory, fileName);

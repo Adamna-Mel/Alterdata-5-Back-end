@@ -29,5 +29,5 @@ public interface UsuarioService {
 	LoginResponse logar(String login, String senha);
 	byte[] retornarAvatar(Long id) throws IOException;
 	Usuario removerUsuarioDaEquipe(Long id);
-	//void enviarEmailEsqueciSenha(UsuarioDto usuario);
+	void enviarEmailEsqueciSenha(String email);
 }

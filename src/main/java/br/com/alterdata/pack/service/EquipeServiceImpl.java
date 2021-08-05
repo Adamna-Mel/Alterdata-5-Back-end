@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import br.com.alterdata.pack.exception.BadRequestException;
 import br.com.alterdata.pack.exception.NotFoundException;
+import br.com.alterdata.pack.exception.UnsupportedMediaTypeException;
 import br.com.alterdata.pack.model.Equipe;
 import br.com.alterdata.pack.model.Usuario;
 import br.com.alterdata.pack.repository.EquipeRepository;
@@ -52,6 +53,7 @@ public class EquipeServiceImpl implements EquipeService{
         return Optional.of(mapper.map(encontrado.get(),EquipeDto.class));
     }
 
+
     @Override
     public List<Equipe> obterPorNome(String nome) {
         List<Equipe> encontrado = _repositorioEquipe.findByNomeContainingIgnoreCase(nome);
@@ -62,6 +64,7 @@ public class EquipeServiceImpl implements EquipeService{
         return encontrado;
     }
     
+
     @Override
     public List<Usuario> obterUsuariosPorLogin(Long idEquipe,String login) {
         
@@ -81,6 +84,7 @@ public class EquipeServiceImpl implements EquipeService{
         return usuarios;
     }
 
+
     @Override
     public Equipe criarEquipe(EquipeDto equipeDto, MultipartFile arquivo) {
     
@@ -93,6 +97,18 @@ public class EquipeServiceImpl implements EquipeService{
         equipe.setIdEquipe(null);
 
         verificarSeEquipeExiste(equipe);
+
+        String formato = arquivo.getContentType();
+		formato = formato.substring(6,formato.length());
+
+		if (
+			!formato.equals("png") & 
+			!formato.equals("jpg") &
+			!formato.equals("jpeg") &
+			!formato.equals("gif")
+		){
+			throw new UnsupportedMediaTypeException("O formato da imagem não é suportado!");
+		}
 
         String fileName = uuid + arquivo.getOriginalFilename();
 		Path fileNamePath = Paths.get(uploadDirectory, fileName);
@@ -162,6 +178,7 @@ public class EquipeServiceImpl implements EquipeService{
         this._repositorioEquipe.deleteById(id);
     }
 
+
     @Override
 	public byte[] retornarAvatar(Long id) throws IOException {
 
@@ -179,6 +196,7 @@ public class EquipeServiceImpl implements EquipeService{
 		throw new NotFoundException("Imagem não encontrada na equipe com ID: ");
 	}
     
+    
     public Equipe editarAvatar(Long id, MultipartFile arquivo){
 		UUID uuid = UUID.randomUUID();
 
@@ -187,6 +205,18 @@ public class EquipeServiceImpl implements EquipeService{
         if (!equipe.isPresent()) {
             throw new NotFoundException("Não foi encontrado nenhuma equipe com o Id: " + id);
         }
+
+        String formato = arquivo.getContentType();
+		formato = formato.substring(6,formato.length());
+
+		if (
+			!formato.equals("png") & 
+			!formato.equals("jpg") &
+			!formato.equals("jpeg") &
+			!formato.equals("gif")
+		){
+			throw new UnsupportedMediaTypeException("O formato da imagem não é suportado!");
+		}
                 
 		String fileName = uuid + arquivo.getOriginalFilename();
 		Path fileNamePath = Paths.get(uploadDirectory, fileName);

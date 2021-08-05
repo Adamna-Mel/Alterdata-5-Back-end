@@ -110,6 +110,20 @@ public class UsuarioController {
         return new ResponseEntity<>(novoUsuario, HttpStatus.CREATED);
     }
     
+    @ApiOperation(value = "Envia um email com nova senha")
+    @ApiResponses(value = {
+        @ApiResponse(code = 201, message = "Email enviado com sucesso com sua nova senha :)"),
+        @ApiResponse(code = 400, message = "Informação invalida :o"),
+        @ApiResponse(code = 404, message = "Não existe usuario com esse email :("),
+        @ApiResponse(code = 403, message=  "Você não tem permissão para isso meu consagrado :("),
+        @ApiResponse(code = 500, message = "Vish quinhetão, da uma olhadinha no código ;-;") 
+    })
+    @PostMapping("/esqueci-senha")
+    public ResponseEntity<Void> enviarEmailEsqueciSenha(String email) {
+        _servicoUsuario.enviarEmailEsqueciSenha(email);
+        return new ResponseEntity<>( HttpStatus.OK);
+    }
+
     @ApiOperation(value = "Atualiza as informações de um usuário de acordo com o id")
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "Usuario atualizado com sucesso :)"),
@@ -123,7 +137,6 @@ public class UsuarioController {
         return new ResponseEntity<>(_servicoUsuario.atualizar(id, usuario), HttpStatus.OK);
     }
 
-
     @ApiOperation(value = "Atualiza status de usuário de acordo com o id")
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "Status do usuario atualizado com sucesso :)"),
@@ -134,8 +147,7 @@ public class UsuarioController {
     })
     @PatchMapping("status/{id}")
     public ResponseEntity<Usuario> editarStatus(@PathVariable(value = "id") Long id, @RequestBody UsuarioDto usuario) {
-        Usuario usuarioNovoStatus = _servicoUsuario.editarStatus(id, usuario);
-        
+        Usuario usuarioNovoStatus = _servicoUsuario.editarStatus(id, usuario);    
         return new ResponseEntity<>(usuarioNovoStatus, HttpStatus.OK);
     }
 
@@ -149,8 +161,7 @@ public class UsuarioController {
     })
     @PatchMapping("alterar-avatar/{id}")
     public ResponseEntity<Usuario> editarAvatar(@PathVariable(value = "id") Long id, @RequestParam("img") MultipartFile arquivo) {
-        Usuario usuarioNovoStatus = _servicoUsuario.editarAvatar(id, arquivo);
-        
+        Usuario usuarioNovoStatus = _servicoUsuario.editarAvatar(id, arquivo);      
         return new ResponseEntity<>(usuarioNovoStatus, HttpStatus.OK);
     }
 
@@ -164,8 +175,7 @@ public class UsuarioController {
     })
     @PatchMapping("{idUsuario}/cargo/{idCargo}")
     public ResponseEntity<Usuario> adicionarCargo(@PathVariable(value = "idCargo") Long idCargo, @PathVariable(value = "idUsuario") Long idUsuario){
-        Usuario usuarioNovoStatus = _servicoUsuario.adicionarCargo(idCargo, idUsuario);
-        
+        Usuario usuarioNovoStatus = _servicoUsuario.adicionarCargo(idCargo, idUsuario);    
         return new ResponseEntity<>(usuarioNovoStatus, HttpStatus.OK);
     }
 
@@ -179,8 +189,7 @@ public class UsuarioController {
     })
     @PatchMapping("{idUsuario}/equipe/{idEquipe}")
     public ResponseEntity<Usuario> adicionarEquipe(@PathVariable(value = "idEquipe") Long idEquipe, @PathVariable(value = "idUsuario") Long idUsuario){
-        Usuario usuarioNovoStatus = _servicoUsuario.adicionarEquipe(idUsuario, idEquipe);
-        
+        Usuario usuarioNovoStatus = _servicoUsuario.adicionarEquipe(idUsuario, idEquipe);    
         return new ResponseEntity<>(usuarioNovoStatus, HttpStatus.OK);
     }
 
