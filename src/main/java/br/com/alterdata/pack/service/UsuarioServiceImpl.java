@@ -139,7 +139,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 
 		Usuario adicionado = this._repositorioUsuario.save(novoUsuario);
 
-		enviarEmailDeCadastro(usuario);
+		//enviarEmailDeCadastro(usuario);
 
 		return adicionado;
 	}
@@ -393,7 +393,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 				+ "<body style=\"text-align: center; font-family: Verdana, Geneva, Tahoma, sans-serif\" > "
 				+ "<h1>Olá, "+ usuario.getNome()+"</h1>"
 				+ "<h2 style= color:#2169FF> Seu cadastro foi realizado com sucesso!!</h2><br>"
-				+ "<h3 style=\"text-aling: left; color:#2169FF\">Suas credenciais para acesso ao sistema:</h3>"
+				+ "<h3 style=\"text-aling: left; color:#030330\">Suas credenciais para acesso ao sistema:</h3>"
 				+ "<div style=\"text-aling:left; color:#030330\">"
 				+ "<h4>Login:</h4>"+"<p>"+ usuario.getLogin() +"</p>"
 				+ "<h4>Senha única:</h4>"+ "<p>"+ usuario.getSenha() +"</p>"

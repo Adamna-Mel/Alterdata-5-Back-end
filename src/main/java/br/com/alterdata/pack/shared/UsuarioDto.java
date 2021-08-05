@@ -1,11 +1,21 @@
 package br.com.alterdata.pack.shared;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+
 
 public class UsuarioDto {
 
+    @NotBlank(message = "Campo não informado!")
+    @Email(message = "Email inválido!")
     private String email;
+
+    @NotBlank(message = "Campo não informado!")
     private String login;
+
     private String senha;
+
+    @NotBlank(message = "Campo não informado!")
     private String nome;
     private String status;
 
