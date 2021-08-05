@@ -27,10 +27,10 @@ public class Usuario implements UserDetails{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "generator_usuario")
     private Long id;
-
-    @Column(nullable = false)
+   
     @Email
     @NotBlank(message = "não é um email válido!")
+    @Column(unique = true, nullable = false)
     private String email;
 
     @Column(unique = true, nullable = false)

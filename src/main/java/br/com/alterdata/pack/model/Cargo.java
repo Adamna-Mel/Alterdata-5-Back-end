@@ -33,8 +33,8 @@ public class Cargo {
 
     public Cargo() {}
 
-    public Cargo(String nome, String avatarName) {
-        
+    public Cargo(String nome, String avatarName) { 
+
         this.nome = nome;
         this.avatarName = avatarName;
     }
@@ -47,7 +47,7 @@ public class Cargo {
     }
 
     public Cargo(Long idCargo, String nome, String avatarName, List<Usuario> usuarios) {
-
+        
         this.idCargo = idCargo;
         this.nome = nome;
         this.avatarName = avatarName;

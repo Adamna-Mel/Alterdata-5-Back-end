@@ -53,6 +53,7 @@ public class EquipeServiceImpl implements EquipeService{
         return Optional.of(mapper.map(encontrado.get(),EquipeDto.class));
     }
 
+
     @Override
     public List<Equipe> obterPorNome(String nome) {
         List<Equipe> encontrado = _repositorioEquipe.findByNomeContainingIgnoreCase(nome);
@@ -63,6 +64,7 @@ public class EquipeServiceImpl implements EquipeService{
         return encontrado;
     }
     
+
     @Override
     public List<Usuario> obterUsuariosPorLogin(Long idEquipe,String login) {
         
@@ -81,6 +83,7 @@ public class EquipeServiceImpl implements EquipeService{
         }
         return usuarios;
     }
+
 
     @Override
     public Equipe criarEquipe(EquipeDto equipeDto, MultipartFile arquivo) {
@@ -163,6 +166,7 @@ public class EquipeServiceImpl implements EquipeService{
         this._repositorioEquipe.deleteById(id);
     }
 
+
     @Override
 	public byte[] retornarAvatar(Long id) throws IOException {
 
@@ -179,6 +183,7 @@ public class EquipeServiceImpl implements EquipeService{
 		}
 		throw new NotFoundException("Imagem não encontrada na equipe com ID: ");
 	}
+    
     
     public Equipe editarAvatar(Long id, MultipartFile arquivo){
 		UUID uuid = UUID.randomUUID();

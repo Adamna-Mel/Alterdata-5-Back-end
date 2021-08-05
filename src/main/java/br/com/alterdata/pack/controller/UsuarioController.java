@@ -63,14 +63,11 @@ public class UsuarioController {
         return new ResponseEntity<>(_servicoUsuario.obterPorLogin(login), HttpStatus.OK);
     }
 
-    // @ApiOperation(value = "Envia um email")
-    // @PostMapping("/esqueci-senha")
-    // //@ResponseBody
-    // public ResponseEntity<Void> enviarEmailEsqueciSenha(@RequestBody UsuarioDto email) {
-    //     _servicoUsuario.enviarEmailEsqueciSenha(email);
-        
-    //     return new ResponseEntity<>( HttpStatus.OK);
-    // }
+    @ApiOperation("Retorna o avatar do usuario")
+    @GetMapping("/avatar/{id}")
+    public ResponseEntity<byte[]> retornarAvatar(@PathVariable(value = "id") Long id) throws IOException{
+        return new ResponseEntity<>(_servicoUsuario.retornarAvatar(id), HttpStatus.OK);
+    }
 
     @ApiOperation(value = "Cadastra um novo usuário")
     @PostMapping
@@ -79,6 +76,13 @@ public class UsuarioController {
         return new ResponseEntity<>(novoUsuario, HttpStatus.CREATED);
     }
     
+    @ApiOperation(value = "Envia um email com nova senha")
+    @PostMapping("/esqueci-senha")
+    public ResponseEntity<Void> enviarEmailEsqueciSenha(String email) {
+        _servicoUsuario.enviarEmailEsqueciSenha(email);
+        return new ResponseEntity<>( HttpStatus.OK);
+    }
+
     @ApiOperation(value = "Atualiza as informações de um usuário de acordo com o id")
     @PutMapping("/{id}")
     public ResponseEntity<Usuario> atualizar(@PathVariable(value = "id") Long id, @RequestBody UsuarioDto usuario) {
@@ -88,47 +92,36 @@ public class UsuarioController {
     @ApiOperation(value = "Deleta um usuário de acordo com o id")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletar(@PathVariable(value = "id") Long id) {
-        _servicoUsuario.deletar(id);
-        
+        _servicoUsuario.deletar(id);     
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @ApiOperation(value = "Atualiza status de usuário de acordo com o id")
     @PatchMapping("status/{id}")
     public ResponseEntity<Usuario> editarStatus(@PathVariable(value = "id") Long id, @RequestBody UsuarioDto usuario) {
-        Usuario usuarioNovoStatus = _servicoUsuario.editarStatus(id, usuario);
-        
+        Usuario usuarioNovoStatus = _servicoUsuario.editarStatus(id, usuario);    
         return new ResponseEntity<>(usuarioNovoStatus, HttpStatus.OK);
     }
 
     @ApiOperation(value = "Alterar avatar")
     @PatchMapping("alterar-avatar/{id}")
     public ResponseEntity<Usuario> editarAvatar(@PathVariable(value = "id") Long id, @RequestParam("img") MultipartFile arquivo) {
-        Usuario usuarioNovoStatus = _servicoUsuario.editarAvatar(id, arquivo);
-        
+        Usuario usuarioNovoStatus = _servicoUsuario.editarAvatar(id, arquivo);      
         return new ResponseEntity<>(usuarioNovoStatus, HttpStatus.OK);
     }
 
     @ApiOperation(value = "Adiciona um cargo no usuario")
     @PatchMapping("{idUsuario}/cargo/{idCargo}")
     public ResponseEntity<Usuario> adicionarCargo(@PathVariable(value = "idCargo") Long idCargo, @PathVariable(value = "idUsuario") Long idUsuario){
-        Usuario usuarioNovoStatus = _servicoUsuario.adicionarCargo(idCargo, idUsuario);
-        
+        Usuario usuarioNovoStatus = _servicoUsuario.adicionarCargo(idCargo, idUsuario);    
         return new ResponseEntity<>(usuarioNovoStatus, HttpStatus.OK);
     }
 
     @ApiOperation(value = "Adiciona uma equipe no usuario")
     @PatchMapping("{idUsuario}/equipe/{idEquipe}")
     public ResponseEntity<Usuario> adicionarEquipe(@PathVariable(value = "idEquipe") Long idEquipe, @PathVariable(value = "idUsuario") Long idUsuario){
-        Usuario usuarioNovoStatus = _servicoUsuario.adicionarEquipe(idUsuario, idEquipe);
-        
+        Usuario usuarioNovoStatus = _servicoUsuario.adicionarEquipe(idUsuario, idEquipe);    
         return new ResponseEntity<>(usuarioNovoStatus, HttpStatus.OK);
-    }
-
-    @ApiOperation("Retorna o avatar do usuario")
-    @GetMapping("/avatar/{id}")
-    public ResponseEntity<byte[]> retornarAvatar(@PathVariable(value = "id") Long id) throws IOException{
-        return new ResponseEntity<>(_servicoUsuario.retornarAvatar(id), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Deleta um usuário de acordo com o id")
@@ -137,6 +130,5 @@ public class UsuarioController {
         _servicoUsuario.removerUsuarioDaEquipe(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-
 
 }

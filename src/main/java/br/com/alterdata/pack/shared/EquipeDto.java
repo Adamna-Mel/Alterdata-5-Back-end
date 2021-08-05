@@ -10,12 +10,11 @@ public class EquipeDto {
     private String nome;    
     private String avatarName;
     private List<Usuario> membros;
-
-    
-    public EquipeDto() {
-    }
+   
+    public EquipeDto() {}
 
     public EquipeDto(Long id, String nome, String avatarName, List<Usuario> membros) {
+        
         this.idEquipe = id;
         this.nome = nome;
         this.avatarName = avatarName;
@@ -53,7 +52,5 @@ public class EquipeDto {
     public void setMembros(List<Usuario> membros) {
         this.membros = membros;
     }
-
-    
     
 }

@@ -19,8 +19,10 @@ public class EmailModel implements Serializable  {
     private String emailFrom;
     private String emailTo;
     private String subject;
+
     @Column(columnDefinition = "TEXT")
     private String text;
+    
     private LocalDateTime sendDateEmail;
     private StatusEmail statusEmail;
 
@@ -28,6 +30,7 @@ public class EmailModel implements Serializable  {
 
     public EmailModel(UUID emailId, String emailFrom, String emailTo, String subject, String text,
             LocalDateTime sendDateEmail, StatusEmail statusEmail) {
+
         this.emailId = emailId;
         this.emailFrom = emailFrom;
         this.emailTo = emailTo;
@@ -39,6 +42,7 @@ public class EmailModel implements Serializable  {
 
     public EmailModel(String emailFrom, String emailTo, String subject, String text,
             LocalDateTime sendDateEmail, StatusEmail statusEmail) {
+
         this.emailFrom = emailFrom;
         this.emailTo = emailTo;
         this.subject = subject;

@@ -19,12 +19,12 @@ public class EmailDto {
     public EmailDto() {}
 
     public EmailDto(String emailFrom, String emailTo, String subject, String text) {
+        
         this.emailFrom = emailFrom;
         this.emailTo = emailTo;
         this.subject = subject;
         this.text = text;
     }
-
 
     public String getEmailFrom() {
         return emailFrom;

@@ -117,7 +117,6 @@ public class UsuarioServiceImpl implements UsuarioService {
 		String senha = passwordEncoder.encode(usuario.getSenha());
 		novoUsuario.setSenha(senha);
 
-		//validarCampos(novoUsuario);
 		Optional<Usuario> usuarioProcurado = this._repositorioUsuario.findByLogin(novoUsuario.getLogin());
 
 		if (usuarioProcurado.isPresent()) {
@@ -126,7 +125,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 
 		Usuario adicionado = this._repositorioUsuario.save(novoUsuario);
 
-		enviarEmailDeCadastro(usuario);
+		//enviarEmailDeCadastro(usuario);
 
 		//adicionarCargo(1L, adicionado.getId());
 
@@ -150,8 +149,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 		usuarioAtualizado.setEquipe(usuarioAntigo.get().getEquipe());
 
 		usuarioAtualizado.setCargo(usuarioAntigo.get().getCargo());
-		//validarCampos(usuarioAtualizado);
-
+		
 		usuarioAtualizado.setId(id);
 		Optional<Usuario> usuarioProcurado = this._repositorioUsuario.findByLogin(usuarioAtualizado.getLogin());
 
@@ -301,19 +299,6 @@ public class UsuarioServiceImpl implements UsuarioService {
 
 		throw new NotFoundException("Não existe usuario com o ID: " + id);
 	}
-
-
-	// private void validarCampos(Usuario usuario) {
-	// 	if (usuario.getLogin() == null || usuario.getLogin().equals(""))
-	// 		throw new BadRequestException("Login não pode ser nulo!");
-
-	// 	if (usuario.getSenha() == null || usuario.getSenha().equals(""))
-	// 		throw new BadRequestException("Senha não pode ser nulo!");
-
-	// 	if (usuario.getNome() == null || usuario.getNome().equals(""))
-	// 		throw new BadRequestException("Nome não pode ser nulo ou vazio :(");
-
-	// }
 	
 	
 	private void enviarEmailDeCadastro(UsuarioDtoCadastro usuario){
@@ -324,10 +309,10 @@ public class UsuarioServiceImpl implements UsuarioService {
 				+ "</head>"
 				+ "<header style=\"background-color: #fff; color: #030330\"> "
 				+ "<body style=\"text-align: center; font-family: Verdana, Geneva, Tahoma, sans-serif\" > "
-				+ "<h1>Prezado(a) "+ usuario.getNome()+"</h1>"
+				+ "<h1>Olá, "+ usuario.getNome()+"</h1>"
 				+ "<h2 style= color:#2169FF> Seu cadastro foi realizado com sucesso!!</h2><br>"
-				+ "<h3 style= text-aling: left; color:#2169FF>Suas credenciais para acesso ao sistema:</h3>"
-				+ "<div style= text-aling:left; color:#030330>"
+				+ "<h3 style=\"text-aling: left; color:#2169FF\">Suas credenciais para acesso ao sistema:</h3>"
+				+ "<div style=\"text-aling:left; color:#030330\">"
 				+ "<h4>Login:</h4>"+"<p>"+ usuario.getLogin() +"</p>"
 				+ "<h4>Senha única:</h4>"+ "<p>"+ usuario.getSenha() +"</p>"
 				+ "</div>"
@@ -343,5 +328,49 @@ public class UsuarioServiceImpl implements UsuarioService {
 		
 				mailler.enviar(email);			
 	}
+
+	
+	@Override
+	public void enviarEmailEsqueciSenha(String email){
+
+		Optional<Usuario> usuario = _repositorioUsuario.findByEmail(email);
+
+		String[] carct ={"0","1","2","3","4","5","6","7","8","9",
+		"a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z",
+		"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
+
+		String senha="";
+
+		for (int x=0; x<6; x++){
+			int j = (int) (Math.random()*carct.length);
+			senha += carct[j];
+		}
+
+		usuario.get().setSenha(senha);
+		_repositorioUsuario.save(usuario.get());
+
+		String mensagem = "<html>"
+				+ "<head>"
+				+ "<title>Sistema PACK</title>"
+				+ "</head>"
+				+ "<header style=\"background-color: #fff; color: #030330\"> "
+				+ "<body style=\"text-align: center; font-family: Verdana, Geneva, Tahoma, sans-serif\" > "
+				+ "<h1>Olá, "+ usuario.get().getLogin() +"</h1>"
+				+ "<h2 style= color:#2169FF> Sua nova senha foi gerada com sucesso!!</h2><br>"
+				+ "<div style=\"text-aling:left; color:#030330\">"
+				+ "<h4>Senha:</h4>"+"<p>"+ usuario.get().getSenha() +"</p>"
+				+ "</div>"
+				+ "<img src=\'https://4.bp.blogspot.com/-fbQaVbgFNYg/WUb8JNv5CzI/AAAAAAAAXq0/_aOoBIcke0g9g4pIugv4w561jWTMgAuIQCLcBGAs/s1600/mtech.jpg\' alt=\"\" />"
+				+ "</body>"
+				+ "</html>";
+			
+		MensagemEmail emailSenha = new MensagemEmail(
+				"Nova senha", 
+				mensagem,
+				"projetoapp05@gmail.com",
+				Arrays.asList(usuario.get().getEmail()));
+		
+				mailler.enviar(emailSenha);			
+	}	
 
 }

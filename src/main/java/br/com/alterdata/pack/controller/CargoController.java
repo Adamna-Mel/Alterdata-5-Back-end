@@ -55,7 +55,6 @@ public class CargoController {
     @ApiOperation("Retorna o avatar do cargo")
     @GetMapping("/avatar/{id}")
     public ResponseEntity<byte[]> retornarAvatar(@PathVariable(value = "id") Long id) throws IOException{
-
         return new ResponseEntity<>(_cargoUsuario.retornarAvatar(id), HttpStatus.OK);
     }
 

@@ -42,15 +42,6 @@ public class Equipe {
     }
 
     public Equipe(Long idEquipe, String nome, String avatarName, List<Usuario> membros) {
-
-        this.idEquipe = idEquipe;
-        this.nome = nome;
-        this.avatarName = avatarName;
-        this.membros = membros;
-    }
-
-    public Equipe(Long idEquipe, String nome, String avatarName, List<Usuario> membros, String cor1, String cor2) {
-
         this.idEquipe = idEquipe;
         this.nome = nome;
         this.avatarName = avatarName;

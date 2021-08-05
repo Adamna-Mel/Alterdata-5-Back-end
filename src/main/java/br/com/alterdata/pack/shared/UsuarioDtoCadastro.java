@@ -2,6 +2,7 @@ package br.com.alterdata.pack.shared;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 public class UsuarioDtoCadastro {
 
@@ -13,6 +14,7 @@ public class UsuarioDtoCadastro {
         private String login;
 
         @NotBlank(message = "Campo não informado!")
+        @Size(min = 6, max = 6, message = "Senha deve ter 6 caracters!")
         private String senha;
 
         @NotBlank(message = "Campo não informado!")

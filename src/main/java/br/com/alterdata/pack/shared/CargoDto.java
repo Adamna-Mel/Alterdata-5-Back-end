@@ -11,10 +11,10 @@ public class CargoDto {
     private String avatarName;
     private List<Usuario> usuarios;
 
-    public CargoDto() {      
-    }
+    public CargoDto() {}
 
     public CargoDto(Long idCargo, String nome, String avatarName, List<Usuario> usuarios) {
+
         this.idCargo = idCargo;
         this.nome = nome;
         this.avatarName = avatarName;
@@ -22,6 +22,7 @@ public class CargoDto {
     }
 
     public CargoDto(String nome, String avatarName, List<Usuario> usuarios) {
+        
         this.nome = nome;
         this.avatarName = avatarName;
         this.usuarios = usuarios;
@@ -58,7 +59,5 @@ public class CargoDto {
     public void setUsuarios(List<Usuario> usuarios) {
         this.usuarios = usuarios;
     }
-
-    
 
 }
