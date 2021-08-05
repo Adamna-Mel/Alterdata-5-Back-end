@@ -31,7 +31,6 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
-
 @CrossOrigin("*")
 @Api("API PACK - Sistema de Status e Papéis")
 @RestController
@@ -41,6 +40,8 @@ public class EquipeController {
     @Autowired
     EquipeService _equipeUsuario;
   
+    //#region GET
+
     @ApiOperation(value = "Retorna todos as equipes cadastradas")
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "Lista de equipes encontrada com sucesso :)"),
@@ -48,7 +49,6 @@ public class EquipeController {
         @ApiResponse(code = 403, message=  "Você não tem permissão para isso meu consagrado :("),
         @ApiResponse(code = 500, message = "Vish quinhetão, da uma olhadinha no código ;-;") 
     })
-
     @GetMapping
     public ResponseEntity<List<EquipeDto>> obterTodos(@PageableDefault(page=0, size=4) Pageable pageable) {
         return ResponseEntity.ok(_equipeUsuario.obterTodos(pageable));
@@ -62,7 +62,6 @@ public class EquipeController {
         @ApiResponse(code = 403, message=  "Você não tem permissão para isso meu consagrado :("),
         @ApiResponse(code = 500, message = "Vish quinhetão, da uma olhadinha no código ;-;") 
     })
-
     @GetMapping("/{id}")
     public ResponseEntity<Optional<EquipeDto>> obterPorId(@PathVariable(value = "id") Long id) {
         Optional<EquipeDto> equipe = _equipeUsuario.obterPorId(id);
@@ -77,7 +76,6 @@ public class EquipeController {
         @ApiResponse(code = 403, message=  "Você não tem permissão para isso meu consagrado :("),
         @ApiResponse(code = 500, message = "Vish quinhetão, da uma olhadinha no código ;-;") 
     })
-
     @GetMapping("/nome/{nome}")
 	public ResponseEntity<List<Equipe>> obterPorNome(@PathVariable ("nome") String nome) {
 		return new ResponseEntity<>(_equipeUsuario.obterPorNome(nome), HttpStatus.OK);
@@ -91,7 +89,6 @@ public class EquipeController {
         @ApiResponse(code = 403, message=  "Você não tem permissão para isso meu consagrado :("),
         @ApiResponse(code = 500, message = "Vish quinhetão, da uma olhadinha no código ;-;") 
     })
-
     @GetMapping("/{id}/login/{login}")
 	public ResponseEntity<List<Usuario>> obterUsuariosPorLogin(@PathVariable ("id") Long id, @PathVariable ("login") String login) {
 		return new ResponseEntity<>(_equipeUsuario.obterUsuariosPorLogin(id,login), HttpStatus.OK);
@@ -105,12 +102,13 @@ public class EquipeController {
         @ApiResponse(code = 403, message=  "Você não tem permissão para isso meu consagrado :("),
         @ApiResponse(code = 500, message = "Vish quinhetão, da uma olhadinha no código ;-;") 
     })
-
     @GetMapping("/avatar/{id}")
     public ResponseEntity<byte[]> retornarAvatar(@PathVariable(value = "id") Long id) throws IOException{
         return new ResponseEntity<>(_equipeUsuario.retornarAvatar(id), HttpStatus.OK);
     }
 
+    //#endregion
+    //#region POST
 
     @ApiOperation(value = "Cadastra uma nova Equipe")
     @ApiResponses(value = {
@@ -121,13 +119,14 @@ public class EquipeController {
         @ApiResponse(code = 403, message=  "Você não tem permissão para isso meu consagrado :("),
         @ApiResponse(code = 500, message = "Vish quinhetão, da uma olhadinha no código ;-;") 
     })
-
     @PostMapping
-    public ResponseEntity<Equipe> adicionar(EquipeDto equipe, @RequestParam("img") MultipartFile arquivo) {
-        Equipe novaEquipe = _equipeUsuario.criarEquipe(equipe, arquivo);
+    public ResponseEntity<Equipe> adicionar(EquipeDto equipe) {
+        Equipe novaEquipe = _equipeUsuario.criarEquipe(equipe);
         return new ResponseEntity<>(novaEquipe, HttpStatus.CREATED );
     }
 
+    //#endregion
+    //#region PUT
 
     @ApiOperation(value = "Atualiza as informações de uma equipe de acordo com o id")
     @ApiResponses(value = {
@@ -137,13 +136,14 @@ public class EquipeController {
         @ApiResponse(code = 403, message=  "Você não tem permissão para isso meu consagrado :("),
         @ApiResponse(code = 500, message = "Vish quinhetão, da uma olhadinha no código ;-;") 
     })
-
     @PutMapping("/{id}")
     public ResponseEntity<Equipe> atualizar(@PathVariable(value = "id") Long id, @RequestBody EquipeDto equipe) {
         Equipe equipeAtualizado = _equipeUsuario.atualizar(id, equipe);
         return new ResponseEntity<>(equipeAtualizado, HttpStatus.OK);
     }
 
+    //#endregion
+    //#region PATCH
 
     @ApiOperation(value = "Alterar avatar")
     @ApiResponses(value = {
@@ -154,13 +154,14 @@ public class EquipeController {
         @ApiResponse(code = 415, message = "Mídia não suportada, vá com calma jovem ;)"),
         @ApiResponse(code = 500, message = "Vish quinhetão, da uma olhadinha no código ;-;") 
     })
-
     @PatchMapping("alterar-avatar/{id}")
     public ResponseEntity<Equipe> editarAvatar(@PathVariable(value = "id") Long id, @RequestParam("img") MultipartFile arquivo) {
         Equipe novoAvatarEquipe = _equipeUsuario.editarAvatar(id, arquivo);     
         return new ResponseEntity<>(novoAvatarEquipe, HttpStatus.OK);
     }
 
+    //#endregion
+    //#region DELETE
 
     @ApiOperation(value = "Deleta uma equipe de acordo com o id")
     @ApiResponses(value = {
@@ -170,11 +171,12 @@ public class EquipeController {
         @ApiResponse(code = 403, message=  "Você não tem permissão para isso meu consagrado :("),
         @ApiResponse(code = 500, message = "Vish quinhetão, da uma olhadinha no código ;-;") 
     })
-
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletar(@PathVariable(value = "id") Long id) {
         _equipeUsuario.deletar(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    //#endregion
 
 }

@@ -16,10 +16,11 @@ public interface EquipeService {
     List<EquipeDto> obterTodos(Pageable pageable);
     Optional<EquipeDto> obterPorId(Long id);
     List<Equipe> obterPorNome(String nome);
-    Equipe criarEquipe(EquipeDto equipe, MultipartFile arquivo);
+    List<Usuario> obterUsuariosPorLogin(Long idEquipe,String login);
+    Equipe criarEquipe(EquipeDto equipe);
     Equipe atualizar(Long id, EquipeDto equipe);
-    void deletar(Long id);
     byte[] retornarAvatar(Long id) throws IOException;
     Equipe editarAvatar(Long id, MultipartFile arquivo);
-    List<Usuario> obterUsuariosPorLogin(Long idEquipe,String login);
+    void deletar(Long id);
+
 }
