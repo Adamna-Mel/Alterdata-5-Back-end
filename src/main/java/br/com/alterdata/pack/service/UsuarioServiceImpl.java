@@ -119,7 +119,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 
 		Usuario adicionado = this._repositorioUsuario.save(novoUsuario);
 
-		//enviarEmailDeCadastro(usuario);
+		enviarEmailDeCadastro(usuario);
 
 		return adicionado;
 	}
@@ -394,7 +394,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 				+ "<h4>Login:</h4>"+"<p>"+ usuario.getLogin() +"</p>"
 				+ "<h4>Senha única:</h4>"+ "<p>"+ usuario.getSenha() +"</p>"
 				+ "</div>"
-				+ "<img src=\'https://4.bp.blogspot.com/-fbQaVbgFNYg/WUb8JNv5CzI/AAAAAAAAXq0/_aOoBIcke0g9g4pIugv4w561jWTMgAuIQCLcBGAs/s1600/mtech.jpg\' alt=\"\" />"
+				//+ "<img src=\'https://4.bp.blogspot.com/-fbQaVbgFNYg/WUb8JNv5CzI/AAAAAAAAXq0/_aOoBIcke0g9g4pIugv4w561jWTMgAuIQCLcBGAs/s1600/mtech.jpg\' alt=\"\" />"
 				+ "</body>"
 				+ "</html>";
 			
