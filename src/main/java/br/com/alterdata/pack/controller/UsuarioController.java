@@ -129,7 +129,6 @@ public class UsuarioController {
         @ApiResponse(code = 403, message=  "Você não tem permissão para isso meu consagrado :("),
         @ApiResponse(code = 500, message = "Vish quinhetão, da uma olhadinha no código ;-;") 
     })
-
     @PutMapping("/{id}")
     public ResponseEntity<Usuario> atualizar(@PathVariable(value = "id") Long id, @RequestBody @Valid UsuarioDto usuario) {
         return new ResponseEntity<>(_servicoUsuario.atualizar(id, usuario), HttpStatus.OK);
@@ -146,7 +145,6 @@ public class UsuarioController {
         @ApiResponse(code = 403, message=  "Você não tem permissão para isso meu consagrado :("),
         @ApiResponse(code = 500, message = "Vish quinhetão, da uma olhadinha no código ;-;") 
     })
-
     @PatchMapping("status/{id}")
     public ResponseEntity<Usuario> editarStatus(@PathVariable(value = "id") Long id, @RequestBody UsuarioDto usuario) {
         Usuario usuarioNovoStatus = _servicoUsuario.editarStatus(id, usuario);    
@@ -163,13 +161,13 @@ public class UsuarioController {
         @ApiResponse(code = 403, message=  "Você não tem permissão para isso meu consagrado :("),
         @ApiResponse(code = 500, message = "Vish quinhetão, da uma olhadinha no código ;-;") 
     })
-
     @PatchMapping("alterar-avatar/{id}")
     public ResponseEntity<Usuario> editarAvatar(@PathVariable(value = "id") Long id, @RequestParam("img") MultipartFile arquivo) {
         Usuario usuarioNovoStatus = _servicoUsuario.editarAvatar(id, arquivo);      
         return new ResponseEntity<>(usuarioNovoStatus, HttpStatus.OK);
     }
 
+    
     @ApiOperation(value = "Adiciona um cargo no usuario")
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "Cargo do usuario atualizado com sucesso :)"),
@@ -178,7 +176,6 @@ public class UsuarioController {
         @ApiResponse(code = 403, message=  "Você não tem permissão para isso meu consagrado :("),
         @ApiResponse(code = 500, message = "Vish quinhetão, da uma olhadinha no código ;-;") 
     })
-
     @PatchMapping("{idUsuario}/cargo/{idCargo}")
     public ResponseEntity<Usuario> adicionarCargo(@PathVariable(value = "idCargo") Long idCargo, @PathVariable(value = "idUsuario") Long idUsuario){
         Usuario usuarioNovoStatus = _servicoUsuario.adicionarCargo(idCargo, idUsuario);    
@@ -194,7 +191,6 @@ public class UsuarioController {
         @ApiResponse(code = 403, message=  "Você não tem permissão para isso meu consagrado :("),
         @ApiResponse(code = 500, message = "Vish quinhetão, da uma olhadinha no código ;-;") 
     })
-
     @PatchMapping("{idUsuario}/equipe/{idEquipe}")
     public ResponseEntity<Usuario> adicionarEquipe(@PathVariable(value = "idEquipe") Long idEquipe, @PathVariable(value = "idUsuario") Long idUsuario){
         Usuario usuarioNovoStatus = _servicoUsuario.adicionarEquipe(idUsuario, idEquipe);    
@@ -216,6 +212,9 @@ public class UsuarioController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    //#endregion
+    //#region DELETE
+
     @ApiOperation(value = "Deleta um usuário de acordo com o id")
     @ApiResponses(value = {
         @ApiResponse(code = 204, message = "Usuario removido da equipe com sucesso :)"),
@@ -224,10 +223,6 @@ public class UsuarioController {
         @ApiResponse(code = 403, message=  "Você não tem permissão para isso meu consagrado :("),
         @ApiResponse(code = 500, message = "Vish quinhetão, da uma olhadinha no código ;-;") 
     })
-
-    //#endregion
-    //#region DELETE
-
     @DeleteMapping("sair-da-equipe/{id}")
     public ResponseEntity<Void> removerUsuarioDaEquipe(@PathVariable(value = "id") Long id) {
         _servicoUsuario.removerUsuarioDaEquipe(id);
@@ -243,7 +238,6 @@ public class UsuarioController {
         @ApiResponse(code = 403, message=  "Você não tem permissão para isso meu consagrado :("),
         @ApiResponse(code = 500, message = "Vish quinhetão, da uma olhadinha no código ;-;") 
     })
-
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletar(@PathVariable(value = "id") Long id) {
         _servicoUsuario.deletar(id);

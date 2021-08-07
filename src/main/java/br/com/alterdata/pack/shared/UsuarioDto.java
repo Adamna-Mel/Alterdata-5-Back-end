@@ -17,6 +17,7 @@ public class UsuarioDto {
 
     @NotBlank(message = "Campo não informado!")
     private String nome;
+    
     private String status;
 
 

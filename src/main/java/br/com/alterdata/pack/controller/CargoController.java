@@ -25,7 +25,6 @@ import br.com.alterdata.pack.model.Cargo;
 import br.com.alterdata.pack.service.CargoService;
 import br.com.alterdata.pack.shared.CargoDto;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 

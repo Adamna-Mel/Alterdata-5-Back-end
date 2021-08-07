@@ -58,7 +58,7 @@ public class SwaggerConfig {
 	}
 
 	private ApiInfo apiInfo() {
-		return new ApiInfo("Aplicação PACK", "Api para Sistema de Status e Papéis", "1.0", "Termos de Serviços",
+		return new ApiInfo("Aplicação PACK", "API para Sistema de Status e Papéis", "1.0", "Termos de Serviços",
 				new Contact("Equipe Alterdata 5", "https://github.com/Adamna-Mel/Alterdata-5-Back-end",
 						"amanda9@estudante.firjan.senai.br"),
 				"Apache License Version 2.0", "https://www.apache.org/licesen.html", new ArrayList<VendorExtension>());

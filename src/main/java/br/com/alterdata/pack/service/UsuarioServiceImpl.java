@@ -76,6 +76,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 		return  this._repositorioUsuario.findAll(pageable);
 	}
 
+	
 	@Override
 	public Optional<Usuario> obterPorId(Long id) {
 		Optional<Usuario> encontrado = _repositorioUsuario.findById(id);
@@ -85,6 +86,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 		}
 		return encontrado;
 	}
+
 
 	@Override
 	public List<Usuario> obterPorLogin(String login) {
@@ -123,8 +125,8 @@ public class UsuarioServiceImpl implements UsuarioService {
 
 		return adicionado;
 	}
-
 	
+
 	@Override
 	public LoginResponse logar(String login, String senha) {
 
@@ -170,7 +172,6 @@ public class UsuarioServiceImpl implements UsuarioService {
 				throw new BadRequestException("Usuário já existe com o Login: " + usuarioAtualizado.getLogin());
 			}
 		}
-
 		Usuario usuarioSalvo = this._repositorioUsuario.save(usuarioAtualizado);
 
 		return usuarioSalvo;
@@ -192,7 +193,6 @@ public class UsuarioServiceImpl implements UsuarioService {
 	}
 
 
-
 	@Override
 	public Usuario editarStatus(Long id, UsuarioDto usuario) {
 		Optional<Usuario> usuarioExistente = obterPorId(id);
@@ -205,6 +205,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 
 		return usuarioSalvo;
 	}
+
 
 	@Override
 	public Usuario editarAvatar(Long id, MultipartFile arquivo){
@@ -236,8 +237,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 			Files.write(fileNamePath, arquivo.getBytes());
 		} catch (IOException e) {
 			e.printStackTrace();;
-		}
-		
+		}	
 		File destino = new File(uploadDirectory, usuario.get().getAvatarName());
 
 		if(!usuario.get().getAvatarName().equals(null)){
@@ -250,6 +250,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 
 		return _repositorioUsuario.save(usuario.get());
 	}
+
 
 	@Override
 	public Usuario adicionarCargo(Long idCargo, Long idUsuario) {
@@ -264,6 +265,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 		}
 		throw new NotFoundException("Cargo não encontrado pelo ID: " + idCargo + " :(");
 	}
+
 
 	@Override
 	public Usuario adicionarEquipe(Long idUsuario, Long idEquipe) {
@@ -298,8 +300,8 @@ public class UsuarioServiceImpl implements UsuarioService {
 	   }	
 		this._repositorioUsuario.deleteById(id);
 	}
-
 	
+
 	@Override
 	public Usuario removerUsuarioDaEquipe(Long id){
 
@@ -309,13 +311,10 @@ public class UsuarioServiceImpl implements UsuarioService {
 			usuario.get().setEquipe(null);
 			return _repositorioUsuario.save(usuario.get());
 		}
-
 		throw new NotFoundException("Não existe usuario com o ID: " + id);
 	}
 	
 	//#endregion
-
-
 	
 	@Override
 	public void enviarEmailEsqueciSenha(String email){
@@ -332,7 +331,6 @@ public class UsuarioServiceImpl implements UsuarioService {
 			int j = (int) (Math.random()*carct.length);
 			senha += carct[j];
 		}
-
 		String novaSenha = passwordEncoder.encode(senha);
 
 		usuario.get().setSenha(novaSenha);
@@ -349,17 +347,18 @@ public class UsuarioServiceImpl implements UsuarioService {
 				+ "<div style=\"text-aling:left; color:#030330\">"
 				+ "<h4>Senha:</h4>"+"<p>"+ senha +"</p>"
 				+ "</div>"
-				+ "<img src=\'https://4.bp.blogspot.com/-fbQaVbgFNYg/WUb8JNv5CzI/AAAAAAAAXq0/_aOoBIcke0g9g4pIugv4w561jWTMgAuIQCLcBGAs/s1600/mtech.jpg\' alt=\"\" />"
 				+ "</body>"
 				+ "</html>";
 			
 		MensagemEmail emailSenha = new MensagemEmail(
 			"Nova senha", 
 			mensagem,
-			"projetoapp05@gmail.com",
+			"Sistema Pack<projetoapp05@gmail.com>",
 			Arrays.asList(usuario.get().getEmail()));
+
 			mailler.enviar(emailSenha);			
 	}	
+
 
 	@Override
 	public void alterarSenha(Long id, String antigaSenha, String novaSenha){
@@ -380,6 +379,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 		}
 	}
 
+
 	private void enviarEmailDeCadastro(UsuarioDtoCadastro usuario){
 		String mensagem = "<html>"
 				+ "<head>"
@@ -394,15 +394,15 @@ public class UsuarioServiceImpl implements UsuarioService {
 				+ "<h4>Login:</h4>"+"<p>"+ usuario.getLogin() +"</p>"
 				+ "<h4>Senha única:</h4>"+ "<p>"+ usuario.getSenha() +"</p>"
 				+ "</div>"
-				//+ "<img src=\'https://4.bp.blogspot.com/-fbQaVbgFNYg/WUb8JNv5CzI/AAAAAAAAXq0/_aOoBIcke0g9g4pIugv4w561jWTMgAuIQCLcBGAs/s1600/mtech.jpg\' alt=\"\" />"
 				+ "</body>"
 				+ "</html>";
 			
 		MensagemEmail email = new MensagemEmail(
 			"Cadastro", 
 			mensagem,
-			"projetoapp05@gmail.com",
+			"Sistema Pack<projetoapp05@gmail.com>",
 			Arrays.asList(usuario.getEmail()));
+
 			mailler.enviar(email);			
 	}
 }

@@ -43,6 +43,7 @@ public class EquipeServiceImpl implements EquipeService{
                       .collect(Collectors.toList());
     }
 
+
     @Override
     public Optional<EquipeDto> obterPorId(Long id) {
         Optional<Equipe> encontrado = _repositorioEquipe.findByIdEquipe(id);
@@ -79,12 +80,12 @@ public class EquipeServiceImpl implements EquipeService{
         List<Usuario> usuarios = encontrado.get().getMembros().stream()
                                                               .filter( usuario -> usuario.getLogin().contains(login))
                                                               .collect(Collectors.toList());
-
         if (usuarios.size() == 0) {
             throw new NotFoundException("Não foi encontrado nenhum usuario com o nome: " + login);
         }
         return usuarios;
     }
+
 
     @Override
 	public byte[] retornarAvatar(Long id) throws IOException {
@@ -122,7 +123,6 @@ public class EquipeServiceImpl implements EquipeService{
         if (equipe.getNome() == "" || equipe.getNome() == null) {
             throw new BadRequestException("Nome não pode ser nulo!");
         }
-    
         return  _repositorioEquipe.save(equipe);
     }
     
@@ -139,7 +139,6 @@ public class EquipeServiceImpl implements EquipeService{
         if (!encontrado.isPresent()) {
             throw new NotFoundException("Não foi encontrado nenhuma equipe com o Id: " + id);
         }
-
         Equipe equipe = mapper.map(equipeDto, Equipe.class);
 
         equipe.setIdEquipe(id);
@@ -148,7 +147,6 @@ public class EquipeServiceImpl implements EquipeService{
         if(equipeDto.getNome() == "" || equipeDto.getNome() == null){
             throw new BadRequestException("Nome não pode ser nulo!");
         }
-
         Equipe equipeAtualizado = _repositorioEquipe.save(equipe);
 
         return equipeAtualizado;
@@ -166,7 +164,6 @@ public class EquipeServiceImpl implements EquipeService{
         if (!equipe.isPresent()) {
             throw new NotFoundException("Não foi encontrado nenhuma equipe com o Id: " + id);
         }
-
         String formato = arquivo.getContentType();
 		formato = formato.substring(6,formato.length());
 
@@ -177,8 +174,7 @@ public class EquipeServiceImpl implements EquipeService{
 			!formato.equals("gif")
 		){
 			throw new UnsupportedMediaTypeException("O formato da imagem não é suportado!");
-		}
-                
+		}         
 		String fileName = uuid + arquivo.getOriginalFilename();
 		Path fileNamePath = Paths.get(uploadDirectory, fileName);
 
@@ -186,14 +182,12 @@ public class EquipeServiceImpl implements EquipeService{
 			Files.write(fileNamePath, arquivo.getBytes());
 		} catch (IOException e) {
 			e.printStackTrace();;
-		}
-		
+		}	
 		File destino = new File(uploadDirectory, equipe.get().getAvatarName());
 
 		if(!equipe.get().getAvatarName().equals("")){
 			destino.delete();
 	   } 
-
 		equipe.get().setAvatarName(fileName);
 
 		return _repositorioEquipe.save(equipe.get());
@@ -217,7 +211,6 @@ public class EquipeServiceImpl implements EquipeService{
         if(!encontrado.get().getAvatarName().equals("")){
 			destino.delete();
 	   }
-	   
         encontrado.get().setMembros(null);
         
         this._repositorioEquipe.deleteById(id);

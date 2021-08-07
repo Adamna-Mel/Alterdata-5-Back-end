@@ -63,6 +63,7 @@ public class CargoServiceImpl implements CargoService{
 		return cargo;
 	}
 
+    
     @Override
 	public byte[] retornarAvatar(Long id) throws IOException {
 
@@ -110,7 +111,6 @@ public class CargoServiceImpl implements CargoService{
         if(!encontrado.isPresent()){
             throw new NotFoundException("Cargo não encontrado pelo ID:" + id);
         }
-
         Cargo cargo = mapper.map(cargoDto, Cargo.class);
 
         cargo.setIdCargo(id);
@@ -118,8 +118,7 @@ public class CargoServiceImpl implements CargoService{
 
         if(cargoDto.getNome() == "" || cargoDto.getNome() == null){
             throw new BadRequestException("Nome não pode ser nulo!");
-        }
-        
+        }  
         return _repositorioCargo.save(cargo);
     }
 
@@ -134,7 +133,6 @@ public class CargoServiceImpl implements CargoService{
         if (!cargo.isPresent()) {
             throw new NotFoundException("Não foi encontrado nenhuma equipe com o Id: " + id);
         }
-
         String formato = arquivo.getContentType();
 		formato = formato.substring(6,formato.length());
 
@@ -146,7 +144,6 @@ public class CargoServiceImpl implements CargoService{
 		){
 			throw new UnsupportedMediaTypeException("O formato da imagem não é suportado!");
 		}
-
 		String fileName = uuid + arquivo.getOriginalFilename();
 		Path fileNamePath = Paths.get(uploadDirectory, fileName);
 
@@ -154,23 +151,20 @@ public class CargoServiceImpl implements CargoService{
 			Files.write(fileNamePath, arquivo.getBytes());
 		} catch (IOException e) {
 			e.printStackTrace();;
-		}
-		
+		}	
 		File destino = new File(uploadDirectory, cargo.get().getAvatarName());
 
         if(!cargo.get().getAvatarName().equals(null)){
 			destino.delete();
 	   } 
-		 
-
 		cargo.get().setAvatarName(fileName);
 
 		return _repositorioCargo.save(cargo.get());
 	}
-    
-    
+       
     //#endregion
     //#region DELETE
+
     @Override
     public void deletar(Long id) {
         Optional<Cargo> cargo = _repositorioCargo.findByIdCargo(id);
@@ -186,7 +180,6 @@ public class CargoServiceImpl implements CargoService{
 		if(!cargo.get().getAvatarName().equals("")){
 			destino.delete();
 	   } 
-
         this._repositorioCargo.deleteById(id);
 	}
 

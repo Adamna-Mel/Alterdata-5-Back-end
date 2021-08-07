@@ -41,6 +41,7 @@ public class LoginController {
         return new ResponseEntity<>(_usuarioService.logar(request.getLogin(), request.getSenha()), HttpStatus.OK);
     }
 
+    
     @ApiOperation(value = "Envia um email com nova senha")
     @ApiResponses(value = {
         @ApiResponse(code = 201, message = "Email enviado com sucesso com sua nova senha :)"),
