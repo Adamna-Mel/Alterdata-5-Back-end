@@ -7,7 +7,6 @@ import java.util.List;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import static springfox.documentation.builders.PathSelectors.regex;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
@@ -63,64 +62,5 @@ public class SwaggerConfig {
 						"amanda9@estudante.firjan.senai.br"),
 				"Apache License Version 2.0", "https://www.apache.org/licesen.html", new ArrayList<VendorExtension>());
 	}
-/*
-	@Bean
-	public Docket swagger() {
-		final List<ResponseMessage> getMessages = new ArrayList<ResponseMessage>();
-		getMessages.add(new ResponseMessageBuilder().code(500).message("500 message")
-				.responseModel(new ModelRef("Error")).build());
-		getMessages.add(new ResponseMessageBuilder().code(403).message("Forbidden").build());
-		getMessages.add(new ResponseMessageBuilder().code(401).message("Unauthorized").build());
 
-		Set<String> produces = new HashSet<>();
-		produces.add("application/json");
-
-		Set<String> consumes = new HashSet<>();
-		consumes.add("application/json");
-
-		
-		return new Docket(DocumentationType.SWAGGER_2).select()
-				.apis(RequestHandlerSelectors.any()).paths(regex("/api.*"))
-				.build()
-				.securitySchemes(Collections.singletonList(new ApiKey("JWT", "Authorization", "Header")))
-		        .securityContexts(singletonList(
-		            SecurityContext.builder()
-		                .securityReferences(
-		                    singletonList(SecurityReference.builder()
-		                        .reference("JWT")
-		                        .scopes(new AuthorizationScope[0])
-		                        .build()
-		                    )
-		                )
-		                .build())
-		        )
-				.produces(produces).consumes(consumes).globalResponseMessage(RequestMethod.GET, getMessages)
-	            .globalResponseMessage(RequestMethod.GET, getMessages);
-
-	}
-
-	// final Predicate<RequestHandler> requestHandlers() {
-		
-	// 	Set<Predicate<RequestHandler>> matchers = new HashSet<Predicate<RequestHandler>>();
-	// 	matchers.add(RequestHandlerSelectors.basePackage("com.salesmanager.shop.store.api.v1"));
-	// 	matchers.add(RequestHandlerSelectors.basePackage("com.salesmanager.shop.store.api.v2"));
-		
-	// 	return Predicates.or(matchers);
-
- 	// }
-
- 	@SuppressWarnings("rawtypes")
-	private ApiInfo apiInfo() {
-		return new ApiInfo("Aplicação PACK", "Api para Sistema de Status e Papéis", "1.0", "Termos de Serviços",
-				new Contact("Equipe Alterdata 5", "https://github.com/Adamna-Mel/Alterdata-5-Back-end",
-						"amanda9@estudante.firjan.senai.br"),
-				"Apache License Version 2.0", "https://www.apache.org/licesen.html", new ArrayList<VendorExtension>());
-	}
-
-	
-	private static ArrayList<? extends SecurityScheme> securitySchemes() {
-		return (ArrayList<? extends SecurityScheme>) Stream.of(new ApiKey("Bearer", "Authorization", "header"))
-				.collect(Collectors.toList());
-	}
-*/
 }
